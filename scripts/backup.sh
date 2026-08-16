@@ -25,7 +25,7 @@ raise_alert() {
 
     # Append to alert log file if directory exists or writable
     if mkdir -p "$(dirname "${ALERT_LOG_FILE}")" 2>/dev/null; then
-        echo "${alert_payload}" >> "${ALERT_LOG_FILE}"
+        echo "${alert_payload}" >> "${ALERT_LOG_FILE}" 2>/dev/null || true
     fi
 
     # Send alert to alert webhook if configured
