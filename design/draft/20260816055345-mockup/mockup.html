@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>DocuStream - Search</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&amp;family=Inter:wght@400;600&amp;family=JetBrains+Mono:wght@400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#434655",
+                        "on-primary-fixed": "#00174b",
+                        "tertiary-fixed": "#d3e4fe",
+                        "surface-container-low": "#f2f4f6",
+                        "on-tertiary-fixed-variant": "#38485d",
+                        "inverse-surface": "#2d3133",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error": "#ffffff",
+                        "tertiary": "#46566c",
+                        "outline": "#737686",
+                        "surface-container-high": "#e6e8ea",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed-dim": "#bec6e0",
+                        "on-tertiary-fixed": "#0b1c30",
+                        "surface-container-highest": "#e0e3e5",
+                        "tertiary-container": "#5e6e85",
+                        "on-primary": "#ffffff",
+                        "secondary-container": "#dae2fd",
+                        "on-secondary-fixed-variant": "#3f465c",
+                        "on-secondary-container": "#5c647a",
+                        "on-background": "#191c1e",
+                        "surface-dim": "#d8dadc",
+                        "surface-tint": "#0053db",
+                        "surface-bright": "#f7f9fb",
+                        "primary-fixed": "#dbe1ff",
+                        "on-primary-container": "#eeefff",
+                        "background": "#f7f9fb",
+                        "surface": "#f7f9fb",
+                        "inverse-on-surface": "#eff1f3",
+                        "on-primary-fixed-variant": "#003ea8",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed-dim": "#b7c8e1",
+                        "outline-variant": "#c3c6d7",
+                        "surface-variant": "#e0e3e5",
+                        "on-secondary-fixed": "#131b2e",
+                        "on-surface": "#191c1e",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-container": "#e9f0ff",
+                        "secondary": "#565e74",
+                        "on-error-container": "#93000a",
+                        "primary-container": "#2563eb",
+                        "surface-container": "#eceef0",
+                        "inverse-primary": "#b4c5ff",
+                        "error": "#ba1a1a",
+                        "primary": "#004ac6",
+                        "primary-fixed-dim": "#b4c5ff",
+                        "secondary-fixed": "#dae2fd"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "xl": "32px",
+                        "base": "4px",
+                        "sm": "12px",
+                        "gutter": "16px",
+                        "margin-desktop": "24px",
+                        "xs": "8px",
+                        "lg": "24px",
+                        "md": "16px"
+                    },
+                    "fontFamily": {
+                        "mono-data": ["JetBrains Mono"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "body-sm": ["Inter"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "headline-sm": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "mono-data": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "700" }],
+                        "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+                        "display-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "label-caps": ["11px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .telemetry-marker {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border: 1px dotted #004ac6; /* primary */
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .telemetry-label {
+            position: absolute;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 8px;
+            color: #004ac6;
+            background: rgba(255,255,255,0.9);
+            padding: 1px 4px;
+            border: 1px solid #e0e3e5; /* outline-variant */
+            border-radius: 2px;
+            pointer-events: none;
+            z-index: 100;
+        }
+        
+        /* Hide scrollbar for clean UI */
+        ::-webkit-scrollbar {
+            display: none;
+        }
+        body {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface h-full flex flex-col antialiased">
+<!-- TopAppBar (Suppressed for raw canvas focus, replacing with custom Search Header) -->
+<header class="pt-12 pb-sm px-margin-mobile bg-surface sticky top-0 z-40 border-b border-surface-variant flex flex-col gap-sm relative">
+<div class="telemetry-marker top-4 right-4"></div>
+<div class="telemetry-label top-6 right-2">[Event: PageLoad_Search]</div>
+<div class="flex items-center gap-sm">
+<button class="text-on-surface-variant hover:bg-surface-container-low p-2 rounded-full transition-colors relative">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+<div class="telemetry-marker top-0 left-0"></div>
+</button>
+<h1 class="font-headline-sm text-headline-sm text-primary font-bold tracking-tight">DocuStream</h1>
+</div>
+<div class="relative w-full group">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="search">search</span>
+<input autofocus="" class="w-full h-12 pl-10 pr-10 bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-body-md text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all placeholder:text-on-surface-variant" placeholder="Search documents..." type="text"/>
+<span class="material-symbols-outlined absolute right-sm top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="tune">tune</span>
+<div class="telemetry-marker -top-2 left-1/2"></div>
+<div class="telemetry-label -top-5 left-1/2 -translate-x-1/2">[Event: SearchFocus]</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 overflow-y-auto pb-24 pt-lg px-margin-mobile relative">
+<!-- Recent Searches Section -->
+<section class="mb-xl relative">
+<div class="telemetry-marker top-0 left-0 border-tertiary"></div>
+<div class="telemetry-label -top-3 left-3 text-tertiary border-tertiary">[Metric: View_Recent]</div>
+<h2 class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider mb-sm">Recent Searches</h2>
+<div class="flex flex-col">
+<!-- Recent Item 1 -->
+<button class="flex items-center gap-sm py-sm border-b border-surface-container-high hover:bg-surface-container-low transition-colors w-full text-left relative group">
+<span class="material-symbols-outlined text-outline-variant" data-icon="history">history</span>
+<span class="font-body-md text-body-md text-on-surface flex-1 truncate">Q3 Financial Reports 2023</span>
+<span class="material-symbols-outlined text-outline-variant opacity-0 group-hover:opacity-100 transition-opacity" data-icon="north_west">north_west</span>
+<div class="telemetry-marker right-12 top-1/2 border-secondary"></div>
+</button>
+<!-- Recent Item 2 -->
+<button class="flex items-center gap-sm py-sm border-b border-surface-container-high hover:bg-surface-container-low transition-colors w-full text-left relative group">
+<span class="material-symbols-outlined text-outline-variant" data-icon="history">history</span>
+<span class="font-body-md text-body-md text-on-surface flex-1 truncate">Project Alpha Specification v2</span>
+<span class="material-symbols-outlined text-outline-variant opacity-0 group-hover:opacity-100 transition-opacity" data-icon="north_west">north_west</span>
+</button>
+<!-- Recent Item 3 -->
+<button class="flex items-center gap-sm py-sm border-b border-surface-container-high hover:bg-surface-container-low transition-colors w-full text-left relative group">
+<span class="material-symbols-outlined text-outline-variant" data-icon="history">history</span>
+<span class="font-body-md text-body-md text-on-surface flex-1 truncate">Employee Onboarding Guidelines</span>
+<span class="material-symbols-outlined text-outline-variant opacity-0 group-hover:opacity-100 transition-opacity" data-icon="north_west">north_west</span>
+</button>
+</div>
+</section>
+<!-- Suggested Filters / Categories (Bento-style layout) -->
+<section class="relative">
+<div class="telemetry-label -top-3 right-3 text-tertiary border-tertiary">[Metric: Tap_Category]</div>
+<h2 class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider mb-sm">Browse by Type</h2>
+<div class="grid grid-cols-2 gap-xs">
+<!-- Bento Cell 1 -->
+<button class="bg-surface-container-low border border-surface-container-high rounded-lg p-sm flex flex-col items-start gap-xs hover:bg-surface-container transition-colors relative">
+<div class="p-xs bg-error-container rounded-md">
+<span class="material-symbols-outlined text-on-error-container text-sm" data-icon="picture_as_pdf" style="font-variation-settings: 'FILL' 1;">picture_as_pdf</span>
+</div>
+<span class="font-body-md text-body-md font-semibold text-on-surface">PDFs</span>
+<span class="font-mono-data text-mono-data text-on-surface-variant">142 docs</span>
+</button>
+<!-- Bento Cell 2 -->
+<button class="bg-surface-container-low border border-surface-container-high rounded-lg p-sm flex flex-col items-start gap-xs hover:bg-surface-container transition-colors relative">
+<div class="p-xs bg-tertiary-fixed rounded-md">
+<span class="material-symbols-outlined text-on-tertiary-fixed text-sm" data-icon="description" style="font-variation-settings: 'FILL' 1;">description</span>
+</div>
+<span class="font-body-md text-body-md font-semibold text-on-surface">Text Docs</span>
+<span class="font-mono-data text-mono-data text-on-surface-variant">89 docs</span>
+<div class="telemetry-marker bottom-2 right-2 border-primary"></div>
+</button>
+<!-- Bento Cell 3 (Full width) -->
+<button class="col-span-2 bg-surface-container-low border border-surface-container-high rounded-lg p-sm flex items-center gap-sm hover:bg-surface-container transition-colors relative">
+<div class="p-xs bg-secondary-fixed rounded-md">
+<span class="material-symbols-outlined text-on-secondary-fixed text-sm" data-icon="table_view" style="font-variation-settings: 'FILL' 1;">table_view</span>
+</div>
+<div class="flex flex-col items-start flex-1">
+<span class="font-body-md text-body-md font-semibold text-on-surface">Spreadsheets</span>
+<span class="font-mono-data text-mono-data text-on-surface-variant">Financials &amp; Data</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Hidden as this is a focused search task/overlay intent, but included per generic app structure rules if considered a main destination. Since Search is a transient task overlaying Library/Recent, suppressing Shell is correct per Semantic Shell Mandate: Task-Focused.) -->
+<script>
+        // Simple script to simulate focus events for visual telemetry
+        const searchInput = document.querySelector('input');
+        const focusTelemetry = document.querySelector('.telemetry-label:contains("SearchFocus")'); // Simplified selector logic
+        
+        searchInput.addEventListener('focus', () => {
+             // In a real app, this would trigger an analytics event
+             console.log("Search Focused");
+        });
+    </script>
+</body></html>
