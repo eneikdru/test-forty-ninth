@@ -1,0 +1,34 @@
+{
+  "epics": [
+    {
+      "existingEpicId": "e7b14c4a-93ea-4aa6-95f0-2e4ff5ed7937",
+      "title": null,
+      "jtbd": null,
+      "kanoClass": null,
+      "cynefinDomain": null,
+      "sixSigmaMetric": "Reduce 'done' tasks with conflicting PR states from >40 findings to 0 findings",
+      "tocConstraintRef": "Inaccurate internal state blocking PM task tracking",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: The system must patch existing code to reconcile internal task status with actual GitHub PR states when discrepancies are found"
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Patch CI status reconciliation logic",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When implementing the status reconciliation patch for this epic, I want to update task states to match GitHub PR states, so that the PM's operational reality is accurate.",
+          "acceptanceCriteria": "Given a task marked 'done' internally, When its actual GitHub PR state is not merged or completed, Then the system updates the internal state to match the PR.\nGiven the system updates the internal task state, When persisting the change, Then it must use an atomically-guarded update (e.g., UPDATE ... WHERE id = ? AND status = ?) rather than a read-then-save.\nGiven the patch is implemented, When the automated tests run, Then unit and integration tests must verify the state reconciliation logic.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Desynchronized internal CI state",
+          "sixSigmaMetric": "Reduce the number of tasks with state discrepancies from >40 to 0",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1"
+          ]
+        }
+      ]
+    }
+  ]
+}
