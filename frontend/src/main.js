@@ -1,6 +1,6 @@
-import MaterialSearch from './MaterialSearch.svelte';
+import ProtocolSearch from './ProtocolSearch.svelte';
 
-const app = new MaterialSearch({
+const app = new ProtocolSearch({
   target: document.getElementById('app'),
 });
 
