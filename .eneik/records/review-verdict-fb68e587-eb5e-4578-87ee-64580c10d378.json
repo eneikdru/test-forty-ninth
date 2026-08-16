@@ -1,0 +1,22 @@
+{
+  "verdicts": [
+    {
+      "sourceIndex": 0,
+      "verdict": "block",
+      "criticalReason": "Committed generated build artifacts under target/ (including compiled .class files and test reports) instead of source files under src/main/java/.",
+      "concerns": []
+    },
+    {
+      "sourceIndex": 1,
+      "verdict": "block",
+      "criticalReason": "Committed generated build artifacts under target/ (compiled .class files and surefire reports) and committed files under .eneik/records/ contrary to PR boundaries.",
+      "concerns": []
+    },
+    {
+      "sourceIndex": 2,
+      "verdict": "block",
+      "criticalReason": "Committed generated screenshot artifacts (.png files) under .eneik/records/ contrary to PR boundaries and blocking policy.",
+      "concerns": []
+    }
+  ]
+}
