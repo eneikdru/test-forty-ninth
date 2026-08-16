@@ -1,7 +1,9 @@
 package com.eneik.production;
 
 import com.eneik.production.dto.SearchEventRequestDTO;
+import com.eneik.production.repository.SearchAnalyticsEventRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -28,6 +30,14 @@ public class SearchAnalyticsControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private SearchAnalyticsEventRepository analyticsRepository;
+
+    @BeforeEach
+    public void setUp() {
+        analyticsRepository.deleteAll();
+    }
 
     @Test
     public void testRecordSearchEventAndGetMetrics() throws Exception {
