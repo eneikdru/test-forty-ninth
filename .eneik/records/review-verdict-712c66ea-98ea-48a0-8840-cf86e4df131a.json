@@ -1,0 +1,19 @@
+{
+  "verdicts": [
+    {
+      "sourceIndex": 0,
+      "verdict": "approve",
+      "criticalReason": "",
+      "concerns": [
+        {
+          "text": "Default fallback credentials (e.g. postgres/minioadmin) in docker-compose.yml should be strictly overridden in non-local/production deployments.",
+          "severity": "low"
+        },
+        {
+          "text": "File-level copy of object storage directory in backup.sh via cp -r may produce partial snapshots if files are being concurrently written.",
+          "severity": "low"
+        }
+      ]
+    }
+  ]
+}
