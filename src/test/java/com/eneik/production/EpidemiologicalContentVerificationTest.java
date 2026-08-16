@@ -20,14 +20,14 @@ public class EpidemiologicalContentVerificationTest {
     private EpidemiologicalProtocolRepository repository;
 
     @Test
-    @DisplayName("Given a freshly seeded environment, When querying active database, Then exactly 10 initial protocols are returned")
+    @DisplayName("Given a freshly seeded environment, When querying active database, Then baseline protocols are returned")
     public void testInitialContentProvisioningCount() {
         List<EpidemiologicalProtocolEntity> protocols = repository.findAll();
-        assertEquals(10, protocols.size(), "Exactly 10 initial protocols must be returned from the active database");
+        assertEquals(15, protocols.size(), "Exactly 15 protocols must be returned from the active database after baseline seeding");
     }
 
     @Test
-    @DisplayName("Given search API, When searching for known seed keywords like 'COVID-19', Then appropriate seed protocols are retrieved")
+    @DisplayName("Given search API, When searching for known seed keywords like 'COVID-19' or 'Avian', Then appropriate seed protocols are retrieved")
     public void testSearchKnownSeedKeywords() {
         // Search COVID-19
         List<EpidemiologicalProtocolEntity> covidResults = repository.searchByKeyword("COVID-19");
@@ -39,14 +39,14 @@ public class EpidemiologicalContentVerificationTest {
         assertFalse(choleraResults.isEmpty(), "Searching for 'Cholera' should return results");
         assertTrue(choleraResults.stream().anyMatch(p -> "EPI-PROTO-002".equals(p.getCode())), "Results for 'Cholera' should contain EPI-PROTO-002");
 
-        // Search Measles
-        List<EpidemiologicalProtocolEntity> measlesResults = repository.searchByKeyword("Measles");
-        assertFalse(measlesResults.isEmpty(), "Searching for 'Measles' should return results");
-        assertTrue(measlesResults.stream().anyMatch(p -> "EPI-PROTO-004".equals(p.getCode())), "Results for 'Measles' should contain EPI-PROTO-004");
+        // Search Avian Influenza
+        List<EpidemiologicalProtocolEntity> avianResults = repository.searchByKeyword("Avian");
+        assertFalse(avianResults.isEmpty(), "Searching for 'Avian' should return results");
+        assertTrue(avianResults.stream().anyMatch(p -> "EPI-PROTO-011".equals(p.getCode())), "Results for 'Avian' should contain EPI-PROTO-011");
 
-        // Search Dengue
-        List<EpidemiologicalProtocolEntity> dengueResults = repository.searchByKeyword("Dengue");
-        assertFalse(dengueResults.isEmpty(), "Searching for 'Dengue' should return results");
-        assertTrue(dengueResults.stream().anyMatch(p -> "EPI-PROTO-006".equals(p.getCode())), "Results for 'Dengue' should contain EPI-PROTO-006");
+        // Search Marburg
+        List<EpidemiologicalProtocolEntity> marburgResults = repository.searchByKeyword("Marburg");
+        assertFalse(marburgResults.isEmpty(), "Searching for 'Marburg' should return results");
+        assertTrue(marburgResults.stream().anyMatch(p -> "EPI-PROTO-012".equals(p.getCode())), "Results for 'Marburg' should contain EPI-PROTO-012");
     }
 }
