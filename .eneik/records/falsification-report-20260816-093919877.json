@@ -1,0 +1,56 @@
+{
+  "violations": [
+    {
+      "roleTag": "BARCAN-TAG-09",
+      "type": "refusal_criteria",
+      "prNumber": 22,
+      "reason": "PR #22 commits modifications to test-result files in the 'target/surefire-reports/' directory, directly violating the explicit project memory rule that forbids committing generated reports or test-results."
+    },
+    {
+      "roleTag": "BARCAN-TAG-09",
+      "type": "refusal_criteria",
+      "prNumber": 20,
+      "reason": "PR #20 contains a task plan where the sixSigmaMetric is 'from unknown to 0%'. This violates TAG-09's refusal criteria which strictly forbids compiling a task without a measurable delta ('unknown' is not a measurable starting baseline)."
+    },
+    {
+      "roleTag": "BARCAN-TAG-05",
+      "type": "refusal_criteria",
+      "prNumber": 19,
+      "reason": "PR #19 modifies a Flyway migration script using 'BIGINT AUTO_INCREMENT' and 'TIMESTAMP'. This violates TAG-05's infrastructure standards which require 'TIMESTAMPTZ' for time and ID generation via 'gen_random_uuid()'."
+    },
+    {
+      "roleTag": "BARCAN-TAG-09",
+      "type": "refusal_criteria",
+      "prNumber": 18,
+      "reason": "PR #18 contains a task plan where the sixSigmaMetric is 'reduce the count of tasks... to zero' without specifying an initial measurable baseline, violating TAG-09's rule for a strict measurable delta."
+    },
+    {
+      "roleTag": "BARCAN-TAG-07",
+      "type": "refusal_criteria",
+      "prNumber": 21,
+      "reason": "PR #21 introduces new backend endpoints and service logic but includes zero test files in its diff. This violates TAG-07's explicit refusal criteria which blocks execution if no '*Test.java' file is in the payload."
+    },
+    {
+      "roleTag": "BARCAN-TAG-02",
+      "type": "refusal_criteria",
+      "prNumber": 21,
+      "reason": "PR #21 introduces new endpoints but does not include or update any contract tests, violating TAG-02's refusal criteria regarding incomplete contract tests for new endpoints."
+    },
+    {
+      "roleTag": "BARCAN-TAG-05",
+      "type": "causal_unjustified",
+      "prNumber": 19,
+      "reason": "PR #19's 'migration fix' simply adds 'IF NOT EXISTS' to the table creation. This hides the symptom of a failing Flyway migration without tracing the actual mechanism/root cause of why the table already existed or why Flyway state was out of sync."
+    },
+    {
+      "roleTag": "BARCAN-TAG-09",
+      "type": "methodological",
+      "philosopher": "Donald Davidson",
+      "thesis": "Radical Interpretation and Charity",
+      "score": "3",
+      "mustBe": "The client brief requires an epidemiology knowledge base ('База знаний по эпидемиологии') for cataloging, searching, and managing epidemiological materials.",
+      "performance": "PR #18 decomposes 'Brief 0' into a 'CI Status Reconciliation Patch' epic, completely missing the actual client requirement.",
+      "attractive": "The implementation (PRs #20, #21, #22) focuses entirely on task state synchronization instead of the requested domain, which is a complete failure to interpret the client's actual needs."
+    }
+  ]
+}
