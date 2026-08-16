@@ -4,7 +4,7 @@ import fs from 'fs';
 import path from 'path';
 
 async function generateScreenshots() {
-  const targetDir = path.resolve(process.cwd(), '../.eneik/records/design-check-01488216-fa59-47f7-8490-d6754f2de5c0');
+  const targetDir = path.resolve(process.cwd(), '../.eneik/records/design-check-814af111-2433-4402-ac01-98ad07e54f04');
   if (!fs.existsSync(targetDir)) {
     fs.mkdirSync(targetDir, { recursive: true });
   }
@@ -29,9 +29,6 @@ async function generateScreenshots() {
   await desktopPage.fill('[data-testid="search-input"]', 'protocol');
   await desktopPage.click('[data-testid="search-submit"]');
   await desktopPage.waitForSelector('[data-testid="document-item"]');
-  // Click document item to trigger telemetry event
-  await desktopPage.click('[data-testid="document-item"]');
-  await desktopPage.waitForSelector('[data-testid="telemetry-log"]');
 
   const desktopPath = path.join(targetDir, 'desktop-1440.png');
   await desktopPage.screenshot({ path: desktopPath, fullPage: false });
@@ -50,8 +47,6 @@ async function generateScreenshots() {
   await mobilePage.fill('[data-testid="search-input"]', 'protocol');
   await mobilePage.click('[data-testid="search-submit"]');
   await mobilePage.waitForSelector('[data-testid="document-item"]');
-  await mobilePage.click('[data-testid="document-item"]');
-  await mobilePage.waitForSelector('[data-testid="telemetry-log"]');
 
   const mobilePath = path.join(targetDir, 'mobile-375.png');
   await mobilePage.screenshot({ path: mobilePath, fullPage: false });
