@@ -93,4 +93,59 @@ describe('MaterialSearch component', () => {
 
     expect(sentRequests.some(r => r.body.eventType === 'SEARCH_ABANDONED')).toBe(true);
   });
+
+  it('preserves user typed input when server/validation rejects form submission', async () => {
+    const { getByTestId, queryByTestId } = render(MaterialSearch);
+
+    // Open create material modal
+    await fireEvent.click(getByTestId('add-material-btn'));
+    expect(getByTestId('catalog-form-modal')).toBeDefined();
+
+    // Fill form with input that triggers simulated rejection (contains "reject")
+    const titleInput = getByTestId('form-title-input');
+    const summaryInput = getByTestId('form-summary-textarea');
+    const authorInput = getByTestId('form-author-input');
+
+    await fireEvent.input(titleInput, { target: { value: 'Rejected Material Title' } });
+    await fireEvent.input(summaryInput, { target: { value: 'Detailed summary of the rejected material.' } });
+    await fireEvent.input(authorInput, { target: { value: 'Dr. John Doe' } });
+
+    // Submit form
+    await fireEvent.click(getByTestId('form-submit-btn'));
+
+    // Verify error message is shown
+    expect(getByTestId('form-error-message')).toBeDefined();
+    expect(getByTestId('form-error-message').textContent).toContain('Server rejected form submission');
+
+    // Verify typed input survives in the form inputs
+    expect(titleInput.value).toBe('Rejected Material Title');
+    expect(summaryInput.value).toBe('Detailed summary of the rejected material.');
+    expect(authorInput.value).toBe('Dr. John Doe');
+  });
+
+  it('opens confirmation dialog before irreversible item deletion', async () => {
+    const { getByTestId, queryByTestId, getAllByTestId } = render(MaterialSearch);
+
+    const initialDocCount = getAllByTestId('document-item').length;
+    const deleteBtn = getByTestId('delete-btn-123e4567-e89b-12d3-a456-426614174000');
+
+    // Click delete
+    await fireEvent.click(deleteBtn);
+
+    // Confirmation dialog appears
+    expect(getByTestId('delete-confirmation-dialog')).toBeDefined();
+
+    // Cancel deletion
+    await fireEvent.click(getByTestId('delete-cancel-btn'));
+    expect(queryByTestId('delete-confirmation-dialog')).toBeNull();
+    expect(getAllByTestId('document-item').length).toBe(initialDocCount);
+
+    // Click delete again and confirm
+    await fireEvent.click(deleteBtn);
+    expect(getByTestId('delete-confirmation-dialog')).toBeDefined();
+
+    await fireEvent.click(getByTestId('delete-confirm-btn'));
+    expect(queryByTestId('delete-confirmation-dialog')).toBeNull();
+    expect(getAllByTestId('document-item').length).toBe(initialDocCount - 1);
+  });
 });
