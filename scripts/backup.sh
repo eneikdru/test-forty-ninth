@@ -24,7 +24,7 @@ raise_alert() {
     echo "${alert_payload}" >&2
 
     # Append to alert log file if directory exists or writable
-    if mkdir -p "$(dirname "${ALERT_LOG_FILE}")" 2>/dev/null; then
+    if mkdir -p "$(dirname "${ALERT_LOG_FILE}")" 2>/dev/null || [ -d "$(dirname "${ALERT_LOG_FILE}")" ]; then
         echo "${alert_payload}" >> "${ALERT_LOG_FILE}" 2>/dev/null || true
     fi
 
@@ -72,7 +72,7 @@ fi
 
 # 2. Object Storage Snapshot
 echo "Performing object storage snapshot from ${OBJECT_STORAGE_DIR}..."
-mkdir -p "${OBJECT_STORAGE_DIR}"
+mkdir -p "${OBJECT_STORAGE_DIR}" 2>/dev/null || true
 cp -r "${OBJECT_STORAGE_DIR}"/. "${TARGET_SNAPSHOT_DIR}/object_storage/" 2>/dev/null || true
 
 # 3. Snapshot Verification
