@@ -19,6 +19,14 @@ public class BackupConfigurationTest {
         File backupTestScript = new File("scripts/test_backup.sh");
         assertTrue(backupTestScript.exists(), "scripts/test_backup.sh must exist");
         assertTrue(backupTestScript.canExecute(), "scripts/test_backup.sh must be executable");
+
+        File restoreScript = new File("scripts/restore.sh");
+        assertTrue(restoreScript.exists(), "scripts/restore.sh must exist");
+        assertTrue(restoreScript.canExecute(), "scripts/restore.sh must be executable");
+
+        File restoreTestScript = new File("scripts/test_restore.sh");
+        assertTrue(restoreTestScript.exists(), "scripts/test_restore.sh must exist");
+        assertTrue(restoreTestScript.canExecute(), "scripts/test_restore.sh must be executable");
     }
 
     @Test
