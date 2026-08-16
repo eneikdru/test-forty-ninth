@@ -1,0 +1,36 @@
+{
+  "epics": [
+    {
+      "existingEpicId": null,
+      "title": "Falsification Finding Remediation Cycle",
+      "jtbd": "When maintaining the project codebase, I want to resolve all confirmed falsification findings, so that technical debt is eliminated and infrastructure standards are strictly upheld.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "clear",
+      "sixSigmaMetric": "Decrease the number of unresolved falsification findings across the project from 8 to 0",
+      "tocConstraintRef": "Technical debt resolution and codebase standards enforcement",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Address codebase and infrastructure violations by removing target/surefire-reports from version control, updating Flyway migrations to use TIMESTAMPTZ and gen_random_uuid() without IF NOT EXISTS, and adding required *Test.java and contract tests.",
+        "R2: Correct project documentation and domain alignment by ensuring all task plans specify explicit measurable starting baselines for their sixSigmaMetric, and refocusing efforts on the actual epidemiological knowledge base domain."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Apply Direct Patches for Falsification Findings",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When implementing the falsification fixes for this epic, I want to patch the existing code directly, so that all eight confirmed findings are resolved without creating new layers.",
+          "acceptanceCriteria": "Given the presence of invalid Flyway schemas,\nWhen the codebase is patched to resolve the findings directly,\nThen Flyway schemas use TIMESTAMPTZ and gen_random_uuid() without IF NOT EXISTS.\nGiven task plans lacking explicit baselines,\nWhen the project documentation is corrected,\nThen all task plans contain explicit numeric baselines.\nGiven the presence of committed test results,\nWhen the build artifacts are removed from version control,\nThen target/surefire-reports are ignored and API endpoints include complete test coverage.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Codebase standards enforcement bottleneck",
+          "sixSigmaMetric": "Reduce the number of failing compliance and schema validations in the CI pipeline from 8 to 0",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2"
+          ]
+        }
+      ]
+    }
+  ]
+}
