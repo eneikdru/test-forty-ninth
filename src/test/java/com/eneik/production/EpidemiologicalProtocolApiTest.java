@@ -67,6 +67,20 @@ public class EpidemiologicalProtocolApiTest {
                         .param("status", "APPROVED"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.pagination.totalElements", is(15)));
+
+        // Test sorting by title ascending
+        mockMvc.perform(get("/api/v1/protocols")
+                        .param("sortBy", "title")
+                        .param("sortOrder", "asc"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.items[0].title", notNullValue()));
+
+        // Test sorting by publicationYear descending
+        mockMvc.perform(get("/api/v1/protocols")
+                        .param("sortBy", "publicationYear")
+                        .param("sortOrder", "desc"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.items[0].publicationYear", notNullValue()));
     }
 
     @Test
@@ -156,6 +170,30 @@ public class EpidemiologicalProtocolApiTest {
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.title", is("Updated COVID-19 Surveillance Protocol")))
                 .andExpect(jsonPath("$.version", is("v3.3")));
+
+        // NotFound 404 for non-existent protocol ID
+        mockMvc.perform(put("/api/v1/protocols/99999")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updateReq)))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.code", is("PROTOCOL_NOT_FOUND")));
+
+        // Duplicate code 409 when updating code to code of another protocol
+        UpdateEpidemiologicalProtocolRequest duplicateUpdateReq = new UpdateEpidemiologicalProtocolRequest(
+                "EPI-PROTO-002",
+                "Conflict Title",
+                "Respiratory",
+                "v1.0",
+                "APPROVED",
+                "Summary",
+                "Org",
+                2024
+        );
+        mockMvc.perform(put("/api/v1/protocols/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(duplicateUpdateReq)))
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("$.code", is("DUPLICATE_PROTOCOL_CODE")));
     }
 
     @Test
