@@ -1,0 +1,5 @@
+/app/src/test/java/com/eneik/production/SearchAnalyticsEventRepositoryTest.java
+/app/src/test/java/com/eneik/production/EpidemiologicalContentVerificationTest.java
+/app/src/test/java/com/eneik/production/SearchAnalyticsMigrationTest.java
+/app/src/test/java/com/eneik/production/EpidemiologicalProtocolSeedTest.java
+/app/src/test/java/com/eneik/production/BackupConfigurationTest.java

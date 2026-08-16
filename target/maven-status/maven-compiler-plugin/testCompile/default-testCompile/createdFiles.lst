@@ -1,0 +1,5 @@
+com/eneik/production/EpidemiologicalProtocolSeedTest.class
+com/eneik/production/SearchAnalyticsMigrationTest.class
+com/eneik/production/SearchAnalyticsEventRepositoryTest.class
+com/eneik/production/BackupConfigurationTest.class
+com/eneik/production/EpidemiologicalContentVerificationTest.class
