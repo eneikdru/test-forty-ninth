@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Protocol Hub - Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface": "#0b1c30",
+                        "surface-container-low": "#eff4ff",
+                        "outline": "#76777d",
+                        "surface-container": "#e5eeff",
+                        "surface-bright": "#f8f9ff",
+                        "inverse-on-surface": "#eaf1ff",
+                        "surface-dim": "#cbdbf5",
+                        "surface-container-high": "#dce9ff",
+                        "primary-container": "#131b2e",
+                        "on-tertiary-fixed-variant": "#3a485c",
+                        "on-primary-container": "#7c839b",
+                        "on-primary-fixed-variant": "#3f465c",
+                        "secondary-container": "#86f2e4",
+                        "on-error-container": "#93000a",
+                        "primary-fixed": "#dae2fd",
+                        "on-secondary": "#ffffff",
+                        "on-background": "#0b1c30",
+                        "on-secondary-fixed": "#00201d",
+                        "inverse-surface": "#213145",
+                        "on-secondary-fixed-variant": "#005049",
+                        "secondary-fixed": "#89f5e7",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-container": "#76859b",
+                        "surface-variant": "#d3e4fe",
+                        "primary": "#000000",
+                        "tertiary": "#000000",
+                        "on-primary-fixed": "#131b2e",
+                        "tertiary-container": "#0d1c2f",
+                        "outline-variant": "#c6c6cd",
+                        "tertiary-fixed-dim": "#b9c7e0",
+                        "on-secondary-container": "#006f66",
+                        "primary-fixed-dim": "#bec6e0",
+                        "on-surface-variant": "#45464d",
+                        "surface-container-highest": "#d3e4fe",
+                        "surface": "#f8f9ff",
+                        "surface-tint": "#565e74",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed-dim": "#6bd8cb",
+                        "error-container": "#ffdad6",
+                        "secondary": "#006a61",
+                        "tertiary-fixed": "#d5e3fd",
+                        "inverse-primary": "#bec6e0",
+                        "on-error": "#ffffff",
+                        "background": "#f8f9ff",
+                        "on-tertiary-fixed": "#0d1c2f",
+                        "error": "#ba1a1a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "margin-desktop": "40px",
+                        "gutter": "16px",
+                        "sm": "8px",
+                        "lg": "24px",
+                        "xl": "32px",
+                        "margin-mobile": "16px",
+                        "base": "4px",
+                        "xs": "4px",
+                        "md": "16px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["JetBrains Mono"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "body-sm": ["Hanken Grotesk"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "headline-sm": ["Hanken Grotesk"],
+                        "label-sm": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "700" }],
+                        "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "label-sm": ["10px", { "lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #F8FAFC; }
+        .hide-scroll::-webkit-scrollbar { display: none; }
+        .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface antialiased min-h-screen flex flex-col font-body-md">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center px-margin-mobile h-16 w-full z-40 bg-surface dark:bg-background border-b border-outline-variant dark:border-outline docked full-width top-0 sticky flat no shadows">
+<div class="flex items-center gap-sm">
+<img class="w-8 h-8 rounded-full object-cover border border-outline-variant" data-alt="A professional headshot of an administrator in a modern office setting. The lighting is bright and even, conveying a sense of corporate efficiency and trust. The background is a slightly blurred, minimalist workspace." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBUb93oJd7J4JOQVd4BxgWuHJmpkXabENkc3DBaDTFSBNGNmE7BWLw3q6wple46cXb9--gU08_Y-e0dVNax9fhjZ3o5oMB-I5iQfVmdbuUlxoK9GP1-wgJoEWmAmmFIsQKKANIUbW7RVW6xqB23_qpckBP2vz6gfiPrW_C0wFo3uMAVxBBP6KkvW-udZ1LXHGiuFj9PTAA7BX4RQ-Z0nhzxGNqafEcShCPPae7LF5oulx-PNi1CGsc-d0Dxk0NukGJPfEuCwr7lfH0v"/>
+<h1 class="text-headline-sm font-headline-sm text-on-surface dark:text-inverse-on-surface font-bold tracking-tight">Protocol Hub</h1>
+</div>
+<button class="p-2 rounded-full hover:bg-surface-container-low dark:hover:bg-surface-container-high transition-colors active:opacity-80 transition-opacity text-on-surface-variant dark:text-surface-variant">
+<span class="material-symbols-outlined">search</span>
+</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 w-full max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop py-lg pb-24 space-y-xl">
+<!-- Summary Section (Bento Grid) -->
+<section>
+<h2 class="text-headline-md font-headline-md mb-sm">Dashboard Overview</h2>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-sm">
+<!-- Active Metric -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded p-md flex flex-col justify-between h-24">
+<span class="text-label-md font-label-md text-on-surface-variant uppercase">Active Protocols</span>
+<div class="flex items-end justify-between">
+<span class="text-headline-lg font-headline-lg text-primary">142</span>
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+<!-- Draft Metric -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded p-md flex flex-col justify-between h-24">
+<span class="text-label-md font-label-md text-on-surface-variant uppercase">Drafts</span>
+<div class="flex items-end justify-between">
+<span class="text-headline-lg font-headline-lg text-primary">28</span>
+<span class="material-symbols-outlined text-outline" style="font-variation-settings: 'FILL' 1;">edit_note</span>
+</div>
+</div>
+<!-- Pending Review -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded p-md flex flex-col justify-between h-24">
+<span class="text-label-md font-label-md text-on-surface-variant uppercase">Pending Review</span>
+<div class="flex items-end justify-between">
+<span class="text-headline-lg font-headline-lg text-primary">12</span>
+<span class="material-symbols-outlined text-[#F59E0B]" style="font-variation-settings: 'FILL' 1;">pending</span>
+</div>
+</div>
+<!-- Archived Metric -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded p-md flex flex-col justify-between h-24">
+<span class="text-label-md font-label-md text-on-surface-variant uppercase">Archived</span>
+<div class="flex items-end justify-between">
+<span class="text-headline-lg font-headline-lg text-primary">450</span>
+<span class="material-symbols-outlined text-outline-variant" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Recent Activity (Horizontal Scroll) -->
+<section>
+<div class="flex justify-between items-center mb-sm">
+<h2 class="text-headline-sm font-headline-sm">Recent Activity</h2>
+<button class="text-label-md font-label-md text-secondary uppercase hover:underline">View All</button>
+</div>
+<div class="flex overflow-x-auto gap-sm pb-xs hide-scroll -mx-margin-mobile px-margin-mobile md:mx-0 md:px-0">
+<!-- Protocol Card 1 -->
+<div class="flex-shrink-0 w-72 bg-surface-container-lowest border border-outline-variant rounded p-md hover:border-secondary transition-colors cursor-pointer group">
+<div class="flex justify-between items-start mb-sm">
+<span class="text-label-sm font-label-sm text-on-surface-variant uppercase">PRT-8921</span>
+<span class="bg-[#D1FAE5] text-[#065F46] text-[10px] px-2 py-0.5 rounded font-bold uppercase tracking-wider">Active</span>
+</div>
+<h3 class="text-headline-sm font-headline-sm mb-xs group-hover:text-secondary transition-colors">Emergency Evacuation Procedure</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant line-clamp-2 mb-sm">Updated guidelines for north wing evacuation scenarios.</p>
+<div class="flex justify-between items-center mt-auto pt-sm border-t border-surface-container">
+<span class="text-label-md font-label-md text-on-surface-variant">Modified 2h ago</span>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-secondary">arrow_forward</span>
+</div>
+</div>
+<!-- Protocol Card 2 -->
+<div class="flex-shrink-0 w-72 bg-surface-container-lowest border border-outline-variant rounded p-md hover:border-secondary transition-colors cursor-pointer group">
+<div class="flex justify-between items-start mb-sm">
+<span class="text-label-sm font-label-sm text-on-surface-variant uppercase">PRT-8944</span>
+<span class="bg-[#FEF3C7] text-[#92400E] text-[10px] px-2 py-0.5 rounded font-bold uppercase tracking-wider">Draft</span>
+</div>
+<h3 class="text-headline-sm font-headline-sm mb-xs group-hover:text-secondary transition-colors">Server Maintenance Protocol</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant line-clamp-2 mb-sm">Drafting new steps for Q3 hardware upgrades.</p>
+<div class="flex justify-between items-center mt-auto pt-sm border-t border-surface-container">
+<span class="text-label-md font-label-md text-on-surface-variant">Modified 5h ago</span>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-secondary">arrow_forward</span>
+</div>
+</div>
+<!-- Protocol Card 3 -->
+<div class="flex-shrink-0 w-72 bg-surface-container-lowest border border-outline-variant rounded p-md hover:border-secondary transition-colors cursor-pointer group">
+<div class="flex justify-between items-start mb-sm">
+<span class="text-label-sm font-label-sm text-on-surface-variant uppercase">PRT-8802</span>
+<span class="bg-[#D1FAE5] text-[#065F46] text-[10px] px-2 py-0.5 rounded font-bold uppercase tracking-wider">Active</span>
+</div>
+<h3 class="text-headline-sm font-headline-sm mb-xs group-hover:text-secondary transition-colors">New Hire Onboarding</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant line-clamp-2 mb-sm">Standard procedure for IT setup and access granting.</p>
+<div class="flex justify-between items-center mt-auto pt-sm border-t border-surface-container">
+<span class="text-label-md font-label-md text-on-surface-variant">Modified 1d ago</span>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-secondary">arrow_forward</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Pinned Protocols (List) -->
+<section>
+<div class="flex justify-between items-center mb-sm">
+<h2 class="text-headline-sm font-headline-sm">Pinned Protocols</h2>
+<button class="p-1 rounded hover:bg-surface-container-low transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">more_vert</span>
+</button>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded overflow-hidden">
+<!-- List Item 1 -->
+<div class="flex items-center p-sm border-b border-surface-container hover:bg-[#F8FAFC] transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-secondary mr-sm">push_pin</span>
+<div class="flex-1">
+<h4 class="text-body-md font-body-md font-semibold">Incident Response Core</h4>
+<span class="text-label-sm font-label-sm text-on-surface-variant">PRT-1001</span>
+</div>
+<span class="bg-[#D1FAE5] text-[#065F46] text-[10px] px-2 py-0.5 rounded font-bold uppercase tracking-wider mr-sm hidden sm:inline-block">Active</span>
+<button class="px-3 py-1 border border-secondary text-secondary rounded text-label-md font-label-md hover:bg-secondary-container transition-colors">View</button>
+</div>
+<!-- List Item 2 -->
+<div class="flex items-center p-sm hover:bg-[#F8FAFC] transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-secondary mr-sm">push_pin</span>
+<div class="flex-1">
+<h4 class="text-body-md font-body-md font-semibold">Annual Security Audit</h4>
+<span class="text-label-sm font-label-sm text-on-surface-variant">PRT-2055</span>
+</div>
+<span class="bg-[#D1FAE5] text-[#065F46] text-[10px] px-2 py-0.5 rounded font-bold uppercase tracking-wider mr-sm hidden sm:inline-block">Active</span>
+<button class="px-3 py-1 border border-secondary text-secondary rounded text-label-md font-label-md hover:bg-secondary-container transition-colors">View</button>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Mobile Only based on platform pivot rules) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-margin-mobile pb-safe bg-surface dark:bg-background border-t border-outline-variant dark:border-outline fixed full-width bottom-0 z-50 h-20 flat no shadows">
+<!-- Dashboard (Active) -->
+<button class="flex flex-col items-center justify-center text-primary dark:text-secondary-fixed-dim font-bold active:scale-95 transition-transform duration-150 w-full h-full">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="text-label-sm font-label-sm mt-1">Dashboard</span>
+</button>
+<!-- Directory -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline hover:text-primary dark:hover:text-secondary-fixed active:scale-95 transition-transform duration-150 w-full h-full">
+<span class="material-symbols-outlined">list_alt</span>
+<span class="text-label-sm font-label-sm mt-1">Directory</span>
+</button>
+<!-- New -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline hover:text-primary dark:hover:text-secondary-fixed active:scale-95 transition-transform duration-150 w-full h-full">
+<span class="material-symbols-outlined">add_box</span>
+<span class="text-label-sm font-label-sm mt-1">New</span>
+</button>
+<!-- Archive -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline hover:text-primary dark:hover:text-secondary-fixed active:scale-95 transition-transform duration-150 w-full h-full">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="text-label-sm font-label-sm mt-1">Archive</span>
+</button>
+</nav>
+<!-- Desktop Sidebar (Visible on md and up, replacing BottomNavBar) -->
+<aside class="hidden md:flex fixed inset-y-0 left-0 z-[60] flex-col p-md w-64 border-r border-outline-variant bg-surface-container-lowest dark:bg-inverse-surface h-full pt-20">
+<nav class="flex flex-col gap-sm">
+<a class="flex items-center gap-sm p-sm rounded bg-secondary-container dark:bg-on-secondary-container text-on-secondary-container dark:text-secondary-fixed font-bold" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="text-label-md font-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-sm p-sm rounded text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined">list_alt</span>
+<span class="text-label-md font-label-md">Directory</span>
+</a>
+<a class="flex items-center gap-sm p-sm rounded text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined">add_box</span>
+<span class="text-label-md font-label-md">New Protocol</span>
+</a>
+<a class="flex items-center gap-sm p-sm rounded text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="text-label-md font-label-md">Archive</span>
+</a>
+</nav>
+</aside>
+<!-- Adjust main content padding for desktop sidebar -->
+<style>
+        @media (min-width: 768px) {
+            main { margin-left: 16rem; max-width: calc(100% - 16rem); }
+        }
+    </style>
+</body></html>
