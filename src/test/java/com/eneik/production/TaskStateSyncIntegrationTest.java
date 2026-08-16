@@ -41,6 +41,29 @@ class TaskStateSyncIntegrationTest {
     }
 
     @Test
+    @DisplayName("Integration test: Synchronize task status when PR is CLOSED reconciles status to BLOCKED")
+    void testTaskStateSyncIntegration_prClosed_reconcilesToBlocked() throws Exception {
+        String taskId = "ca69a93d-4e7e-4b71-a5a9-17f9c294ba99";
+        LocalDateTime now = LocalDateTime.now();
+        InternalTaskEntity task = new InternalTaskEntity(taskId, "Closed PR task", "done", 99, "CLOSED", now, now);
+        taskRepository.save(task);
+
+        when(gitHubPrClient.getPullRequestState(99)).thenReturn("CLOSED");
+
+        mockMvc.perform(post("/api/tasks/" + taskId + "/sync")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.taskId").value(taskId))
+                .andExpect(jsonPath("$.previousStatus").value("done"))
+                .andExpect(jsonPath("$.newStatus").value("BLOCKED"))
+                .andExpect(jsonPath("$.githubPrState").value("CLOSED"))
+                .andExpect(jsonPath("$.updated").value(true));
+
+        InternalTaskEntity updatedTask = taskRepository.findById(taskId).orElseThrow();
+        assertEquals("BLOCKED", updatedTask.getStatus());
+    }
+
+    @Test
     @DisplayName("Integration test: Synchronize task status using REST API and verify database state and atomic update query")
     void testTaskStateSyncIntegration() throws Exception {
         String taskId = "dc09037e-cbf1-4e7e-a5a9-17f9c294ba71";

@@ -62,7 +62,7 @@ public class TaskStateSyncService {
         if ("done".equalsIgnoreCase(currentStatus) || "DONE".equalsIgnoreCase(currentStatus)) {
             String targetStatus = null;
 
-            if ("OPEN".equalsIgnoreCase(prState)) {
+            if ("OPEN".equalsIgnoreCase(prState) || "DRAFT".equalsIgnoreCase(prState)) {
                 targetStatus = "IN_PROGRESS";
             } else if ("MISSING".equalsIgnoreCase(prState)) {
                 targetStatus = "STUCK";
