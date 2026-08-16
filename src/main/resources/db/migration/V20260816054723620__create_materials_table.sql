@@ -6,7 +6,7 @@ CREATE TABLE materials (
     file_name VARCHAR(255),
     content_type VARCHAR(100),
     file_data BLOB,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE INDEX idx_materials_title ON materials (title);

@@ -8,7 +8,7 @@ import com.eneik.production.service.TaskStateSyncService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -57,7 +57,7 @@ public class TaskStateSyncController {
 
     @PostMapping
     public ResponseEntity<InternalTaskDto> createTask(@RequestBody InternalTaskDto dto) {
-        LocalDateTime now = LocalDateTime.now();
+        OffsetDateTime now = OffsetDateTime.now();
         InternalTaskEntity entity = new InternalTaskEntity(
                 dto.getId(),
                 dto.getTitle(),

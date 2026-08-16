@@ -1,7 +1,7 @@
 package com.eneik.production.dto;
 
 import com.eneik.production.models.persistence.MaterialEntity;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 public class MaterialDto {
 
@@ -11,12 +11,12 @@ public class MaterialDto {
     private String content;
     private String fileName;
     private String contentType;
-    private LocalDateTime createdAt;
+    private OffsetDateTime createdAt;
 
     public MaterialDto() {
     }
 
-    public MaterialDto(Long id, String title, String description, String content, String fileName, String contentType, LocalDateTime createdAt) {
+    public MaterialDto(Long id, String title, String description, String content, String fileName, String contentType, OffsetDateTime createdAt) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -89,11 +89,11 @@ public class MaterialDto {
         this.contentType = contentType;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public OffsetDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(OffsetDateTime createdAt) {
         this.createdAt = createdAt;
     }
 }

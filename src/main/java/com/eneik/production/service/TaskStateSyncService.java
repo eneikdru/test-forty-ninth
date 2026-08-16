@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Clock;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -74,7 +74,7 @@ public class TaskStateSyncService {
             }
 
             if (targetStatus != null) {
-                LocalDateTime now = LocalDateTime.now(clock);
+                OffsetDateTime now = OffsetDateTime.now(clock);
                 // Execute atomically-guarded database update query using current status guard
                 int rowsUpdated = taskRepository.updateStatusAtomically(task.getId(), currentStatus, targetStatus, prState, now);
                 if (rowsUpdated > 0) {

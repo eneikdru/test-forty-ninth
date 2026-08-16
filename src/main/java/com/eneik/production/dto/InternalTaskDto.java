@@ -1,6 +1,6 @@
 package com.eneik.production.dto;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 public class InternalTaskDto {
     private String id;
@@ -8,13 +8,13 @@ public class InternalTaskDto {
     private String status;
     private Integer githubPrNumber;
     private String githubPrState;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private OffsetDateTime createdAt;
+    private OffsetDateTime updatedAt;
 
     public InternalTaskDto() {
     }
 
-    public InternalTaskDto(String id, String title, String status, Integer githubPrNumber, String githubPrState, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public InternalTaskDto(String id, String title, String status, Integer githubPrNumber, String githubPrState, OffsetDateTime createdAt, OffsetDateTime updatedAt) {
         this.id = id;
         this.title = title;
         this.status = status;
@@ -64,19 +64,19 @@ public class InternalTaskDto {
         this.githubPrState = githubPrState;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public OffsetDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(OffsetDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getUpdatedAt() {
+    public OffsetDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
+    public void setUpdatedAt(OffsetDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 }

@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Clock;
 import java.time.Instant;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.util.Optional;
 
@@ -43,8 +43,8 @@ class TaskStateSyncServiceTest {
                 "done",
                 101,
                 "OPEN",
-                LocalDateTime.now(fixedClock),
-                LocalDateTime.now(fixedClock)
+                OffsetDateTime.now(fixedClock),
+                OffsetDateTime.now(fixedClock)
         );
 
         when(taskRepository.findById("dc09037e-cbf1-4e7e-a5a9-17f9c294ba71")).thenReturn(Optional.of(task));
@@ -70,8 +70,8 @@ class TaskStateSyncServiceTest {
                 "done",
                 103,
                 "DRAFT",
-                LocalDateTime.now(fixedClock),
-                LocalDateTime.now(fixedClock)
+                OffsetDateTime.now(fixedClock),
+                OffsetDateTime.now(fixedClock)
         );
 
         when(taskRepository.findById("dc09037e-cbf1-4e7e-a5a9-17f9c294ba71")).thenReturn(Optional.of(task));
@@ -96,8 +96,8 @@ class TaskStateSyncServiceTest {
                 "done",
                 104,
                 "CLOSED",
-                LocalDateTime.now(fixedClock),
-                LocalDateTime.now(fixedClock)
+                OffsetDateTime.now(fixedClock),
+                OffsetDateTime.now(fixedClock)
         );
 
         when(taskRepository.findById("dc09037e-cbf1-4e7e-a5a9-17f9c294ba71")).thenReturn(Optional.of(task));
@@ -121,8 +121,8 @@ class TaskStateSyncServiceTest {
                 "done",
                 105,
                 "MERGED",
-                LocalDateTime.now(fixedClock),
-                LocalDateTime.now(fixedClock)
+                OffsetDateTime.now(fixedClock),
+                OffsetDateTime.now(fixedClock)
         );
 
         when(taskRepository.findById("dc09037e-cbf1-4e7e-a5a9-17f9c294ba71")).thenReturn(Optional.of(task));
@@ -145,8 +145,8 @@ class TaskStateSyncServiceTest {
                 "done",
                 null,
                 "MISSING",
-                LocalDateTime.now(fixedClock),
-                LocalDateTime.now(fixedClock)
+                OffsetDateTime.now(fixedClock),
+                OffsetDateTime.now(fixedClock)
         );
 
         when(taskRepository.findById("dc09037e-cbf1-4e7e-a5a9-17f9c294ba71")).thenReturn(Optional.of(task));
@@ -169,8 +169,8 @@ class TaskStateSyncServiceTest {
                 "done",
                 102,
                 "OPEN",
-                LocalDateTime.now(fixedClock),
-                LocalDateTime.now(fixedClock)
+                OffsetDateTime.now(fixedClock),
+                OffsetDateTime.now(fixedClock)
         );
 
         when(taskRepository.findById("dc09037e-cbf1-4e7e-a5a9-17f9c294ba71")).thenReturn(Optional.of(task));

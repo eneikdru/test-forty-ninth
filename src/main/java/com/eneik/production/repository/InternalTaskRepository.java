@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Repository
 public interface InternalTaskRepository extends JpaRepository<InternalTaskEntity, String> {
@@ -19,6 +19,6 @@ public interface InternalTaskRepository extends JpaRepository<InternalTaskEntity
             @Param("expectedStatus") String expectedStatus,
             @Param("newStatus") String newStatus,
             @Param("githubPrState") String githubPrState,
-            @Param("updatedAt") LocalDateTime updatedAt
+            @Param("updatedAt") OffsetDateTime updatedAt
     );
 }

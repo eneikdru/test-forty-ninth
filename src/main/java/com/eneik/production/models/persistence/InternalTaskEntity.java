@@ -4,7 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Entity
 @Table(name = "internal_tasks")
@@ -27,15 +27,15 @@ public class InternalTaskEntity {
     private String githubPrState;
 
     @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    private OffsetDateTime createdAt;
 
     @Column(name = "updated_at", nullable = false)
-    private LocalDateTime updatedAt;
+    private OffsetDateTime updatedAt;
 
     public InternalTaskEntity() {
     }
 
-    public InternalTaskEntity(String id, String title, String status, Integer githubPrNumber, String githubPrState, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public InternalTaskEntity(String id, String title, String status, Integer githubPrNumber, String githubPrState, OffsetDateTime createdAt, OffsetDateTime updatedAt) {
         this.id = id;
         this.title = title;
         this.status = status;
@@ -85,19 +85,19 @@ public class InternalTaskEntity {
         this.githubPrState = githubPrState;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public OffsetDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(OffsetDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getUpdatedAt() {
+    public OffsetDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
+    public void setUpdatedAt(OffsetDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 }

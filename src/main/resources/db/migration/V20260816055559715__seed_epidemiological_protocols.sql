@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS epidemiological_protocols (
+CREATE TABLE epidemiological_protocols (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     code VARCHAR(100) NOT NULL UNIQUE,
     title VARCHAR(512) NOT NULL,
@@ -8,11 +8,11 @@ CREATE TABLE IF NOT EXISTS epidemiological_protocols (
     summary TEXT,
     author_organization VARCHAR(256) NOT NULL,
     publication_year INT NOT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX IF NOT EXISTS idx_epi_protocols_category ON epidemiological_protocols (category);
-CREATE INDEX IF NOT EXISTS idx_epi_protocols_code ON epidemiological_protocols (code);
+CREATE INDEX idx_epi_protocols_category ON epidemiological_protocols (category);
+CREATE INDEX idx_epi_protocols_code ON epidemiological_protocols (code);
 
 MERGE INTO epidemiological_protocols (code, title, category, version, status, summary, author_organization, publication_year)
 KEY (code)

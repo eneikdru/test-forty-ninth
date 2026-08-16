@@ -4,8 +4,8 @@ CREATE TABLE internal_tasks (
     status VARCHAR(50) NOT NULL,
     github_pr_number INT,
     github_pr_state VARCHAR(50),
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE INDEX idx_internal_tasks_status ON internal_tasks (status);
