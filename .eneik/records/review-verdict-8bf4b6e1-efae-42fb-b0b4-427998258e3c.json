@@ -1,0 +1,19 @@
+{
+  "verdicts": [
+    {
+      "sourceIndex": 0,
+      "verdict": "approve",
+      "criticalReason": "",
+      "concerns": [
+        {
+          "text": "Filtering by category and status in EpidemiologicalProtocolService is performed in-memory on all database entities rather than via JPA query criteria.",
+          "severity": "low"
+        },
+        {
+          "text": "Redundant endpoint mappings exist (/api/protocols and /api/protocols/search) executing identical search logic.",
+          "severity": "low"
+        }
+      ]
+    }
+  ]
+}
