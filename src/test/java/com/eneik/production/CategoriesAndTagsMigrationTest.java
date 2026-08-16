@@ -8,8 +8,10 @@ import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
@@ -51,10 +53,12 @@ public class CategoriesAndTagsMigrationTest {
     public void testCascadingDeletionNoOrphans() {
         // Insert test category and tag
         jdbcTemplate.update("INSERT INTO categories (name, description) VALUES ('Virology', 'Virology docs')");
-        Long categoryId = jdbcTemplate.queryForObject("SELECT MAX(id) FROM categories", Long.class);
+        UUID categoryId = jdbcTemplate.queryForObject("SELECT id FROM categories WHERE name = 'Virology'", UUID.class);
+        assertNotNull(categoryId);
 
         jdbcTemplate.update("INSERT INTO tags (name) VALUES ('surveillance')");
-        Long tagId = jdbcTemplate.queryForObject("SELECT MAX(id) FROM tags", Long.class);
+        UUID tagId = jdbcTemplate.queryForObject("SELECT id FROM tags WHERE name = 'surveillance'", UUID.class);
+        assertNotNull(tagId);
 
         // Dummy material id
         Long materialId = 9999L;
