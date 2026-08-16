@@ -1,0 +1,36 @@
+{
+  "epics": [
+    {
+      "existingEpicId": "c1be406c-64fa-4620-83c6-49abdc20c7c2",
+      "title": null,
+      "jtbd": null,
+      "kanoClass": null,
+      "cynefinDomain": null,
+      "sixSigmaMetric": "decrease unresolved database synchronization falsification findings from 1 to 0",
+      "tocConstraintRef": "database synchronization integrity",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Identify and resolve the underlying schema state mismatch causing Flyway migration failures",
+        "R2: Remove the 'IF NOT EXISTS' statement from the migration introduced in PR #19"
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Resolve DB state mismatch and remove migration mask",
+          "roleTag": "BARCAN-TAG-05",
+          "jtbd": "When implementing the database synchronization fix for this epic, I want to eliminate the migration mask and fix the root cause, so that technical debt is eliminated and infrastructure standards are strictly upheld.",
+          "acceptanceCriteria": "Given a Flyway migration script that uses 'IF NOT EXISTS' to mask a schema mismatch\nWhen the root cause of the schema mismatch is resolved and the mask is removed\nThen the database schema is updated correctly without relying on the mask\nAnd integration tests confirm the migration successfully executes from a clean database state",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "database migration pipeline",
+          "sixSigmaMetric": "decrease unresolved database migration falsification findings from 1 to 0",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2"
+          ]
+        }
+      ]
+    }
+  ]
+}
