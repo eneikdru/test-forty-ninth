@@ -2,32 +2,65 @@
   "epics": [
     {
       "existingEpicId": null,
-      "title": "Self-Falsification Improvement Patch",
-      "jtbd": "When the development team reviews past work, I want to resolve the confirmed structural and procedural findings, so that the codebase remains fully compliant with required invariant standards.",
+      "title": "Falsification Findings Remediation",
+      "jtbd": "When the engineering team runs a self-falsification cycle, I want to resolve all confirmed findings, so that project compliance and methodological alignment are restored.",
       "kanoClass": "Must-Be",
-      "cynefinDomain": "clear",
-      "sixSigmaMetric": "reduce unresolved audit findings from 8 to 0",
-      "tocConstraintRef": "verification flow bottleneck",
+      "cynefinDomain": "complicated",
+      "sixSigmaMetric": "decrease unresolved critical findings from 8 to 0",
+      "tocConstraintRef": "invariant-enforcement",
       "sourceIndex": 0,
       "requirements": [
-        "R1: Revert generated file changes, enforce measurable baselines, and fix Flyway script column types and error masking.",
-        "R2: Ensure tests and contract tests are present for new endpoints, and properly align the epic context with the epidemiological domain."
+        "R1: Remove modifications to generated test-result files in 'target/surefire-reports/' from the PR #22 payload.",
+        "R2: Update the PR #20 task plan to replace the 'unknown' sixSigmaMetric baseline with a measurable starting baseline and target delta.",
+        "R3: Refactor the Flyway migration script in PR #19 to replace 'BIGINT AUTO_INCREMENT' and 'TIMESTAMP' with 'gen_random_uuid()' and 'TIMESTAMPTZ'.",
+        "R4: Update the PR #18 task plan to specify a strict measurable starting baseline for its sixSigmaMetric.",
+        "R5: Implement '*Test.java' unit tests covering the new backend endpoints and service logic introduced in PR #21.",
+        "R6: Implement contract tests for the new backend endpoints introduced in PR #21.",
+        "R7: Remove the 'IF NOT EXISTS' clause from the PR #19 migration and resolve the actual root cause of the Flyway state mismatch.",
+        "R8: Realign the implementation and plans in PRs #18-22 to serve the epidemiological knowledge base domain, correcting the misinterpretation in PR #18."
       ],
       "coverageComplete": true,
       "slices": [
         {
-          "title": "Apply Self-Falsification Corrections",
+          "title": "Falsification Patch and Test Implementation",
           "roleTag": "BARCAN-TAG-02",
-          "jtbd": "When implementing the audit corrections for this epic, I want to patch the repository directly, so that all eight findings are resolved.",
-          "acceptanceCriteria": "Given task plans in PRs 18 and 20, When patched, Then they include a measurable starting baseline and correct domain alignment.\nGiven the Flyway script in PR 19, When revised, Then it uses TIMESTAMPTZ, gen_random_uuid(), and resolves the root cause instead of using IF NOT EXISTS.\nGiven the backend endpoints in PR 21, When verified, Then proper test files and contract tests are added and generated reports from PR 22 are reverted.\nGiven the need for quality assurance, When the patches are applied, Then the existing test suite executes successfully covering these changes.",
+          "jtbd": "When implementing the falsification fixes for this epic, I want to patch the migrations, write the missing tests, and update the task plans, so that all confirmed findings are resolved in a single atomic change.",
+          "acceptanceCriteria": "Given the PR #19 migration, When patched, Then it uses gen_random_uuid(), TIMESTAMPTZ, and omits IF NOT EXISTS while fixing the root cause.\nGiven the PR #21 endpoints, When updated, Then *Test.java unit and contract tests are provided.\nGiven the task plans in PR #18 and #20, When patched, Then their sixSigmaMetric fields have measurable baselines and deltas.\nGiven the PR #22 payload, When applied, Then target/surefire-reports/ is ignored and excluded.",
           "leanValue": "essential",
-          "cynefinDomain": "clear",
-          "tocConstraintRef": "PR review cycle time",
-          "sixSigmaMetric": "reduce failing invariance checks from 8 to 0",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "invariant-enforcement",
+          "sixSigmaMetric": "reduce active falsification finding count from 8 to 0",
           "hasUi": false,
           "requirementRefs": [
             "R1",
-            "R2"
+            "R2",
+            "R3",
+            "R4",
+            "R5",
+            "R6",
+            "R7",
+            "R8"
+          ]
+        },
+        {
+          "title": "Falsification Patch Quality Assurance",
+          "roleTag": "BARCAN-TAG-06",
+          "jtbd": "When implementing QA for this epic, I want to execute the test suite and verify the migration fixes, so that the applied patches do not introduce regressions.",
+          "acceptanceCriteria": "Given the patched DB migrations, When Flyway runs, Then the schema applies cleanly without 'IF NOT EXISTS' and state is synced.\nGiven the new tests for PR #21 endpoints, When `mvn test` is run, Then all unit and contract tests pass.\nGiven the repository files, When checked, Then no generated test reports are tracked in version control.\nGiven the updated task plans, When reviewed, Then the domain alignment matches the epidemiological knowledge base.",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "regression-prevention",
+          "sixSigmaMetric": "increase test pass rate from baseline failing to 100% and reduce invariant violations from 8 to 0",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4",
+            "R5",
+            "R6",
+            "R7",
+            "R8"
           ]
         }
       ]
