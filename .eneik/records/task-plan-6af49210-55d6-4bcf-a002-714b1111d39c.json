@@ -1,0 +1,36 @@
+{
+  "epics": [
+    {
+      "existingEpicId": null,
+      "title": "Self-Falsification Improvement Patch",
+      "jtbd": "When the development team reviews past work, I want to resolve the confirmed structural and procedural findings, so that the codebase remains fully compliant with required invariant standards.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "clear",
+      "sixSigmaMetric": "reduce unresolved audit findings from 8 to 0",
+      "tocConstraintRef": "verification flow bottleneck",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Revert generated file changes, enforce measurable baselines, and fix Flyway script column types and error masking.",
+        "R2: Ensure tests and contract tests are present for new endpoints, and properly align the epic context with the epidemiological domain."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Apply Self-Falsification Corrections",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When implementing the audit corrections for this epic, I want to patch the repository directly, so that all eight findings are resolved.",
+          "acceptanceCriteria": "Given task plans in PRs 18 and 20, When patched, Then they include a measurable starting baseline and correct domain alignment.\nGiven the Flyway script in PR 19, When revised, Then it uses TIMESTAMPTZ, gen_random_uuid(), and resolves the root cause instead of using IF NOT EXISTS.\nGiven the backend endpoints in PR 21, When verified, Then proper test files and contract tests are added and generated reports from PR 22 are reverted.\nGiven the need for quality assurance, When the patches are applied, Then the existing test suite executes successfully covering these changes.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "PR review cycle time",
+          "sixSigmaMetric": "reduce failing invariance checks from 8 to 0",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2"
+          ]
+        }
+      ]
+    }
+  ]
+}
