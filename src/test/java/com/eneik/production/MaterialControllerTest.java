@@ -8,12 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -67,5 +71,45 @@ class MaterialControllerTest {
     void testDownloadDocumentNotFound() throws Exception {
         mockMvc.perform(get("/api/materials/99999/download"))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void testCreateMaterialSuccess() throws Exception {
+        byte[] fileBytes = "PDF report content".getBytes();
+        MockMultipartFile file = new MockMultipartFile("file", "report.pdf", "application/pdf", fileBytes);
+
+        mockMvc.perform(multipart("/api/materials")
+                        .file(file)
+                        .param("title", "Epidemiological Report 2026")
+                        .param("description", "Annual influenza surveillance data")
+                        .param("content", "Full text of epidemiological findings..."))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id", notNullValue()))
+                .andExpect(jsonPath("$.title", is("Epidemiological Report 2026")))
+                .andExpect(jsonPath("$.description", is("Annual influenza surveillance data")))
+                .andExpect(jsonPath("$.fileName", is("report.pdf")))
+                .andExpect(jsonPath("$.contentType", is("application/pdf")));
+
+        assertEquals(1, materialRepository.count());
+        MaterialEntity saved = materialRepository.findAll().get(0);
+        assertEquals("Epidemiological Report 2026", saved.getTitle());
+        assertEquals("report.pdf", saved.getFileName());
+        assertEquals("application/pdf", saved.getContentType());
+        assertArrayEquals(fileBytes, saved.getFileData());
+    }
+
+    @Test
+    void testCreateMaterialValidationErrorMissingTitle() throws Exception {
+        mockMvc.perform(multipart("/api/materials")
+                        .param("description", "Missing title description"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.status", is(400)))
+                .andExpect(jsonPath("$.error", is("Bad Request")))
+                .andExpect(jsonPath("$.code", is("VALIDATION_ERROR")))
+                .andExpect(jsonPath("$.details", hasSize(1)))
+                .andExpect(jsonPath("$.details[0].field", is("title")))
+                .andExpect(jsonPath("$.details[0].message", is("Title is required")));
+
+        assertEquals(0, materialRepository.count());
     }
 }
