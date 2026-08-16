@@ -1,6 +1,6 @@
-import MaterialSearch from './MaterialSearch.svelte';
+import ProtocolDashboard from './ProtocolDashboard.svelte';
 
-const app = new MaterialSearch({
+const app = new ProtocolDashboard({
   target: document.getElementById('app'),
 });
 
