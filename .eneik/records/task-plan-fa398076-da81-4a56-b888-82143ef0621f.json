@@ -1,0 +1,34 @@
+{
+  "epics": [
+    {
+      "existingEpicId": "e7b14c4a-93ea-4aa6-95f0-2e4ff5ed7937",
+      "title": null,
+      "jtbd": null,
+      "kanoClass": null,
+      "cynefinDomain": null,
+      "sixSigmaMetric": "Reduce the number of desynchronized task records from the baseline of 3 known discrepancy nodes to 0.",
+      "tocConstraintRef": "Task tracking state desynchronization bottleneck",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Patch existing task synchronization logic to accurately reflect actual GitHub PR states in internal records."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Patch task sync to actual GitHub PR state",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When implementing the CI status reconciliation patch for this epic, I want to fetch and align actual GitHub PR states with internal task records, so that operational reality is accurate.",
+          "acceptanceCriteria": "Given a task internally marked 'done' with conflicting GitHub PR state, When the synchronization patch runs, Then the internal status is updated to exactly match the PR state.\nGiven a fresh install with test task records, When the synchronization logic is executed, Then automated unit and integration tests must pass proving desynchronization is resolved.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Task tracking state desynchronization bottleneck",
+          "sixSigmaMetric": "Reduce the number of desynchronized task records from the baseline of 3 known discrepancy nodes to 0.",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1"
+          ]
+        }
+      ]
+    }
+  ]
+}
