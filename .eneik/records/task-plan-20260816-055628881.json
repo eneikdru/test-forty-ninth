@@ -1,0 +1,414 @@
+{
+  "epics": [
+    {
+      "existingEpicId": null,
+      "title": "Epidemiological Material Cataloging and Management",
+      "jtbd": "When the knowledge base administrator manages materials, I want to upload, categorize, and archive epidemiological protocols, so that the collection remains accurate and organized.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "complicated",
+      "sixSigmaMetric": "Reduce average material cataloging processing time by 40%",
+      "tocConstraintRef": "Material ingestion and categorization throughput",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Administrator can upload document files (PDF, text) representing epidemiological protocols.",
+        "R2: Administrator can assign metadata (disease category, protocol type, publication date) to uploaded materials.",
+        "R3: Administrator can edit metadata of existing materials.",
+        "R4: Administrator can archive or delete outdated materials, with a confirmation prompt to prevent accidental data loss.",
+        "R5: The system provides explicit visible feedback upon successful upload or any validation failure.",
+        "R6: In case of submission failure, the user's entered metadata survives and is not cleared.",
+        "R7: Complex editorial approval workflows and automated stale-content detection are explicitly omitted as this is a direct cataloging utility for a trusted administrator team."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Storage architecture decision for epidemiological materials",
+          "roleTag": "BARCAN-TAG-09",
+          "jtbd": "When implementing document storage for this epic, I want to decide between object storage and database BLOBs, so that the cataloging system is scalable and performant.",
+          "acceptanceCriteria": "Given the need to store large PDF protocols,\nWhen evaluating object storage versus database BLOBs,\nThen an ADR is drafted documenting the selected approach.\nGiven the ADR draft,\nWhen reviewed by the team,\nThen it is committed as a Markdown record in the repository.",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "Storage strategy selection bottleneck",
+          "sixSigmaMetric": "Zero ambiguity in storage implementation approach for subsequent tasks",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1"
+          ]
+        },
+        {
+          "title": "Database schema for epidemiological materials",
+          "roleTag": "BARCAN-TAG-08",
+          "jtbd": "When implementing data persistence for this epic, I want to define the relational schema for materials and metadata, so that the catalog can be reliably queried.",
+          "acceptanceCriteria": "Given the cataloging requirements,\nWhen the migration runs,\nThen tables for materials, categories, and tags are created successfully.\nGiven a rollback scenario,\nWhen the migration is reverted,\nThen the tables are removed without leaving orphan data.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Schema definition and review bottleneck",
+          "sixSigmaMetric": "Zero schema validation errors upon deployment to integration environments",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4"
+          ]
+        },
+        {
+          "title": "API contract for material management endpoints",
+          "roleTag": "BARCAN-TAG-12",
+          "jtbd": "When implementing the cataloging API for this epic, I want to define the OpenAPI specification, so that backend and frontend can be built in parallel without integration mismatches.",
+          "acceptanceCriteria": "Given the need to upload materials,\nWhen the OpenAPI contract is reviewed,\nThen it specifies endpoints for POST/PUT/DELETE with exact request schemas.\nGiven potential failure states,\nWhen defining responses,\nThen standard 4xx and 5xx error structures are comprehensively included.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Frontend-backend parallel integration bottleneck",
+          "sixSigmaMetric": "Zero API contract mismatches detected during final integration",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4",
+            "R5",
+            "R6"
+          ]
+        },
+        {
+          "title": "Backend API implementation for material cataloging",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When implementing the server logic for this epic, I want to expose the material management endpoints, so that the UI can interact with the underlying database.",
+          "acceptanceCriteria": "Given a valid multipart request,\nWhen the API receives it,\nThen the document is stored and metadata is saved to the database.\nGiven an invalid request,\nWhen processed,\nThen a 400 Bad Request is returned with structured validation errors.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Cataloging API implementation bottleneck",
+          "sixSigmaMetric": "100% adherence to the predefined BARCAN-TAG-12 OpenAPI contract",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4",
+            "R5",
+            "R6",
+            "R7"
+          ]
+        },
+        {
+          "title": "Frontend interface for material cataloging dashboard",
+          "roleTag": "BARCAN-TAG-11",
+          "jtbd": "When implementing the user interface for this epic, I want to build the cataloging forms and lists, so that administrators can easily manage the epidemiological knowledge base.",
+          "acceptanceCriteria": "Given the administrator is on a mobile device,\nWhen viewing the dashboard,\nThen the layout is responsive and fully usable.\nGiven a form submission error,\nWhen the server rejects it,\nThen the user's typed input survives and a visible error message is shown.\nGiven a delete action,\nWhen clicked,\nThen a confirmation dialog appears before irreversible destruction.\nGiven the requirement for accessibility,\nWhen verified against WCAG 2.1 AA,\nThen the UI exhibits full keyboard operability, visible focus, labelled form controls, and 4.5:1 text contrast.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Cataloging UI implementation bottleneck",
+          "sixSigmaMetric": "Zero layout breakage on viewports matching major mobile device profiles",
+          "hasUi": true,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4",
+            "R5",
+            "R6"
+          ]
+        },
+        {
+          "title": "Quality assurance for material cataloging workflows",
+          "roleTag": "BARCAN-TAG-06",
+          "jtbd": "When implementing test coverage for this epic, I want to verify the cataloging logic across the test pyramid, so that the epic functions correctly end-to-end without regressions.",
+          "acceptanceCriteria": "Given the cataloging backend,\nWhen running unit tests,\nThen the pure validation logic passes reliably.\nGiven the API and database,\nWhen running integration tests,\nThen the data flows correctly and is persisted.\nGiven the complete system,\nWhen running E2E tests,\nThen an administrator can successfully upload, edit, and delete a document.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Cataloging QA validation bottleneck",
+          "sixSigmaMetric": "Achieve >90% code coverage for cataloging domain logic",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4",
+            "R5",
+            "R6",
+            "R7"
+          ]
+        }
+      ]
+    },
+    {
+      "existingEpicId": null,
+      "title": "Epidemiological Material Search and Retrieval",
+      "jtbd": "When a health professional looks for guidance, I want to search and retrieve relevant epidemiological protocols, so that I can access accurate information during an outbreak.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "clear",
+      "sixSigmaMetric": "Reduce average time from search initiation to document retrieval to under 2 seconds",
+      "tocConstraintRef": "Information retrieval and indexing bottleneck",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Users can search for materials using keywords matching titles, descriptions, and assigned tags.",
+        "R2: Users can filter search results by disease category and specific protocol type.",
+        "R3: Users can view the detailed metadata and download or read the actual document.",
+        "R4: The system provides a clear empty-state message and recovery suggestions if a search yields zero results.",
+        "R5: The system provides explicit error feedback if a document fails to load or download due to network issues.",
+        "R6: Offline access to previously viewed documents is explicitly omitted as the system assumes an active network connection for the web portal."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "API contract for material search and retrieval",
+          "roleTag": "BARCAN-TAG-12",
+          "jtbd": "When implementing the search API for this epic, I want to define the search and retrieval endpoints, so that parallel frontend and backend development can proceed smoothly.",
+          "acceptanceCriteria": "Given the search requirements,\nWhen reviewing the API contract,\nThen it details query parameters, pagination, and sorting for search results.\nGiven error scenarios,\nWhen the search fails,\nThen the contract defines the appropriate error response structure.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Search API definition bottleneck",
+          "sixSigmaMetric": "Zero ambiguity in search endpoint request and response contracts",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4",
+            "R5"
+          ]
+        },
+        {
+          "title": "Backend API implementation for material search",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When implementing the server logic for this epic, I want to build the search query handlers, so that the frontend can efficiently query the knowledge base.",
+          "acceptanceCriteria": "Given a valid search query,\nWhen the API processes it,\nThen a paginated list of matching materials is returned.\nGiven a document download request,\nWhen valid,\nThen the document file stream is returned with correct HTTP headers.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Search query execution performance bottleneck",
+          "sixSigmaMetric": "Maintain search query API response time under 100ms at P95",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4",
+            "R5",
+            "R6"
+          ]
+        },
+        {
+          "title": "Frontend interface for search and retrieval",
+          "roleTag": "BARCAN-TAG-11",
+          "jtbd": "When implementing the user interface for this epic, I want to build the search bar, filters, and results list, so that users can effectively find epidemiological materials.",
+          "acceptanceCriteria": "Given a mobile user,\nWhen performing a search,\nThen the interface is responsive, readable, and perfectly usable.\nGiven a search with no matches,\nWhen the results return,\nThen an explicit empty state is shown with clear recovery suggestions.\nGiven a failed download,\nWhen the network drops,\nThen a visible error is shown allowing the user to retry the action.\nGiven the requirement for accessibility,\nWhen verified against WCAG 2.1 AA,\nThen the UI exhibits full keyboard operability, visible focus, labelled form controls, and 4.5:1 text contrast.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Search UI implementation bottleneck",
+          "sixSigmaMetric": "Zero layout breakage on viewports matching major mobile device profiles",
+          "hasUi": true,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4",
+            "R5"
+          ]
+        },
+        {
+          "title": "Quality assurance for search and retrieval workflows",
+          "roleTag": "BARCAN-TAG-06",
+          "jtbd": "When implementing test coverage for this epic, I want to verify the search functionality across the test pyramid, so that users can reliably find critical materials.",
+          "acceptanceCriteria": "Given the search query builder,\nWhen running unit tests,\nThen complex queries with filters are constructed correctly.\nGiven the search API,\nWhen running integration tests,\nThen database records are accurately filtered by the requested metadata.\nGiven the integrated UI and API,\nWhen running E2E tests,\nThen a user can perform a search and view a document successfully end-to-end.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Search QA test execution bottleneck",
+          "sixSigmaMetric": "Achieve >90% test coverage for search and filtering components",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4",
+            "R5",
+            "R6"
+          ]
+        }
+      ]
+    },
+    {
+      "existingEpicId": null,
+      "title": "Knowledge Base Utilization Measurement",
+      "jtbd": "Goal: Ensure epidemiologists can efficiently find needed protocols. Questions: 1) Are searches resulting in document retrievals? 2) How quickly are documents found? 3) Which searches yield no results? When evaluating the knowledge base's impact, I want to measure these metrics via search success and retrieval times, so that the knowledge base's usefulness is demonstrably tracked.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "clear",
+      "sixSigmaMetric": "Increase the percentage of successful searches (leading to a document view) to >90%",
+      "tocConstraintRef": "Analytics instrumentation and reporting bottleneck",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Goal: Ensure epidemiologists can efficiently find needed protocols.",
+        "R2: Question 1: Are searches resulting in document retrievals? Answered by tracking the percentage of searches that result in zero clicks or zero results.",
+        "R3: Question 2: How quickly are documents found? Answered by tracking the time taken from search initiation to document opening.",
+        "R4: Question 3: Which searches yield no results? Answered by logging query strings that result in zero-click or zero-result events to identify critical content gaps.",
+        "R5: These metrics must be recorded in the database and be programmatically accessible via a basic reporting endpoint."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Database schema for search analytics",
+          "roleTag": "BARCAN-TAG-08",
+          "jtbd": "When implementing metrics for this epic, I want to define the schema for search events, so that utilization data can be reliably persisted.",
+          "acceptanceCriteria": "Given the metrics requirements,\nWhen the migration runs,\nThen a table for search analytics events is successfully created.\nGiven a need to query performance,\nWhen evaluating the schema,\nThen appropriate indices are present for efficient data aggregation.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Metrics schema definition bottleneck",
+          "sixSigmaMetric": "Zero migration errors or performance regressions for the analytics schema",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4",
+            "R5"
+          ]
+        },
+        {
+          "title": "Backend API for tracking utilization metrics",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When implementing the measurement logic for this epic, I want to expose endpoints for recording search events and fetching aggregate metrics, so that system usage can be evaluated.",
+          "acceptanceCriteria": "Given a search event payload,\nWhen sent to the tracking API,\nThen it is recorded persistently in the database.\nGiven a request to the reporting endpoint,\nWhen processed,\nThen accurately aggregated metrics answering the GQM questions are returned.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Metrics tracking API implementation bottleneck",
+          "sixSigmaMetric": "Metrics tracking adds less than 10ms processing overhead to requests",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4",
+            "R5"
+          ]
+        },
+        {
+          "title": "Frontend instrumentation for utilization tracking",
+          "roleTag": "BARCAN-TAG-11",
+          "jtbd": "When implementing UI measurement for this epic, I want to instrument the search and document viewing flows, so that accurate telemetry answering the GQM questions is sent back to the backend.",
+          "acceptanceCriteria": "Given a user performing a search,\nWhen the search completes and a document is clicked,\nThen the exact elapsed time is sent to the tracking endpoint.\nGiven a search yielding no clicks,\nWhen the user abandons the search page,\nThen a failed search event with the query string is correctly recorded and transmitted.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "UI metrics instrumentation bottleneck",
+          "sixSigmaMetric": "Zero unhandled exceptions occurring within the tracking instrumentation logic",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4"
+          ]
+        },
+        {
+          "title": "Quality assurance for metrics tracking",
+          "roleTag": "BARCAN-TAG-06",
+          "jtbd": "When implementing test coverage for this epic, I want to verify that analytics events are correctly recorded, so that the measurement floor is reliably satisfied with true data.",
+          "acceptanceCriteria": "Given the tracking backend,\nWhen running integration tests,\nThen simulated search events are properly validated and persisted.\nGiven the frontend,\nWhen running E2E tests,\nThen a complete search journey correctly triggers the expected tracking API calls without fail.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Metrics QA validation bottleneck",
+          "sixSigmaMetric": "Achieve 100% test coverage for the metrics tracking endpoints and logic",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4",
+            "R5"
+          ]
+        }
+      ]
+    },
+    {
+      "existingEpicId": null,
+      "title": "Disaster Recovery and Data Continuity",
+      "jtbd": "When managing a system containing critical epidemiological records whose loss would harm the operation, I want to ensure automated backups run and recovery is proven, so that data availability is guaranteed during an incident.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "clear",
+      "sixSigmaMetric": "100% of catastrophic data loss scenarios can be successfully reverted within the agreed recovery time objective",
+      "tocConstraintRef": "Disaster recovery readiness bottleneck",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: The system must perform regular, automated backups of the document storage and relational database.",
+        "R2: The backup restoration process must be formally documented, actively performed, and verified against a staging environment to prove viability."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Configuration of automated backups",
+          "roleTag": "BARCAN-TAG-05",
+          "jtbd": "When implementing infrastructure for this epic, I want to configure the automated backup jobs, so that database and document assets are safely archived.",
+          "acceptanceCriteria": "Given the production infrastructure,\nWhen the backup cron executes,\nThen a complete snapshot of database and object storage is saved to a secure secondary location.\nGiven a failed backup job,\nWhen detected,\nThen an alert is immediately raised to the infrastructure team.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Backup configuration execution bottleneck",
+          "sixSigmaMetric": "Zero missed scheduled backup windows",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1"
+          ]
+        },
+        {
+          "title": "Verification of complete data restoration",
+          "roleTag": "BARCAN-TAG-06",
+          "jtbd": "When verifying disaster recovery for this epic, I want to execute a full restore from a backup artifact into an isolated environment, so that the backups are proven to be viable.",
+          "acceptanceCriteria": "Given a recent backup artifact,\nWhen the restore procedure is executed in a staging environment,\nThen the database and document storage are completely recovered without data corruption.\nGiven the restored environment,\nWhen validation tests run,\nThen critical application workflows function exactly as they did before the snapshot.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Disaster recovery validation bottleneck",
+          "sixSigmaMetric": "Recovery Time Objective (RTO) achieved during the validation exercise",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2"
+          ]
+        }
+      ]
+    },
+    {
+      "existingEpicId": null,
+      "title": "Baseline Epidemiological Content Provisioning",
+      "jtbd": "When demonstrating the system to the buyer, I want the database pre-loaded with real epidemiological protocols, so that all search and cataloging workflows can be visually verified.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "clear",
+      "sixSigmaMetric": "100% of functional acceptance criteria can be verified using the pre-loaded real data",
+      "tocConstraintRef": "Baseline content provisioning bottleneck",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: The system must be initialized with at least 10 real-world epidemiological protocols (e.g., standard WHO guidelines for COVID-19, Cholera, Measles).",
+        "R2: The initialized materials must contain comprehensive, realistic metadata, including tags and disease categories, to fully exercise the search filters."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Data seed script for baseline epidemiological content",
+          "roleTag": "BARCAN-TAG-08",
+          "jtbd": "When providing initial content for this epic, I want to write a database seed script, so that the environment predictably starts with real epidemiological data.",
+          "acceptanceCriteria": "Given an empty database,\nWhen the seed script is executed,\nThen exactly 10 real epidemiological protocols with full metadata are inserted.\nGiven an existing seeded database,\nWhen the script runs again,\nThen it is fully idempotent and does not duplicate the baseline content.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Data seeding script execution bottleneck",
+          "sixSigmaMetric": "Seed script completely executes in under 5 seconds",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2"
+          ]
+        },
+        {
+          "title": "Verification of initial content provisioning",
+          "roleTag": "BARCAN-TAG-06",
+          "jtbd": "When verifying the acceptance floor for this epic, I want to confirm that the seed data is correctly loaded and searchable, so that the system is demonstrably ready for handover.",
+          "acceptanceCriteria": "Given a freshly seeded environment,\nWhen running a content verification test,\nThen exactly 10 initial protocols are returned from the active database.\nGiven the search API,\nWhen searching for known seed keywords like 'COVID-19',\nThen the appropriate seed protocols are successfully retrieved.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Baseline content QA validation bottleneck",
+          "sixSigmaMetric": "100% pass rate for automated content verification tests",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2"
+          ]
+        }
+      ]
+    }
+  ]
+}
