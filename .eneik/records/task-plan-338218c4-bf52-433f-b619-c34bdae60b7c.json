@@ -1,0 +1,34 @@
+{
+  "epics": [
+    {
+      "existingEpicId": "e7b14c4a-93ea-4aa6-95f0-2e4ff5ed7937",
+      "title": null,
+      "jtbd": null,
+      "kanoClass": null,
+      "cynefinDomain": null,
+      "sixSigmaMetric": null,
+      "tocConstraintRef": null,
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Reconcile internal task states with actual GitHub PR states"
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "CI Status Reconciliation Patch",
+          "roleTag": "BARCAN-TAG-05",
+          "jtbd": "When implementing the reconciliation patch for this epic, I want to sync local statuses with GitHub PRs, so that blocked tasks are visible and operational reality is accurate",
+          "acceptanceCriteria": "Given a local task marked as 'done'\nWhen the corresponding GitHub PR is not merged or closed\nThen the local task status should be updated to reflect the true GitHub PR state\nGiven a PR state changes in GitHub\nWhen the reconciliation runs\nThen the local system should correctly reflect the new state",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "CI/CD synchronization and visibility",
+          "sixSigmaMetric": "Reduce mismatch percentage between local task statuses and GitHub PR states from unknown to 0%",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1"
+          ]
+        }
+      ]
+    }
+  ]
+}
