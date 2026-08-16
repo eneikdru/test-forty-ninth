@@ -104,4 +104,27 @@ class TaskStateSyncIntegrationTest {
         int staleUpdateRows = taskRepository.updateStatusAtomically(taskId, "done", "BLOCKED", "OPEN", now.plusMinutes(2));
         assertEquals(0, staleUpdateRows);
     }
+
+    @Test
+    @DisplayName("Integration test: Synchronize stuck task dc09037e when PR is OPEN reconciles to IN_PROGRESS")
+    void testTaskStateSyncIntegration_stuckTask_reconcilesToInProgress() throws Exception {
+        String taskId = "dc09037e-cbf1-4e7e-a5a9-17f9c294ba71";
+        LocalDateTime now = LocalDateTime.now();
+        InternalTaskEntity task = new InternalTaskEntity(taskId, "Stuck candidate task", "STUCK", 108, "OPEN", now, now);
+        taskRepository.save(task);
+
+        when(gitHubPrClient.getPullRequestState(108)).thenReturn("OPEN");
+
+        mockMvc.perform(post("/api/tasks/" + taskId + "/sync")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.taskId").value(taskId))
+                .andExpect(jsonPath("$.previousStatus").value("STUCK"))
+                .andExpect(jsonPath("$.newStatus").value("IN_PROGRESS"))
+                .andExpect(jsonPath("$.githubPrState").value("OPEN"))
+                .andExpect(jsonPath("$.updated").value(true));
+
+        InternalTaskEntity updatedTask = taskRepository.findById(taskId).orElseThrow();
+        assertEquals("IN_PROGRESS", updatedTask.getStatus());
+    }
 }

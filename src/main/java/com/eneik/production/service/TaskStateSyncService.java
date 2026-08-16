@@ -57,45 +57,40 @@ public class TaskStateSyncService {
         Integer prNumber = task.getGithubPrNumber();
         String prState = gitHubPrClient.getPullRequestState(prNumber);
 
-        // Discrepancy logic:
-        // When task is internally marked 'done' (or 'DONE'), but PR is OPEN, CLOSED, or MISSING
-        if ("done".equalsIgnoreCase(currentStatus) || "DONE".equalsIgnoreCase(currentStatus)) {
-            String targetStatus = null;
+        String targetStatus = null;
 
-            if ("OPEN".equalsIgnoreCase(prState) || "DRAFT".equalsIgnoreCase(prState)) {
-                targetStatus = "IN_PROGRESS";
-            } else if ("MISSING".equalsIgnoreCase(prState)) {
-                targetStatus = "STUCK";
-            } else if ("CLOSED".equalsIgnoreCase(prState)) {
-                targetStatus = "BLOCKED";
-            } else if ("MERGED".equalsIgnoreCase(prState)) {
-                // If merged, internal 'done' state matches reality
-                return new TaskSyncResultDto(task.getId(), currentStatus, currentStatus, prState, false, "State is in sync with GitHub PR");
-            }
+        if ("OPEN".equalsIgnoreCase(prState) || "DRAFT".equalsIgnoreCase(prState)) {
+            targetStatus = "IN_PROGRESS";
+        } else if ("MERGED".equalsIgnoreCase(prState)) {
+            targetStatus = "done";
+        } else if ("CLOSED".equalsIgnoreCase(prState)) {
+            targetStatus = "BLOCKED";
+        } else if ("MISSING".equalsIgnoreCase(prState)) {
+            targetStatus = "STUCK";
+        }
 
-            if (targetStatus != null) {
-                LocalDateTime now = LocalDateTime.now(clock);
-                // Execute atomically-guarded database update query using current status guard
-                int rowsUpdated = taskRepository.updateStatusAtomically(task.getId(), currentStatus, targetStatus, prState, now);
-                if (rowsUpdated > 0) {
-                    return new TaskSyncResultDto(
-                            task.getId(),
-                            currentStatus,
-                            targetStatus,
-                            prState,
-                            true,
-                            "Updated task status from " + currentStatus + " to " + targetStatus + " matching GitHub PR state " + prState
-                    );
-                } else {
-                    return new TaskSyncResultDto(
-                            task.getId(),
-                            currentStatus,
-                            currentStatus,
-                            prState,
-                            false,
-                            "Atomic update failed: status changed concurrently"
-                    );
-                }
+        if (targetStatus != null && !targetStatus.equalsIgnoreCase(currentStatus)) {
+            LocalDateTime now = LocalDateTime.now(clock);
+            // Execute atomically-guarded database update query using current status guard
+            int rowsUpdated = taskRepository.updateStatusAtomically(task.getId(), currentStatus, targetStatus, prState, now);
+            if (rowsUpdated > 0) {
+                return new TaskSyncResultDto(
+                        task.getId(),
+                        currentStatus,
+                        targetStatus,
+                        prState,
+                        true,
+                        "Updated task status from " + currentStatus + " to " + targetStatus + " matching GitHub PR state " + prState
+                );
+            } else {
+                return new TaskSyncResultDto(
+                        task.getId(),
+                        currentStatus,
+                        currentStatus,
+                        prState,
+                        false,
+                        "Atomic update failed: status changed concurrently"
+                );
             }
         }
 
