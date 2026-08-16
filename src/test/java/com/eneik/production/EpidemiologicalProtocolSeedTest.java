@@ -27,8 +27,8 @@ public class EpidemiologicalProtocolSeedTest {
         // Given an empty database auto-seeded by Flyway
         List<EpidemiologicalProtocolEntity> protocols = repository.findAll();
 
-        // Then exactly 10 real epidemiological protocols with full metadata are inserted
-        assertEquals(10, protocols.size(), "Seed script must insert exactly 10 epidemiological protocols");
+        // Then exactly 15 real epidemiological protocols with full metadata are inserted
+        assertEquals(15, protocols.size(), "Seed scripts must insert exactly 15 epidemiological protocols");
 
         for (EpidemiologicalProtocolEntity protocol : protocols) {
             assertNotNull(protocol.getId(), "Protocol id must not be null");
@@ -42,17 +42,18 @@ public class EpidemiologicalProtocolSeedTest {
             assertNotNull(protocol.getPublicationYear(), "Protocol publication year must not be null");
         }
 
-        // Verify specific known protocol exists
+        // Verify specific known protocols exist
         assertTrue(repository.findByCode("EPI-PROTO-001").isPresent());
+        assertTrue(repository.findByCode("EPI-PROTO-011").isPresent());
 
         // When the seed script runs again on an existing seeded database
         jdbcTemplate.execute("MERGE INTO epidemiological_protocols (code, title, category, version, status, summary, author_organization, publication_year) " +
                 "KEY (code) VALUES " +
                 "('EPI-PROTO-001', 'COVID-19 Public Health Surveillance and Outbreak Investigation Protocol', 'Respiratory', 'v3.2', 'APPROVED', 'Comprehensive guidance for standard case definitions, contact tracing, and outbreak investigation protocols for SARS-CoV-2.', 'World Health Organization', 2022), " +
-                "('EPI-PROTO-002', 'Cholera Outbreak Early Warning and Rapid Response Protocol', 'Enteric', 'v2.1', 'APPROVED', 'Standard procedures for cholera case detection, water source testing, oral cholera vaccine deployment, and epidemic control.', 'CDC Epidemic Intelligence Service', 2021);");
+                "('EPI-PROTO-011', 'Avian Influenza A (H5N1) Field Outbreak Investigation Protocol', 'Zoonotic', 'v2.0', 'APPROVED', 'Guidelines for poultry flock exposure assessment, human contact monitoring, PPE requirements, and antiviral prophylaxis triggers.', 'CDC / WHO Joint Taskforce', 2023);");
 
         // Then it is fully idempotent and does not duplicate baseline content
         List<EpidemiologicalProtocolEntity> protocolsAfterReRun = repository.findAll();
-        assertEquals(10, protocolsAfterReRun.size(), "Re-running seed SQL must not duplicate baseline content");
+        assertEquals(15, protocolsAfterReRun.size(), "Re-running seed SQL must not duplicate baseline content");
     }
 }
