@@ -1,0 +1,34 @@
+{
+  "epics": [
+    {
+      "existingEpicId": null,
+      "title": "GitHub PR State Reconciliation",
+      "jtbd": "When I monitor task progress, I want internal task states to strictly mirror actual GitHub PR states, so that operational reality disagreements are eliminated.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "clear",
+      "sixSigmaMetric": "Reduce local-vs-GitHub PR state discrepancies to 0",
+      "tocConstraintRef": "Task state alignment bottleneck",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: The system must enforce synchronization between internal task states and their actual GitHub PR states, resolving discrepancies where a task is marked 'done' but the PR is stuck or blocked."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Patch GitHub PR state reconciliation logic",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When implementing state synchronization for this epic, I want to patch the task state updater to verify against actual GitHub PR states, so that false 'done' statuses are eliminated.",
+          "acceptanceCriteria": "Given an internal task marked as 'done',\nWhen the corresponding GitHub PR is actually stuck or blocked,\nThen the system must revert or block the 'done' state and log a discrepancy.\nGiven a test suite verifying state synchronization,\nWhen the test runs,\nThen it asserts that discrepancies between local and GitHub PR states are detected and resolved.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Task state alignment bottleneck",
+          "sixSigmaMetric": "Reduce false 'done' records from state mismatches to 0",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1"
+          ]
+        }
+      ]
+    }
+  ]
+}
