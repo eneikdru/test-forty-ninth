@@ -2,6 +2,7 @@ package com.eneik.production.service;
 
 import com.eneik.production.dto.MaterialDto;
 import com.eneik.production.dto.MaterialUploadDto;
+import com.eneik.production.dto.SearchEventRequestDTO;
 import com.eneik.production.models.persistence.MaterialEntity;
 import com.eneik.production.repository.MaterialRepository;
 import org.springframework.data.domain.Page;
@@ -17,14 +18,35 @@ import java.util.Optional;
 public class MaterialService {
 
     private final MaterialRepository materialRepository;
+    private final SearchAnalyticsService searchAnalyticsService;
 
-    public MaterialService(MaterialRepository materialRepository) {
+    public MaterialService(MaterialRepository materialRepository, SearchAnalyticsService searchAnalyticsService) {
         this.materialRepository = materialRepository;
+        this.searchAnalyticsService = searchAnalyticsService;
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public Page<MaterialDto> searchMaterials(String query, Pageable pageable) {
+        long startTime = System.currentTimeMillis();
         Page<MaterialEntity> entities = materialRepository.searchMaterials(query, pageable);
+        long executionTimeMs = System.currentTimeMillis() - startTime;
+
+        if (searchAnalyticsService != null) {
+            String sanitizedQuery = query != null ? query : "";
+            SearchEventRequestDTO telemetryDTO = new SearchEventRequestDTO(
+                    sanitizedQuery,
+                    null,
+                    null,
+                    (int) entities.getTotalElements(),
+                    executionTimeMs
+            );
+            try {
+                searchAnalyticsService.recordSearchEvent(telemetryDTO);
+            } catch (Exception e) {
+                org.slf4j.LoggerFactory.getLogger(MaterialService.class).warn("Failed to record search telemetry", e);
+            }
+        }
+
         return entities.map(MaterialDto::fromEntity);
     }
 
