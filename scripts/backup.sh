@@ -60,8 +60,8 @@ if [ "${SIMULATE_FAILURE:-false}" = "true" ]; then
     false
 fi
 
-if command -v pg_dump >/dev/null 2>&1; then
-    pg_dump -h "${DB_HOST}" -p "${DB_PORT}" -U "${DB_USER}" "${DB_NAME}" > "${TARGET_SNAPSHOT_DIR}/db/db_snapshot.sql"
+if command -v pg_dump >/dev/null 2>&1 && pg_dump -h "${DB_HOST}" -p "${DB_PORT}" -U "${DB_USER}" "${DB_NAME}" > "${TARGET_SNAPSHOT_DIR}/db/db_snapshot.sql" 2>/dev/null; then
+    echo "Database snapshot created via pg_dump."
 else
     # File-based / fallback snapshot mechanism for H2 / local file DB storage
     echo "-- Database snapshot fallback (${TIMESTAMP})" > "${TARGET_SNAPSHOT_DIR}/db/db_snapshot.sql"
