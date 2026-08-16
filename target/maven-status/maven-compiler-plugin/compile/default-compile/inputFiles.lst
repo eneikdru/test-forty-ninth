@@ -1,18 +1,13 @@
 /app/src/main/java/com/eneik/production/dto/TaskSyncResultDto.java
-/app/src/main/java/com/eneik/production/dto/UpdateEpidemiologicalProtocolRequest.java
-/app/src/main/java/com/eneik/production/dto/EpidemiologicalProtocolDto.java
 /app/src/main/java/com/eneik/production/service/DefaultGitHubPrClient.java
 /app/src/main/java/com/eneik/production/service/SearchAnalyticsService.java
 /app/src/main/java/com/eneik/production/repository/MaterialRepository.java
 /app/src/main/java/com/eneik/production/controller/MaterialController.java
-/app/src/main/java/com/eneik/production/service/EpidemiologicalProtocolService.java
 /app/src/main/java/com/eneik/production/controller/SearchAnalyticsController.java
-/app/src/main/java/com/eneik/production/dto/CreateEpidemiologicalProtocolRequest.java
 /app/src/main/java/com/eneik/production/models/persistence/EpidemiologicalProtocolEntity.java
 /app/src/main/java/com/eneik/production/controller/TaskStateSyncController.java
 /app/src/main/java/com/eneik/production/models/persistence/MaterialEntity.java
 /app/src/main/java/com/eneik/production/dto/MaterialDto.java
-/app/src/main/java/com/eneik/production/controller/EpidemiologicalProtocolController.java
 /app/src/main/java/com/eneik/production/dto/FieldErrorDto.java
 /app/src/main/java/com/eneik/production/repository/EpidemiologicalProtocolRepository.java
 /app/src/main/java/com/eneik/production/dto/SearchMetricsDTO.java
@@ -21,8 +16,6 @@
 /app/src/main/java/com/eneik/production/search/SearchQueryBuilder.java
 /app/src/main/java/com/eneik/production/dto/MaterialUploadDto.java
 /app/src/main/java/com/eneik/production/models/persistence/SearchAnalyticsEventEntity.java
-/app/src/main/java/com/eneik/production/dto/EpidemiologicalProtocolSearchResult.java
-/app/src/main/java/com/eneik/production/dto/PaginationMeta.java
 /app/src/main/java/com/eneik/production/service/MaterialService.java
 /app/src/main/java/com/eneik/production/dto/InternalTaskDto.java
 /app/src/main/java/com/eneik/production/repository/SearchAnalyticsEventRepository.java
