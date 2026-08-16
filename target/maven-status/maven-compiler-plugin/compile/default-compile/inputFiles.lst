@@ -1,0 +1,14 @@
+/app/src/main/java/com/eneik/production/service/SearchAnalyticsService.java
+/app/src/main/java/com/eneik/production/repository/MaterialRepository.java
+/app/src/main/java/com/eneik/production/service/MaterialService.java
+/app/src/main/java/com/eneik/production/controller/MaterialController.java
+/app/src/main/java/com/eneik/production/repository/SearchAnalyticsEventRepository.java
+/app/src/main/java/com/eneik/production/controller/SearchAnalyticsController.java
+/app/src/main/java/com/eneik/production/models/persistence/EpidemiologicalProtocolEntity.java
+/app/src/main/java/com/eneik/production/models/persistence/MaterialEntity.java
+/app/src/main/java/com/eneik/production/dto/MaterialDto.java
+/app/src/main/java/com/eneik/production/repository/EpidemiologicalProtocolRepository.java
+/app/src/main/java/com/eneik/production/dto/SearchMetricsDTO.java
+/app/src/main/java/com/eneik/production/dto/SearchEventRequestDTO.java
+/app/src/main/java/com/eneik/production/Application.java
+/app/src/main/java/com/eneik/production/models/persistence/SearchAnalyticsEventEntity.java

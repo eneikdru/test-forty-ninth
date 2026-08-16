@@ -1,0 +1,36 @@
+{
+  "epics": [
+    {
+      "existingEpicId": null,
+      "title": "CI Status Reconciliation Patch",
+      "jtbd": "When a project manager reviews task states, I want internal records to match actual GitHub PR states, so that blocked tasks are visible and operational reality is accurate.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "clear",
+      "sixSigmaMetric": "reduce the count of tasks with mismatched GitHub PR states to zero",
+      "tocConstraintRef": "task status reconciliation layer",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: The task status synchronization must reconcile the actual GitHub PR state with the internal task state to resolve discrepancies.",
+        "R2: The status update must use an atomically-guarded database update (e.g., UPDATE ... WHERE id = ? AND status = ?) rather than a plain read-then-save."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Patch local task state synchronization with GitHub PRs",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When implementing the state sync patch for this epic, I want to fetch actual GitHub PR states and apply atomically-guarded updates to internal records, so that discrepancies are resolved.",
+          "acceptanceCriteria": "Given an internal task marked as 'done' while its GitHub PR is still open or missing, When the synchronization process executes, Then the internal state is updated to reflect the true GitHub PR state.\nGiven the database update operation for the task status, When the system updates the status, Then it executes an atomically-guarded query (e.g., UPDATE WHERE id=? AND status=?) ensuring no lost updates.\nGiven the requirement to avoid regressions, When the suite is run, Then unit and integration tests explicitly verify both the state reconciliation logic and the atomic update mechanism.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "database concurrency and state retrieval",
+          "sixSigmaMetric": "achieve zero occurrences of lost updates during task state reconciliation",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2"
+          ]
+        }
+      ]
+    }
+  ]
+}

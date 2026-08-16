@@ -1,0 +1,10 @@
+{
+  "verdicts": [
+    {
+      "sourceIndex": 0,
+      "verdict": "block",
+      "criticalReason": "Committed generated build artifacts under target/ directory (class files, surefire test reports, maven status logs).",
+      "concerns": []
+    }
+  ]
+}
