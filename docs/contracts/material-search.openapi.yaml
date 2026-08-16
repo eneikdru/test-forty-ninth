@@ -1,85 +1,95 @@
 openapi: 3.0.3
 info:
   title: Epidemiological Materials Search and Retrieval API
-  description: >
-    API contract for searching, filtering, and retrieving epidemiological materials,
-    protocols, and datasets in the Epidemiology Knowledge Base system.
+  description: 'API contract for searching, filtering, and retrieving epidemiological
+    materials, protocols, and datasets in the Epidemiology Knowledge Base system.
+
+    '
   version: 1.0.0
 servers:
-  - url: /api/v1
-    description: Base path for Epidemiology Knowledge Base v1 API
-
+- url: /api/v1
+  description: Base path for Epidemiology Knowledge Base v1 API
 paths:
   /materials/search:
     get:
       summary: Search epidemiological materials
-      description: >
-        Search materials using query strings, filters (category, tags),
+      description: 'Search materials using query strings, filters (category, tags),
         pagination, and sorting options.
+
+        '
       operationId: searchMaterials
       parameters:
-        - name: q
-          in: query
-          description: Search term or keyword (title, abstract, content)
-          required: false
-          schema:
+      - name: q
+        in: query
+        description: Search term or keyword (title, abstract, content)
+        required: false
+        schema:
+          type: string
+          example: influenza surveillance
+      - name: category
+        in: query
+        description: Filter by material category (e.g., protocol, report, dataset,
+          guideline)
+        required: false
+        schema:
+          type: string
+          example: protocol
+      - name: tags
+        in: query
+        description: Filter by tag names (comma-separated or multiple)
+        required: false
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
             type: string
-            example: "influenza surveillance"
-        - name: category
-          in: query
-          description: Filter by material category (e.g., protocol, report, dataset, guideline)
-          required: false
-          schema:
-            type: string
-            example: "protocol"
-        - name: tags
-          in: query
-          description: Filter by tag names (comma-separated or multiple)
-          required: false
-          style: form
-          explode: false
-          schema:
-            type: array
-            items:
-              type: string
-            example: ["respiratory", "outbreak"]
-        - name: page
-          in: query
-          description: Zero-based page index (default 0)
-          required: false
-          schema:
-            type: integer
-            minimum: 0
-            default: 0
-            example: 0
-        - name: size
-          in: query
-          description: Number of items per page (default 20, max 100)
-          required: false
-          schema:
-            type: integer
-            minimum: 1
-            maximum: 100
-            default: 20
-            example: 20
-        - name: sortBy
-          in: query
-          description: Field name to sort by (e.g., createdAt, title, relevance)
-          required: false
-          schema:
-            type: string
-            enum: [createdAt, updatedAt, title, relevance]
-            default: createdAt
-            example: "createdAt"
-        - name: sortOrder
-          in: query
-          description: Sort direction (asc or desc)
-          required: false
-          schema:
-            type: string
-            enum: [asc, desc]
-            default: desc
-            example: "desc"
+          example:
+          - respiratory
+          - outbreak
+      - name: page
+        in: query
+        description: Zero-based page index (default 0)
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+          example: 0
+      - name: size
+        in: query
+        description: Number of items per page (default 20, max 100)
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 20
+          example: 20
+      - name: sortBy
+        in: query
+        description: Field name to sort by (e.g., createdAt, description, title, relevance)
+        required: false
+        schema:
+          type: string
+          enum:
+          - createdAt
+          - description
+          - title
+          - relevance
+          default: createdAt
+          example: createdAt
+      - name: sortOrder
+        in: query
+        description: Sort direction (asc or desc)
+        required: false
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          default: desc
+          example: desc
       responses:
         '200':
           description: Successfully retrieved paginated material search results
@@ -94,12 +104,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
               example:
-                timestamp: "2026-08-16T05:47:00Z"
+                timestamp: '2026-08-16T05:47:00Z'
                 status: 400
-                error: "Bad Request"
-                code: "INVALID_SEARCH_PARAMETER"
-                message: "Query parameter 'size' must be between 1 and 100"
-                path: "/api/v1/materials/search"
+                error: Bad Request
+                code: INVALID_SEARCH_PARAMETER
+                message: Query parameter 'size' must be between 1 and 100
+                path: /api/v1/materials/search
         '500':
           description: Internal server error during search execution
           content:
@@ -107,27 +117,27 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
               example:
-                timestamp: "2026-08-16T05:47:00Z"
+                timestamp: '2026-08-16T05:47:00Z'
                 status: 500
-                error: "Internal Server Error"
-                code: "SEARCH_INDEX_UNAVAILABLE"
-                message: "An unexpected error occurred while executing the search query"
-                path: "/api/v1/materials/search"
-
+                error: Internal Server Error
+                code: SEARCH_INDEX_UNAVAILABLE
+                message: An unexpected error occurred while executing the search query
+                path: /api/v1/materials/search
   /materials/{id}:
     get:
       summary: Retrieve material by ID
-      description: Fetch full metadata and details for a specific epidemiological material.
+      description: Fetch full metadata and details for a specific epidemiological
+        material.
       operationId: getMaterialById
       parameters:
-        - name: id
-          in: path
-          description: Unique identifier of the material
-          required: true
-          schema:
-            type: string
-            format: uuid
-            example: "123e4567-e89b-12d3-a456-426614174000"
+      - name: id
+        in: path
+        description: Unique identifier of the material
+        required: true
+        schema:
+          type: integer
+          format: int64
+          example: 123
       responses:
         '200':
           description: Material retrieved successfully
@@ -142,12 +152,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
               example:
-                timestamp: "2026-08-16T05:47:00Z"
+                timestamp: '2026-08-16T05:47:00Z'
                 status: 400
-                error: "Bad Request"
-                code: "INVALID_ID_FORMAT"
-                message: "Provided ID is not a valid UUID string"
-                path: "/api/v1/materials/invalid-id"
+                error: Bad Request
+                code: INVALID_ID_FORMAT
+                message: Provided ID is not a valid integer
+                path: /api/v1/materials/invalid-id
         '404':
           description: Material not found
           content:
@@ -155,102 +165,251 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
               example:
-                timestamp: "2026-08-16T05:47:00Z"
+                timestamp: '2026-08-16T05:47:00Z'
                 status: 404
-                error: "Not Found"
-                code: "MATERIAL_NOT_FOUND"
-                message: "Epidemiological material with ID '123e4567-e89b-12d3-a456-426614174000' was not found"
-                path: "/api/v1/materials/123e4567-e89b-12d3-a456-426614174000"
+                error: Not Found
+                code: MATERIAL_NOT_FOUND
+                message: Epidemiological material with ID '123'
+                  was not found
+                path: /api/v1/materials/123
         '500':
           description: Internal server error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-
+    put:
+      summary: Update existing material
+      description: Update details or replace the file of an existing epidemiological
+        material.
+      operationId: updateMaterial
+      parameters:
+      - name: id
+        in: path
+        description: Unique identifier of the material
+        required: true
+        schema:
+          type: integer
+          format: int64
+          example: 123
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: Updated Protocol
+                description:
+                  type: string
+                  example: Updated Description...
+                content:
+                  type: string
+                  example: Updated content...
+                category:
+                  type: string
+                  example: protocol
+                tags:
+                  type: array
+                  items:
+                    type: string
+                  example:
+                  - influenza
+                file:
+                  type: string
+                  format: binary
+                  description: Replacement document or dataset file
+      responses:
+        '200':
+          description: Material updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MaterialDetail'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Material not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      summary: Delete material
+      description: Remove an epidemiological material and its associated file.
+      operationId: deleteMaterial
+      parameters:
+      - name: id
+        in: path
+        description: Unique identifier of the material
+        required: true
+        schema:
+          type: integer
+          format: int64
+          example: 123
+      responses:
+        '204':
+          description: Material deleted successfully
+        '404':
+          description: Material not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /materials:
+    post:
+      summary: Create new material
+      description: Upload a new epidemiological material.
+      operationId: createMaterial
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+              - title
+              - category
+              properties:
+                title:
+                  type: string
+                  example: New Protocol
+                description:
+                  type: string
+                  example: Description...
+                content:
+                  type: string
+                  example: Full content...
+                category:
+                  type: string
+                  example: protocol
+                tags:
+                  type: array
+                  items:
+                    type: string
+                  example:
+                  - influenza
+                file:
+                  type: string
+                  format: binary
+                  description: Attached document or dataset file
+      responses:
+        '201':
+          description: Material created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MaterialDetail'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
     MaterialSummary:
       type: object
       required:
-        - id
-        - title
-        - category
-        - tags
-        - createdAt
-        - updatedAt
+      - id
+      - title
+      - category
+      - tags
+      - createdAt
       properties:
         id:
-          type: string
-          format: uuid
+          type: integer
+          format: int64
           description: Unique identifier of the material
-          example: "123e4567-e89b-12d3-a456-426614174000"
+          example: 123
         title:
           type: string
           description: Title of the epidemiological material
-          example: "Standard Protocol for Influenza Outbreak Investigation"
-        summary:
+          example: Standard Protocol for Influenza Outbreak Investigation
+        description:
           type: string
           nullable: true
           description: Brief abstract or summary of the material
-          example: "Guidelines and protocols for field investigation of suspected influenza outbreaks."
+          example: Guidelines and protocols for field investigation of suspected influenza
+            outbreaks.
         category:
           type: string
           description: Classification category
-          example: "protocol"
+          example: protocol
         tags:
           type: array
           items:
             type: string
           description: Associated tags
-          example: ["influenza", "outbreak", "surveillance"]
-        author:
-          type: string
-          nullable: true
-          description: Author or issuing institution
-          example: "Epidemiology Research Group"
+          example:
+          - influenza
+          - outbreak
+          - surveillance
         createdAt:
           type: string
           format: date-time
           description: Creation timestamp
-          example: "2026-08-01T10:00:00Z"
-        updatedAt:
-          type: string
-          format: date-time
-          description: Last update timestamp
-          example: "2026-08-15T14:30:00Z"
-
+          example: '2026-08-01T10:00:00Z'
     MaterialDetail:
       allOf:
-        - $ref: '#/components/schemas/MaterialSummary'
-        - type: object
-          properties:
-            content:
-              type: string
-              description: Detailed text content or body of the material
-              example: "Full protocol content detailing step-by-step procedures..."
-            fileUrl:
-              type: string
-              nullable: true
-              description: Download URL for attached document/dataset file
-              example: "/files/protocols/influenza-investigation-2026.pdf"
-            metadata:
-              type: object
-              additionalProperties: true
-              description: Additional key-value domain metadata (e.g. disease code, jurisdiction)
-              example:
-                icdCode: "J11"
-                region: "National"
-
+      - $ref: '#/components/schemas/MaterialSummary'
+      - type: object
+        properties:
+          content:
+            type: string
+            description: Detailed text content or body of the material
+            example: Full protocol content detailing step-by-step procedures...
+          fileName:
+            type: string
+            nullable: true
+            description: Name of the attached document/dataset file
+            example: influenza-investigation-2026.pdf
+          contentType:
+            type: string
+            nullable: true
+            description: MIME type of the attached document/dataset file
+            example: application/pdf
+          metadata:
+            type: object
+            additionalProperties: true
+            description: Additional key-value domain metadata (e.g. disease code,
+              jurisdiction)
+            example:
+              icdCode: J11
+              region: National
     PaginationMeta:
       type: object
       required:
-        - page
-        - size
-        - totalElements
-        - totalPages
-        - isFirst
-        - isLast
+      - page
+      - size
+      - totalElements
+      - totalPages
+      - isFirst
+      - isLast
       properties:
         page:
           type: integer
@@ -277,12 +436,11 @@ components:
           type: boolean
           description: Indicates whether this is the last page
           example: false
-
     MaterialSearchResult:
       type: object
       required:
-        - items
-        - pagination
+      - items
+      - pagination
       properties:
         items:
           type: array
@@ -290,22 +448,21 @@ components:
             $ref: '#/components/schemas/MaterialSummary'
         pagination:
           $ref: '#/components/schemas/PaginationMeta'
-
     ErrorResponse:
       type: object
       required:
-        - timestamp
-        - status
-        - error
-        - code
-        - message
-        - path
+      - timestamp
+      - status
+      - error
+      - code
+      - message
+      - path
       properties:
         timestamp:
           type: string
           format: date-time
           description: Time when the error occurred
-          example: "2026-08-16T05:47:00Z"
+          example: '2026-08-16T05:47:00Z'
         status:
           type: integer
           description: HTTP status code
@@ -313,31 +470,31 @@ components:
         error:
           type: string
           description: HTTP status text
-          example: "Bad Request"
+          example: Bad Request
         code:
           type: string
           description: Business application error code
-          example: "INVALID_SEARCH_PARAMETER"
+          example: INVALID_SEARCH_PARAMETER
         message:
           type: string
           description: Detailed, human-readable error description
-          example: "Query parameter 'size' must be between 1 and 100"
+          example: Query parameter 'size' must be between 1 and 100
         path:
           type: string
           description: Request path that triggered the error
-          example: "/api/v1/materials/search"
+          example: /api/v1/materials/search
         details:
           type: array
           nullable: true
           items:
             type: object
             required:
-              - field
-              - message
+            - field
+            - message
             properties:
               field:
                 type: string
-                example: "size"
+                example: size
               message:
                 type: string
-                example: "must be less than or equal to 100"
+                example: must be less than or equal to 100
