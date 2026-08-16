@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.eneik.production.EpidemiologicalProtocolSeedTest" time="0.083" tests="1" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.eneik.production.SearchAnalyticsControllerTest" time="1.341" tests="1" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="21"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -43,7 +43,7 @@
     <property name="localRepository" value="/home/jules/.m2/repository"/>
     <property name="java.vendor.url.bug" value="https://bugs.launchpad.net/ubuntu/+source/openjdk-21"/>
     <property name="java.io.tmpdir" value="/tmp"/>
-    <property name="com.zaxxer.hikari.pool_number" value="3"/>
+    <property name="com.zaxxer.hikari.pool_number" value="2"/>
     <property name="java.version" value="21.0.10"/>
     <property name="user.dir" value="/app"/>
     <property name="os.arch" value="amd64"/>
@@ -59,12 +59,44 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="65.0"/>
   </properties>
-  <testcase name="testBaselineSeedAndIdempotency" classname="com.eneik.production.EpidemiologicalProtocolSeedTest" time="0.07">
-    <system-out><![CDATA[2026-08-16T07:23:21.593Z  INFO 160148 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.eneik.production.EpidemiologicalProtocolSeedTest]: EpidemiologicalProtocolSeedTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2026-08-16T07:23:21.599Z  INFO 160148 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.eneik.production.Application for test class com.eneik.production.EpidemiologicalProtocolSeedTest
-Hibernate: select epe1_0.id,epe1_0.author_organization,epe1_0.category,epe1_0.code,epe1_0.created_at,epe1_0.publication_year,epe1_0.status,epe1_0.summary,epe1_0.title,epe1_0.version from epidemiological_protocols epe1_0
-Hibernate: select epe1_0.id,epe1_0.author_organization,epe1_0.category,epe1_0.code,epe1_0.created_at,epe1_0.publication_year,epe1_0.status,epe1_0.summary,epe1_0.title,epe1_0.version from epidemiological_protocols epe1_0 where epe1_0.code=?
-Hibernate: select epe1_0.id,epe1_0.author_organization,epe1_0.category,epe1_0.code,epe1_0.created_at,epe1_0.publication_year,epe1_0.status,epe1_0.summary,epe1_0.title,epe1_0.version from epidemiological_protocols epe1_0
+  <testcase name="testRecordSearchEventAndGetMetrics" classname="com.eneik.production.SearchAnalyticsControllerTest" time="0.35">
+    <system-out><![CDATA[2026-08-16T07:23:18.249Z  INFO 160148 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.eneik.production.SearchAnalyticsControllerTest]: SearchAnalyticsControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-16T07:23:18.257Z  INFO 160148 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.eneik.production.Application for test class com.eneik.production.SearchAnalyticsControllerTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.5)
+
+2026-08-16T07:23:18.284Z  INFO 160148 --- [           main] c.e.p.SearchAnalyticsControllerTest      : Starting SearchAnalyticsControllerTest using Java 21.0.10 with PID 160148 (started by jules in /app)
+2026-08-16T07:23:18.285Z  INFO 160148 --- [           main] c.e.p.SearchAnalyticsControllerTest      : No active profile set, falling back to 1 default profile: "default"
+2026-08-16T07:23:18.504Z  INFO 160148 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-08-16T07:23:18.520Z  INFO 160148 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 15 ms. Found 4 JPA repository interfaces.
+2026-08-16T07:23:18.750Z  INFO 160148 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Starting...
+2026-08-16T07:23:18.756Z  INFO 160148 --- [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-2 - Added connection conn10: url=jdbc:h2:mem:testdb user=SA
+2026-08-16T07:23:18.756Z  INFO 160148 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Start completed.
+2026-08-16T07:23:18.769Z  INFO 160148 --- [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:h2:mem:testdb (H2 2.2)
+2026-08-16T07:23:18.771Z  WARN 160148 --- [           main] o.f.c.internal.database.base.Database    : Flyway upgrade recommended: H2 2.2.224 is newer than this version of Flyway and support has not been tested. The latest supported version of H2 is 2.2.220.
+2026-08-16T07:23:18.782Z  INFO 160148 --- [           main] o.f.core.internal.command.DbValidate     : Successfully validated 5 migrations (execution time 00:00.009s)
+2026-08-16T07:23:18.788Z  INFO 160148 --- [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "PUBLIC": 20260816065637846
+2026-08-16T07:23:18.789Z  INFO 160148 --- [           main] o.f.core.internal.command.DbMigrate      : Schema "PUBLIC" is up to date. No migration necessary.
+2026-08-16T07:23:18.813Z  INFO 160148 --- [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-08-16T07:23:18.815Z  INFO 160148 --- [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-08-16T07:23:18.820Z  INFO 160148 --- [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-08-16T07:23:18.935Z  INFO 160148 --- [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-08-16T07:23:18.938Z  INFO 160148 --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-08-16T07:23:19.055Z  WARN 160148 --- [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-08-16T07:23:19.214Z  INFO 160148 --- [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-08-16T07:23:19.214Z  INFO 160148 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-08-16T07:23:19.218Z  INFO 160148 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 2 ms
+2026-08-16T07:23:19.229Z  INFO 160148 --- [           main] c.e.p.SearchAnalyticsControllerTest      : Started SearchAnalyticsControllerTest in 0.969 seconds (process running for 8.231)
+Hibernate: insert into search_analytics_events (created_at,execution_time_ms,filters,query,result_count,user_id,id) values (?,?,?,?,?,?,default)
+Hibernate: insert into search_analytics_events (created_at,execution_time_ms,filters,query,result_count,user_id,id) values (?,?,?,?,?,?,default)
+Hibernate: insert into search_analytics_events (created_at,execution_time_ms,filters,query,result_count,user_id,id) values (?,?,?,?,?,?,default)
+Hibernate: select saee1_0.id,saee1_0.created_at,saee1_0.execution_time_ms,saee1_0.filters,saee1_0.query,saee1_0.result_count,saee1_0.user_id from search_analytics_events saee1_0
 ]]></system-out>
   </testcase>
 </testsuite>

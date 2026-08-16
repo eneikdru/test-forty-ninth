@@ -1,0 +1,84 @@
+package com.eneik.production;
+
+import com.eneik.production.models.persistence.InternalTaskEntity;
+import com.eneik.production.repository.InternalTaskRepository;
+import com.eneik.production.service.GitHubPrClient;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@SpringBootTest
+@AutoConfigureMockMvc
+class TaskStateSyncIntegrationTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @Autowired
+    private InternalTaskRepository taskRepository;
+
+    @MockBean
+    private GitHubPrClient gitHubPrClient;
+
+    @BeforeEach
+    void setUp() {
+        taskRepository.deleteAll();
+    }
+
+    @Test
+    @DisplayName("Integration test: Synchronize task status using REST API and verify database state and atomic update query")
+    void testTaskStateSyncIntegration() throws Exception {
+        String taskId = "dc09037e-cbf1-4e7e-a5a9-17f9c294ba71";
+        LocalDateTime now = LocalDateTime.now();
+        InternalTaskEntity task = new InternalTaskEntity(taskId, "Discrepant task", "done", 42, "OPEN", now, now);
+        taskRepository.save(task);
+
+        when(gitHubPrClient.getPullRequestState(42)).thenReturn("OPEN");
+
+        mockMvc.perform(post("/api/tasks/" + taskId + "/sync")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.taskId").value(taskId))
+                .andExpect(jsonPath("$.previousStatus").value("done"))
+                .andExpect(jsonPath("$.newStatus").value("IN_PROGRESS"))
+                .andExpect(jsonPath("$.githubPrState").value("OPEN"))
+                .andExpect(jsonPath("$.updated").value(true));
+
+        InternalTaskEntity updatedTask = taskRepository.findById(taskId).orElseThrow();
+        assertEquals("IN_PROGRESS", updatedTask.getStatus());
+        assertEquals("OPEN", updatedTask.getGithubPrState());
+    }
+
+    @Test
+    @Transactional
+    @DisplayName("Integration test: Verify atomic guarded update query directly on database")
+    void testAtomicUpdateQuery() {
+        String taskId = "dc09037e-cbf1-4e7e-a5a9-17f9c294ba71";
+        LocalDateTime now = LocalDateTime.now();
+        InternalTaskEntity task = new InternalTaskEntity(taskId, "Discrepant task", "done", 10, "OPEN", now, now);
+        taskRepository.save(task);
+
+        // Atomic update with matching expected status succeeds
+        int rowsUpdated = taskRepository.updateStatusAtomically(taskId, "done", "IN_PROGRESS", "OPEN", now.plusMinutes(1));
+        assertEquals(1, rowsUpdated);
+
+        // Atomic update with mismatched expected status fails (0 rows updated)
+        int staleUpdateRows = taskRepository.updateStatusAtomically(taskId, "done", "BLOCKED", "OPEN", now.plusMinutes(2));
+        assertEquals(0, staleUpdateRows);
+    }
+}
