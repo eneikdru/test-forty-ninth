@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EPI Discovery - Search</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config injected by system -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-dim": "#d8dadc",
+                    "surface-container-lowest": "#ffffff",
+                    "outline-variant": "#c3c6d5",
+                    "on-surface": "#191c1e",
+                    "on-background": "#191c1e",
+                    "on-secondary-container": "#54647a",
+                    "outline": "#737784",
+                    "on-secondary": "#ffffff",
+                    "on-secondary-fixed-variant": "#38485d",
+                    "inverse-primary": "#b0c6ff",
+                    "error": "#ba1a1a",
+                    "primary-fixed-dim": "#b0c6ff",
+                    "on-primary": "#ffffff",
+                    "inverse-on-surface": "#eff1f3",
+                    "secondary-fixed-dim": "#b7c8e1",
+                    "surface-container-highest": "#e0e3e5",
+                    "primary-container": "#0f52ba",
+                    "on-surface-variant": "#434653",
+                    "on-primary-fixed": "#001945",
+                    "surface-container-high": "#e6e8ea",
+                    "tertiary": "#004943",
+                    "on-tertiary-container": "#73e0d2",
+                    "on-tertiary-fixed": "#00201d",
+                    "on-tertiary-fixed-variant": "#005049",
+                    "surface-container": "#eceef0",
+                    "tertiary-fixed": "#89f5e7",
+                    "primary-fixed": "#d9e2ff",
+                    "primary": "#003c90",
+                    "error-container": "#ffdad6",
+                    "tertiary-container": "#00635b",
+                    "tertiary-fixed-dim": "#6bd8cb",
+                    "secondary-fixed": "#d3e4fe",
+                    "background": "#f7f9fb",
+                    "on-primary-fixed-variant": "#00419c",
+                    "surface": "#f7f9fb",
+                    "secondary-container": "#d0e1fb",
+                    "surface-tint": "#1d59c1",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-fixed": "#0b1c30",
+                    "inverse-surface": "#2d3133",
+                    "on-primary-container": "#bcceff",
+                    "surface-bright": "#f7f9fb",
+                    "secondary": "#505f76",
+                    "on-error": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "surface-container-low": "#f2f4f6",
+                    "surface-variant": "#e0e3e5"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "gutter": "24px",
+                    "container-max": "1440px",
+                    "density-compact": "8px",
+                    "margin-desktop": "40px",
+                    "margin-mobile": "16px",
+                    "density-comfortable": "16px",
+                    "unit": "4px"
+            },
+            "fontFamily": {
+                    "label-md": [
+                            "JetBrains Mono"
+                    ],
+                    "body-sm": [
+                            "Inter"
+                    ],
+                    "headline-md": [
+                            "Inter"
+                    ],
+                    "headline-lg": [
+                            "Inter"
+                    ],
+                    "display-lg": [
+                            "Inter"
+                    ],
+                    "body-md": [
+                            "Inter"
+                    ],
+                    "label-sm": [
+                            "JetBrains Mono"
+                    ],
+                    "body-lg": [
+                            "Inter"
+                    ],
+                    "headline-lg-mobile": [
+                            "Inter"
+                    ]
+            },
+            "fontSize": {
+                    "label-md": [
+                            "14px",
+                            {
+                                    "lineHeight": "16px",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "body-sm": [
+                            "14px",
+                            {
+                                    "lineHeight": "20px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "headline-md": [
+                            "24px",
+                            {
+                                    "lineHeight": "32px",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "headline-lg": [
+                            "32px",
+                            {
+                                    "lineHeight": "40px",
+                                    "letterSpacing": "-0.01em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "display-lg": [
+                            "48px",
+                            {
+                                    "lineHeight": "56px",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "body-md": [
+                            "16px",
+                            {
+                                    "lineHeight": "24px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "label-sm": [
+                            "12px",
+                            {
+                                    "lineHeight": "14px",
+                                    "letterSpacing": "0.05em",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "body-lg": [
+                            "18px",
+                            {
+                                    "lineHeight": "28px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "headline-lg-mobile": [
+                            "24px",
+                            {
+                                    "lineHeight": "32px",
+                                    "fontWeight": "600"
+                            }
+                    ]
+            }
+    }
+        }
+      }
+    </script>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+          font-variation-settings:
+          'FILL' 0,
+          'wght' 400,
+          'GRAD' 0,
+          'opsz' 24
+        }
+        
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md h-screen w-full overflow-hidden flex flex-col md:hidden relative">
+<!-- TopAppBar -->
+<header class="bg-surface w-full sticky top-0 z-50 flat no shadows flex flex-col pt-4 pb-2 border-b border-outline-variant">
+<div class="flex items-center justify-between px-margin-mobile h-16 w-full gap-4">
+<div class="flex-1">
+<div class="relative w-full h-12 flex items-center group">
+<div class="absolute left-3 text-outline">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="w-full h-full pl-10 pr-4 bg-surface-container-lowest border border-outline-variant rounded-DEFAULT focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary-fixed font-body-sm text-body-sm placeholder:text-on-surface-variant transition-all duration-200" placeholder="Search epidemiological materials..." type="text"/>
+</div>
+</div>
+<button aria-label="Filter" class="w-12 h-12 flex items-center justify-center bg-surface-container-lowest border border-outline-variant rounded-DEFAULT text-on-surface hover:bg-surface-container-high transition-colors active:scale-95 duration-150 flex-shrink-0">
+<span class="material-symbols-outlined">filter_list</span>
+</button>
+</div>
+<!-- Filter Chips -->
+<div class="px-margin-mobile pt-3 pb-2 overflow-x-auto hide-scrollbar">
+<div class="flex gap-2 w-max">
+<button class="px-3 py-1.5 bg-primary-container text-on-primary-container rounded-full border border-transparent font-label-md text-label-md flex items-center gap-1">
+                    Disease Type <span class="material-symbols-outlined" style="font-size: 16px;">close</span>
+</button>
+<button class="px-3 py-1.5 bg-surface-container-lowest border border-outline-variant text-on-surface-variant rounded-full font-label-md text-label-md hover:bg-surface-container-high transition-colors">
+                    Region
+                </button>
+<button class="px-3 py-1.5 bg-surface-container-lowest border border-outline-variant text-on-surface-variant rounded-full font-label-md text-label-md hover:bg-surface-container-high transition-colors">
+                    Year
+                </button>
+<button class="px-3 py-1.5 bg-surface-container-lowest border border-outline-variant text-on-surface-variant rounded-full font-label-md text-label-md hover:bg-surface-container-high transition-colors">
+                    Material Type
+                </button>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 overflow-y-auto px-margin-mobile py-density-comfortable pb-24 space-y-density-comfortable bg-surface-container-low">
+<!-- Result Count -->
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Showing 243 results</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1 cursor-pointer">Sort by: Relevance <span class="material-symbols-outlined" style="font-size: 14px;">expand_more</span></span>
+</div>
+<!-- Result Card 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-density-comfortable hover:bg-surface-container-highest transition-colors cursor-pointer group">
+<div class="flex justify-between items-start mb-2">
+<div class="px-2 py-1 bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm rounded-DEFAULT inline-block">
+                    Journal Article
+                </div>
+<button aria-label="Bookmark" class="text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined">bookmark_border</span>
+</button>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2 group-hover:text-primary transition-colors line-clamp-2">
+                SARS-CoV-2 Variant Transmission in Urban Centers
+            </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-3 line-clamp-2">
+                An extensive longitudinal study mapping the rapid spread and evolutionary divergence of multiple SARS-CoV-2 strains across high-density metropolitan areas globally.
+            </p>
+<div class="flex items-center gap-2 font-label-sm text-label-sm text-on-secondary-container">
+<span class="material-symbols-outlined" style="font-size: 14px;">person</span>
+<span class="truncate">Dr. Elena Rostova, et al.</span>
+<span class="w-1 h-1 rounded-full bg-outline mx-1"></span>
+<span>Oct 2023</span>
+</div>
+</div>
+<!-- Result Card 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-density-comfortable hover:bg-surface-container-highest transition-colors cursor-pointer group">
+<div class="flex justify-between items-start mb-2">
+<div class="px-2 py-1 bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm rounded-DEFAULT inline-block">
+                    Dataset
+                </div>
+<button aria-label="Bookmark" class="text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined">bookmark_border</span>
+</button>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2 group-hover:text-primary transition-colors line-clamp-2">
+                Global Influenza A (H1N1) Surveillance Data 2010-2020
+            </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-3 line-clamp-2">
+                Comprehensive dataset aggregating ten years of global surveillance records, detailing strain variations, geographic distribution, and resistance markers.
+            </p>
+<div class="flex items-center gap-2 font-label-sm text-label-sm text-on-secondary-container">
+<span class="material-symbols-outlined" style="font-size: 14px;">account_balance</span>
+<span class="truncate">WHO Global Health Observatory</span>
+<span class="w-1 h-1 rounded-full bg-outline mx-1"></span>
+<span>Jan 2024</span>
+</div>
+</div>
+<!-- Result Card 3 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-density-comfortable hover:bg-surface-container-highest transition-colors cursor-pointer group">
+<div class="flex justify-between items-start mb-2">
+<div class="px-2 py-1 bg-primary-fixed-dim text-on-primary-fixed font-label-sm text-label-sm rounded-DEFAULT inline-block">
+                    Clinical Trial
+                </div>
+<button aria-label="Bookmark" class="text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined">bookmark_border</span>
+</button>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2 group-hover:text-primary transition-colors line-clamp-2">
+                Efficacy of Novel mRNA Vaccines Against Zoonotic Spillover Events
+            </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-3 line-clamp-2">
+                Phase III clinical trial results assessing the protective efficacy and immunogenicity of next-generation mRNA platforms targeted at emergent paramyxoviruses.
+            </p>
+<div class="flex items-center gap-2 font-label-sm text-label-sm text-on-secondary-container">
+<span class="material-symbols-outlined" style="font-size: 14px;">science</span>
+<span class="truncate">Nexus BioLabs Research</span>
+<span class="w-1 h-1 rounded-full bg-outline mx-1"></span>
+<span>Aug 2023</span>
+</div>
+</div>
+<!-- Load More -->
+<div class="flex justify-center mt-density-comfortable">
+<button class="px-4 py-2 border border-outline text-on-surface font-label-md text-label-md rounded-DEFAULT hover:bg-surface-container-high transition-colors">
+                Load More Results
+            </button>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="bg-surface dark:bg-surface-container-low fixed bottom-0 w-full z-50 flat no shadows flex justify-around items-center h-20 px-margin-mobile transition-all duration-200 ease-in-out border-t border-transparent" style="box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.05);">
+<!-- Search (Active) -->
+<a class="flex flex-col items-center justify-center bg-secondary-container dark:bg-on-secondary-fixed-variant text-on-secondary-container dark:text-secondary-fixed rounded-full px-5 py-1" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">search</span>
+<span class="font-label-md text-label-md mt-1">Search</span>
+</a>
+<!-- Recent -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-5 py-1 hover:text-primary dark:hover:text-primary-fixed" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="font-label-md text-label-md mt-1">Recent</span>
+</a>
+<!-- Bookmarks -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-5 py-1 hover:text-primary dark:hover:text-primary-fixed" href="#">
+<span class="material-symbols-outlined">bookmark</span>
+<span class="font-label-md text-label-md mt-1">Bookmarks</span>
+</a>
+<!-- Profile -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-5 py-1 hover:text-primary dark:hover:text-primary-fixed" href="#">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="font-label-md text-label-md mt-1">Profile</span>
+</a>
+</nav>
+</body></html>
