@@ -1,6 +1,6 @@
-import SearchTelemetry from './SearchTelemetry.svelte';
+import MaterialSearch from './MaterialSearch.svelte';
 
-const app = new SearchTelemetry({
+const app = new MaterialSearch({
   target: document.getElementById('app'),
 });
 
