@@ -1,0 +1,11 @@
+{
+  "gaps": [
+    {
+      "title": "Missing API and UI endpoints for Epidemiological Protocols management",
+      "roleTag": "BARCAN-TAG-02",
+      "jtbd": "When an epidemiologist accesses the system, I want to search, view, and manage epidemiological protocols, so that standardized outbreak procedures and guidelines are accessible.",
+      "acceptanceCriteria": "Given seeded epidemiological protocols in the database, When a client queries protocol search or CRUD endpoints, Then the system returns matching protocol entities with search and filter capabilities.",
+      "reason": "literal brief requirement: The brief explicitly requires cataloging, search, and management of epidemiological protocols ('протоколами'), but the codebase only provides repository-level entities and seeds without any REST controllers or UI components."
+    }
+  ]
+}
