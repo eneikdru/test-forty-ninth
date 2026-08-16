@@ -45,8 +45,8 @@ public class EpidemiologicalProtocolApiTest {
                 .andExpect(jsonPath("$.items", hasSize(5)))
                 .andExpect(jsonPath("$.pagination.page", is(0)))
                 .andExpect(jsonPath("$.pagination.size", is(5)))
-                .andExpect(jsonPath("$.pagination.totalElements", is(10)))
-                .andExpect(jsonPath("$.pagination.totalPages", is(2)));
+                .andExpect(jsonPath("$.pagination.totalElements", is(15)))
+                .andExpect(jsonPath("$.pagination.totalPages", is(3)));
 
         // Test search by keyword q
         mockMvc.perform(get("/api/v1/protocols")
@@ -66,7 +66,7 @@ public class EpidemiologicalProtocolApiTest {
         mockMvc.perform(get("/api/v1/protocols")
                         .param("status", "APPROVED"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.pagination.totalElements", is(10)));
+                .andExpect(jsonPath("$.pagination.totalElements", is(15)));
     }
 
     @Test
