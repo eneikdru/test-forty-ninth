@@ -23,7 +23,7 @@ raise_alert() {
     echo "${alert_payload}" >&2
 
     if mkdir -p "$(dirname "${ALERT_LOG_FILE}")" 2>/dev/null; then
-        echo "${alert_payload}" >> "${ALERT_LOG_FILE}"
+        echo "${alert_payload}" >> "${ALERT_LOG_FILE}" 2>/dev/null || true
     fi
 }
 

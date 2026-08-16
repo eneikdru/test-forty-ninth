@@ -1,0 +1,14 @@
+/app/src/test/java/com/eneik/production/SearchAnalyticsEventRepositoryTest.java
+/app/src/test/java/com/eneik/production/EpidemiologicalContentVerificationTest.java
+/app/src/test/java/com/eneik/production/SearchAnalyticsControllerTest.java
+/app/src/test/java/com/eneik/production/search/SearchQueryBuilderTest.java
+/app/src/test/java/com/eneik/production/BackupConfigurationTest.java
+/app/src/test/java/com/eneik/production/TaskStateSyncServiceTest.java
+/app/src/test/java/com/eneik/production/CategoriesAndTagsMigrationTest.java
+/app/src/test/java/com/eneik/production/SearchApiIntegrationTest.java
+/app/src/test/java/com/eneik/production/DataRestorationVerificationTest.java
+/app/src/test/java/com/eneik/production/MaterialControllerTest.java
+/app/src/test/java/com/eneik/production/MaterialServiceTest.java
+/app/src/test/java/com/eneik/production/SearchAnalyticsMigrationTest.java
+/app/src/test/java/com/eneik/production/EpidemiologicalProtocolSeedTest.java
+/app/src/test/java/com/eneik/production/TaskStateSyncIntegrationTest.java

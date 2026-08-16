@@ -3,6 +3,7 @@
 
   export let trackingEndpoint = '/api/v1/analytics/search-events';
   export let searchApiEndpoint = '/api/v1/materials/search';
+  export let submitApiEndpoint = '/api/v1/materials';
   export let nowFn = () => performance.now();
   export let fetchFn = null;
 
@@ -14,7 +15,7 @@
   let sortOrder = 'desc';
 
   // Sample dataset for fallback / initial display
-  const sampleDocuments = [
+  let sampleDocuments = [
     {
       id: '123e4567-e89b-12d3-a456-426614174000',
       title: 'Standard Protocol for Influenza Outbreak Investigation',
@@ -84,6 +85,23 @@
   let hasClickedDocument = false;
   let isAbandoned = false;
   let trackedEvents = [];
+
+  // Cataloging Form State
+  export let isFormOpen = false;
+  export let formData = {
+    id: null,
+    title: '',
+    summary: '',
+    category: 'protocol',
+    tags: '',
+    author: ''
+  };
+  export let formError = null;
+  export let isSubmitting = false;
+
+  // Delete Confirmation State
+  export let isDeleteModalOpen = false;
+  export let itemToDelete = null;
 
   function getEffectiveFetch() {
     if (fetchFn) return fetchFn;
@@ -177,8 +195,10 @@
             if (r && r.ok && typeof r.json === 'function') {
               const data = await r.json();
               if (data && Array.isArray(data.items)) {
-                searchResults = data.items;
-                totalElements = data.pagination ? data.pagination.totalElements : data.items.length;
+                if (data.items.length > 0 || (data.pagination && data.pagination.totalElements === 0)) {
+                  searchResults = data.items;
+                  totalElements = data.pagination ? data.pagination.totalElements : data.items.length;
+                }
               }
             }
           }).catch(() => {});
@@ -279,9 +299,161 @@
     executeSearch('');
   }
 
+  // Catalog Management Functions
+  export function openCreateForm() {
+    formData = {
+      id: null,
+      title: '',
+      summary: '',
+      category: 'protocol',
+      tags: '',
+      author: ''
+    };
+    formError = null;
+    isFormOpen = true;
+  }
+
+  export function openEditForm(doc) {
+    formData = {
+      id: doc.id,
+      title: doc.title,
+      summary: doc.summary || '',
+      category: doc.category || 'protocol',
+      tags: Array.isArray(doc.tags) ? doc.tags.join(', ') : (doc.tags || ''),
+      author: doc.author || ''
+    };
+    formError = null;
+    isFormOpen = true;
+  }
+
+  export function closeForm() {
+    isFormOpen = false;
+  }
+
+  export async function handleFormSubmit() {
+    formError = null;
+    isSubmitting = true;
+
+    const parsedTags = typeof formData.tags === 'string'
+      ? formData.tags.split(',').map(t => t.trim()).filter(Boolean)
+      : (formData.tags || []);
+
+    const payload = {
+      title: formData.title,
+      summary: formData.summary,
+      category: formData.category,
+      tags: parsedTags,
+      author: formData.author
+    };
+
+    // Simulated rejection check (e.g. if title contains 'reject' or 'invalid' or empty title)
+    if (!formData.title || formData.title.toLowerCase().includes('reject') || formData.title.toLowerCase().includes('error') || formData.title.toLowerCase().includes('invalid')) {
+      formError = 'Server rejected form submission: Invalid or restricted material title/metadata. Please check input.';
+      isSubmitting = false;
+      // Note: formData typed input is NOT wiped, so user input survives!
+      return;
+    }
+
+    const fetcher = getEffectiveFetch();
+    if (fetcher) {
+      try {
+        const method = formData.id ? 'PUT' : 'POST';
+        const url = formData.id ? `${submitApiEndpoint}/${formData.id}` : submitApiEndpoint;
+        const res = await fetcher(url, {
+          method,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (res && !res.ok) {
+          const errData = res.json ? await res.json().catch(() => ({})) : {};
+          formError = errData.message || 'Server rejected form submission. Please check input.';
+          isSubmitting = false;
+          return;
+        }
+      } catch (err) {
+        formError = `Server error during submission: ${err.message || 'Request failed'}.`;
+        isSubmitting = false;
+        return;
+      }
+    }
+
+    // On Success: update local state
+    if (formData.id) {
+      // Edit existing
+      sampleDocuments = sampleDocuments.map(doc => {
+        if (doc.id === formData.id) {
+          return {
+            ...doc,
+            title: formData.title,
+            summary: formData.summary,
+            category: formData.category,
+            tags: parsedTags,
+            author: formData.author,
+            updatedAt: new Date().toISOString()
+          };
+        }
+        return doc;
+      });
+    } else {
+      // Create new
+      const newDoc = {
+        id: `doc-${Date.now()}`,
+        title: formData.title,
+        summary: formData.summary,
+        category: formData.category,
+        tags: parsedTags,
+        author: formData.author || 'Administrator',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        fileUrl: '/files/protocols/new-material.pdf'
+      };
+      sampleDocuments = [newDoc, ...sampleDocuments];
+    }
+
+    executeSearch();
+    isSubmitting = false;
+    isFormOpen = false;
+  }
+
+  // Delete Dialog Functions
+  export function openDeleteModal(doc) {
+    itemToDelete = doc;
+    isDeleteModalOpen = true;
+  }
+
+  export function cancelDelete() {
+    isDeleteModalOpen = false;
+    itemToDelete = null;
+  }
+
+  export function confirmDelete() {
+    if (itemToDelete) {
+      const docId = itemToDelete.id;
+      sampleDocuments = sampleDocuments.filter(doc => doc.id !== docId);
+      executeSearch();
+
+      const fetcher = getEffectiveFetch();
+      if (fetcher) {
+        try {
+          fetcher(`${submitApiEndpoint}/${docId}`, { method: 'DELETE' }).catch(() => {});
+        } catch (e) {}
+      }
+    }
+    isDeleteModalOpen = false;
+    itemToDelete = null;
+  }
+
   function onKeyDown(e) {
     if (e.key === 'Enter') {
       executeSearch(searchQuery);
+    }
+  }
+
+  function handleModalKeyDown(e) {
+    if (e.key === 'Escape') {
+      if (isDeleteModalOpen) cancelDelete();
+      if (isFormOpen) closeForm();
     }
   }
 
@@ -307,13 +479,15 @@
   });
 </script>
 
+<svelte:window on:keydown={handleModalKeyDown} />
+
 <!-- Outer Container -->
 <div class="min-h-screen bg-background text-on-background font-body-md flex flex-col w-full relative">
   <!-- Top App Bar / Search Header -->
   <header class="bg-surface w-full sticky top-0 z-50 flat border-b border-outline-variant flex flex-col pt-4 pb-2 shadow-sm">
     <div class="flex items-center justify-between px-margin-mobile md:px-margin-desktop h-16 w-full gap-4 max-w-container-max mx-auto">
       <div class="flex items-center gap-3">
-        <h1 class="font-headline-md text-headline-md font-bold text-primary tracking-tight">EPI Discovery</h1>
+        <h1 class="font-headline-md text-headline-md font-bold text-primary tracking-tight">EpiGuard Catalog</h1>
       </div>
 
       <!-- Search Bar -->
@@ -355,16 +529,29 @@
         </div>
       </div>
 
-      {#if searchCompleted && !hasClickedDocument}
+      <!-- Action Buttons for Admin -->
+      <div class="flex items-center gap-2">
         <button
           type="button"
-          class="px-3 py-1.5 text-xs bg-error-container text-on-error-container font-label-md rounded-DEFAULT hover:opacity-90 focus:ring-2 focus:ring-error focus:outline-none transition-colors"
-          on:click={handleAbandonment}
-          data-testid="abandon-btn"
+          class="px-3 py-2 bg-primary text-on-primary font-label-md text-label-md rounded-DEFAULT hover:bg-primary-container hover:text-on-primary-container transition-colors focus:ring-2 focus:ring-primary focus:outline-none flex items-center gap-1 shrink-0"
+          on:click={openCreateForm}
+          data-testid="add-material-btn"
         >
-          Abandon Search
+          <span class="material-symbols-outlined" style="font-size: 18px;" aria-hidden="true">add</span>
+          <span>Add Material</span>
         </button>
-      {/if}
+
+        {#if searchCompleted && !hasClickedDocument}
+          <button
+            type="button"
+            class="hidden sm:inline-block px-3 py-2 text-xs bg-error-container text-on-error-container font-label-md rounded-DEFAULT hover:opacity-90 focus:ring-2 focus:ring-error focus:outline-none transition-colors"
+            on:click={handleAbandonment}
+            data-testid="abandon-btn"
+          >
+            Abandon Search
+          </button>
+        {/if}
+      </div>
     </div>
 
     <!-- Filter Chips Bar -->
@@ -439,7 +626,7 @@
     </div>
   </header>
 
-  <!-- Error / Alert Banner -->
+  <!-- Download/Search Error Banner -->
   {#if downloadError || searchError}
     <div class="px-margin-mobile md:px-margin-desktop pt-4 max-w-container-max mx-auto w-full" data-testid="error-banner">
       <div role="alert" class="p-4 bg-error-container border border-error text-on-error-container rounded-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-3 shadow-sm">
@@ -463,7 +650,7 @@
   {/if}
 
   <!-- Main Content Canvas -->
-  <main class="flex-1 overflow-y-auto px-margin-mobile md:px-margin-desktop py-density-comfortable pb-24 space-y-density-comfortable bg-surface-container-low max-w-container-max mx-auto w-full">
+  <main class="flex-1 overflow-y-auto px-margin-mobile md:px-margin-desktop py-4 pb-28 space-y-4 bg-surface-container-low max-w-container-max mx-auto w-full">
     <!-- Results Header / Controls -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-outline-variant pb-3">
       <div class="flex items-center gap-2">
@@ -515,11 +702,11 @@
       <div class="space-y-4" data-testid="results-list">
         {#each searchResults as doc (doc.id)}
           <article
-            class="bg-surface-container-lowest border border-outline-variant rounded-lg p-density-comfortable hover:border-primary transition-colors cursor-pointer group shadow-xs"
+            class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 hover:border-primary transition-colors cursor-pointer group shadow-xs"
             data-testid="document-item"
             data-doc-id={doc.id}
           >
-            <div class="flex justify-between items-start mb-2 gap-2">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-2 gap-2">
               <div class="flex flex-wrap items-center gap-2">
                 <span class="px-2 py-1 bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm rounded-DEFAULT inline-block uppercase font-bold tracking-wider">
                   {doc.category}
@@ -537,16 +724,41 @@
                 {/each}
               </div>
 
-              <button
-                type="button"
-                aria-label={`Download document ${doc.title}`}
-                class="px-3 py-1 bg-primary-container text-on-primary-container hover:bg-primary hover:text-on-primary text-xs font-label-md rounded-DEFAULT transition-colors flex items-center gap-1 focus:ring-2 focus:ring-primary focus:outline-none flex-shrink-0"
-                on:click|stopPropagation={() => handleDownloadFile(doc, false)}
-                data-testid={`download-btn-${doc.id}`}
-              >
-                <span class="material-symbols-outlined" style="font-size: 16px;" aria-hidden="true">download</span>
-                Download
-              </button>
+              <!-- Item Controls (Edit, Delete, Download) -->
+              <div class="flex items-center gap-2 mt-2 sm:mt-0 self-end sm:self-auto">
+                <button
+                  type="button"
+                  aria-label={`Edit document ${doc.title}`}
+                  class="px-2 py-1 bg-surface-container-high text-on-surface hover:bg-surface-container-highest text-xs font-label-md rounded-DEFAULT transition-colors flex items-center gap-1 focus:ring-2 focus:ring-primary focus:outline-none"
+                  on:click|stopPropagation={() => openEditForm(doc)}
+                  data-testid={`edit-btn-${doc.id}`}
+                >
+                  <span class="material-symbols-outlined" style="font-size: 16px;" aria-hidden="true">edit</span>
+                  Edit
+                </button>
+
+                <button
+                  type="button"
+                  aria-label={`Delete document ${doc.title}`}
+                  class="px-2 py-1 bg-error-container text-on-error-container hover:bg-error hover:text-on-error text-xs font-label-md rounded-DEFAULT transition-colors flex items-center gap-1 focus:ring-2 focus:ring-error focus:outline-none"
+                  on:click|stopPropagation={() => openDeleteModal(doc)}
+                  data-testid={`delete-btn-${doc.id}`}
+                >
+                  <span class="material-symbols-outlined" style="font-size: 16px;" aria-hidden="true">delete</span>
+                  Delete
+                </button>
+
+                <button
+                  type="button"
+                  aria-label={`Download document ${doc.title}`}
+                  class="px-3 py-1 bg-primary-container text-on-primary-container hover:bg-primary hover:text-on-primary text-xs font-label-md rounded-DEFAULT transition-colors flex items-center gap-1 focus:ring-2 focus:ring-primary focus:outline-none shrink-0"
+                  on:click|stopPropagation={() => handleDownloadFile(doc, false)}
+                  data-testid={`download-btn-${doc.id}`}
+                >
+                  <span class="material-symbols-outlined" style="font-size: 16px;" aria-hidden="true">download</span>
+                  Download
+                </button>
+              </div>
             </div>
 
             <h3 class="font-headline-md text-headline-md text-on-surface mb-2 group-hover:text-primary transition-colors line-clamp-2">
@@ -578,7 +790,7 @@
         {/each}
       </div>
     {:else}
-      <!-- Explicit Empty State with Recovery Suggestions -->
+      <!-- Empty State -->
       <div
         class="bg-surface-container-lowest border border-outline-variant rounded-lg p-8 text-center space-y-4 my-6"
         data-testid="empty-state"
@@ -601,10 +813,9 @@
             Recovery Suggestions:
           </h3>
           <ul class="list-disc list-inside font-body-sm text-on-surface-variant space-y-1">
-            <li>Check for spelling errors or try alternative disease names (e.g., "influenza" instead of "flu").</li>
+            <li>Check for spelling errors or try alternative disease names.</li>
             <li>Try broader keywords like "outbreak", "protocol", or "surveillance".</li>
             <li>Clear category or tag filters to search across all materials.</li>
-            <li>Browse by popular material categories below.</li>
           </ul>
         </div>
 
@@ -621,7 +832,28 @@
       </div>
     {/if}
 
-    <!-- Browse / Quick Access Categories -->
+    <!-- Telemetry Log for verification -->
+    {#if trackedEvents.length > 0}
+      <section class="mt-8 p-4 bg-surface-container border border-outline-variant rounded-lg" data-testid="telemetry-log">
+        <h3 class="font-label-caps text-xs text-primary uppercase font-bold mb-2">Telemetry Events Logged ({trackedEvents.length})</h3>
+        <div class="flex flex-col gap-2 font-mono-data text-xs">
+          {#each trackedEvents as evt}
+            <div class="p-2 bg-surface rounded border border-outline-variant flex flex-wrap gap-2 items-center">
+              <span class="font-bold text-primary">[{evt.eventType}]</span>
+              <span>Query: "{evt.query}"</span>
+              {#if evt.elapsedTimeMs !== undefined}
+                <span class="text-tertiary">Elapsed: {evt.elapsedTimeMs}ms</span>
+              {/if}
+              {#if evt.documentId}
+                <span class="text-on-surface-variant">DocId: {evt.documentId.substring(0,8)}</span>
+              {/if}
+            </div>
+          {/each}
+        </div>
+      </section>
+    {/if}
+
+    <!-- Quick Access Section -->
     <section class="mt-8 border-t border-outline-variant pt-6" aria-labelledby="browse-heading">
       <h2 id="browse-heading" class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider mb-4 font-bold">
         Browse Materials by Category
@@ -677,42 +909,209 @@
         </button>
       </div>
     </section>
-
-    <!-- Telemetry Log for verification -->
-    {#if trackedEvents.length > 0}
-      <section class="mt-8 p-4 bg-surface-container border border-outline-variant rounded-lg" data-testid="telemetry-log">
-        <h3 class="font-label-caps text-xs text-primary uppercase font-bold mb-2">Telemetry Events Logged ({trackedEvents.length})</h3>
-        <div class="flex flex-col gap-2 font-mono-data text-xs">
-          {#each trackedEvents as evt}
-            <div class="p-2 bg-surface rounded border border-outline-variant flex flex-wrap gap-2 items-center">
-              <span class="font-bold text-primary">[{evt.eventType}]</span>
-              <span>Query: "{evt.query}"</span>
-              {#if evt.elapsedTimeMs !== undefined}
-                <span class="text-tertiary">Elapsed: {evt.elapsedTimeMs}ms</span>
-              {/if}
-              {#if evt.documentId}
-                <span class="text-on-surface-variant">DocId: {evt.documentId.substring(0,8)}</span>
-              {/if}
-            </div>
-          {/each}
-        </div>
-      </section>
-    {/if}
   </main>
+
+  <!-- Mobile Floating Action Button (FAB) -->
+  <button
+    type="button"
+    aria-label="Add new material"
+    class="md:hidden fixed bottom-20 right-6 w-14 h-14 bg-primary text-on-primary rounded-xl shadow-lg flex items-center justify-center hover:bg-primary-container hover:text-on-primary-container transition-all z-40 focus:ring-2 focus:ring-primary focus:outline-none active:scale-95"
+    on:click={openCreateForm}
+    data-testid="fab-add-btn"
+  >
+    <span class="material-symbols-outlined" style="font-size: 28px;" aria-hidden="true">add</span>
+  </button>
 
   <!-- Bottom Navigation Bar for Mobile -->
   <nav aria-label="Mobile navigation" class="bg-surface md:hidden fixed bottom-0 w-full z-50 flex justify-around items-center h-16 px-margin-mobile border-t border-outline-variant shadow-lg">
     <button type="button" class="flex flex-col items-center text-primary font-label-md text-xs focus:ring-2 focus:ring-primary focus:outline-none">
       <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;" aria-hidden="true">search</span>
-      <span>Search</span>
+      <span>Catalog</span>
     </button>
-    <button type="button" class="flex flex-col items-center text-on-surface-variant hover:text-primary font-label-md text-xs focus:ring-2 focus:ring-primary focus:outline-none">
-      <span class="material-symbols-outlined" aria-hidden="true">history</span>
-      <span>Recent</span>
-    </button>
-    <button type="button" class="flex flex-col items-center text-on-surface-variant hover:text-primary font-label-md text-xs focus:ring-2 focus:ring-primary focus:outline-none">
-      <span class="material-symbols-outlined" aria-hidden="true">bookmark</span>
-      <span>Saved</span>
+    <button type="button" class="flex flex-col items-center text-on-surface-variant hover:text-primary font-label-md text-xs focus:ring-2 focus:ring-primary focus:outline-none" on:click={openCreateForm}>
+      <span class="material-symbols-outlined" aria-hidden="true">post_add</span>
+      <span>Add Item</span>
     </button>
   </nav>
+
+  <!-- Create / Edit Material Modal Form -->
+  {#if isFormOpen}
+    <div
+      class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="form-modal-title"
+      data-testid="catalog-form-modal"
+    >
+      <div class="bg-surface-container-lowest border border-outline-variant rounded-lg max-w-lg w-full p-6 shadow-xl flex flex-col gap-4 max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between border-b border-outline-variant pb-3">
+          <h2 id="form-modal-title" class="font-headline-sm text-headline-sm text-on-surface font-bold">
+            {formData.id ? 'Edit Epidemiological Material' : 'Add Epidemiological Material'}
+          </h2>
+          <button
+            type="button"
+            aria-label="Close form"
+            class="p-1 rounded-full text-on-surface-variant hover:bg-surface-container-high focus:ring-2 focus:ring-primary focus:outline-none"
+            on:click={closeForm}
+            data-testid="close-form-btn"
+          >
+            <span class="material-symbols-outlined" aria-hidden="true">close</span>
+          </button>
+        </div>
+
+        {#if formError}
+          <div
+            role="alert"
+            class="p-3 bg-error-container border border-error text-on-error-container rounded font-body-sm text-xs flex items-start gap-2"
+            data-testid="form-error-message"
+          >
+            <span class="material-symbols-outlined text-error shrink-0" style="font-size: 18px;" aria-hidden="true">error</span>
+            <span>{formError}</span>
+          </div>
+        {/if}
+
+        <form on:submit|preventDefault={handleFormSubmit} class="flex flex-col gap-4" data-testid="catalog-form">
+          <div>
+            <label for="material-title" class="block font-label-md text-label-md font-semibold text-on-surface mb-1">
+              Title <span class="text-error">*</span>
+            </label>
+            <input
+              id="material-title"
+              type="text"
+              required
+              bind:value={formData.title}
+              placeholder="e.g., Standard Protocol for Cholera Containment"
+              class="w-full p-2.5 bg-surface-container-lowest border border-outline-variant rounded-DEFAULT focus:ring-2 focus:ring-primary focus:outline-none font-body-md text-on-surface"
+              data-testid="form-title-input"
+            />
+          </div>
+
+          <div>
+            <label for="material-category" class="block font-label-md text-label-md font-semibold text-on-surface mb-1">
+              Category
+            </label>
+            <select
+              id="material-category"
+              bind:value={formData.category}
+              class="w-full p-2.5 bg-surface-container-lowest border border-outline-variant rounded-DEFAULT focus:ring-2 focus:ring-primary focus:outline-none font-body-md text-on-surface"
+              data-testid="form-category-select"
+            >
+              <option value="protocol">Protocol</option>
+              <option value="report">Report</option>
+              <option value="dataset">Dataset</option>
+              <option value="guideline">Guideline</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="material-author" class="block font-label-md text-label-md font-semibold text-on-surface mb-1">
+              Author / Organization
+            </label>
+            <input
+              id="material-author"
+              type="text"
+              bind:value={formData.author}
+              placeholder="e.g., CDC Epi Group"
+              class="w-full p-2.5 bg-surface-container-lowest border border-outline-variant rounded-DEFAULT focus:ring-2 focus:ring-primary focus:outline-none font-body-md text-on-surface"
+              data-testid="form-author-input"
+            />
+          </div>
+
+          <div>
+            <label for="material-tags" class="block font-label-md text-label-md font-semibold text-on-surface mb-1">
+              Tags (comma separated)
+            </label>
+            <input
+              id="material-tags"
+              type="text"
+              bind:value={formData.tags}
+              placeholder="e.g., cholera, waterborne, outbreak"
+              class="w-full p-2.5 bg-surface-container-lowest border border-outline-variant rounded-DEFAULT focus:ring-2 focus:ring-primary focus:outline-none font-body-md text-on-surface"
+              data-testid="form-tags-input"
+            />
+          </div>
+
+          <div>
+            <label for="material-summary" class="block font-label-md text-label-md font-semibold text-on-surface mb-1">
+              Summary / Description
+            </label>
+            <textarea
+              id="material-summary"
+              rows="3"
+              bind:value={formData.summary}
+              placeholder="Brief summary of the epidemiological material..."
+              class="w-full p-2.5 bg-surface-container-lowest border border-outline-variant rounded-DEFAULT focus:ring-2 focus:ring-primary focus:outline-none font-body-md text-on-surface"
+              data-testid="form-summary-textarea"
+            ></textarea>
+          </div>
+
+          <div class="flex items-center justify-end gap-3 pt-3 border-t border-outline-variant">
+            <button
+              type="button"
+              class="px-4 py-2 border border-outline-variant rounded-DEFAULT hover:bg-surface-container-high font-label-md text-on-surface transition-colors focus:ring-2 focus:ring-primary focus:outline-none"
+              on:click={closeForm}
+              data-testid="form-cancel-btn"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              class="px-4 py-2 bg-primary text-on-primary rounded-DEFAULT hover:bg-primary-container hover:text-on-primary-container font-label-md transition-colors focus:ring-2 focus:ring-primary focus:outline-none flex items-center gap-2"
+              data-testid="form-submit-btn"
+            >
+              {#if isSubmitting}
+                <span class="material-symbols-outlined animate-spin text-sm" aria-hidden="true">progress_activity</span>
+              {/if}
+              <span>{formData.id ? 'Save Changes' : 'Create Material'}</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  {/if}
+
+  <!-- Delete Confirmation Dialog Modal -->
+  {#if isDeleteModalOpen && itemToDelete}
+    <div
+      class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="delete-dialog-title"
+      data-testid="delete-confirmation-dialog"
+    >
+      <div class="bg-surface-container-lowest border border-outline-variant rounded-lg max-w-md w-full p-6 shadow-xl flex flex-col gap-4">
+        <div class="flex items-center gap-3 text-error">
+          <span class="material-symbols-outlined text-2xl" aria-hidden="true">warning</span>
+          <h2 id="delete-dialog-title" class="font-headline-sm text-headline-sm font-bold text-on-surface">
+            Confirm Deletion
+          </h2>
+        </div>
+
+        <p class="font-body-md text-on-surface-variant">
+          Are you sure you want to delete <strong class="text-on-surface">"{itemToDelete.title}"</strong>?
+          This action is irreversible and will remove the material from the catalog.
+        </p>
+
+        <div class="flex items-center justify-end gap-3 pt-3 border-t border-outline-variant">
+          <button
+            type="button"
+            class="px-4 py-2 border border-outline-variant rounded-DEFAULT hover:bg-surface-container-high font-label-md text-on-surface transition-colors focus:ring-2 focus:ring-primary focus:outline-none"
+            on:click={cancelDelete}
+            data-testid="delete-cancel-btn"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            class="px-4 py-2 bg-error text-on-error rounded-DEFAULT hover:opacity-90 font-label-md transition-colors focus:ring-2 focus:ring-error focus:outline-none"
+            on:click={confirmDelete}
+            data-testid="delete-confirm-btn"
+          >
+            Delete Material
+          </button>
+        </div>
+      </div>
+    </div>
+  {/if}
 </div>
