@@ -18,7 +18,7 @@ public class SearchAnalyticsService {
         this.repository = repository;
     }
 
-    @Transactional
+    @Transactional(propagation = org.springframework.transaction.annotation.Propagation.REQUIRES_NEW)
     public SearchAnalyticsEventEntity recordSearchEvent(SearchEventRequestDTO dto) {
         SearchAnalyticsEventEntity entity = new SearchAnalyticsEventEntity(
                 dto.getQuery(),

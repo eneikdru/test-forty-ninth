@@ -1,4 +1,5 @@
 /app/src/test/java/com/eneik/production/SearchAnalyticsEventRepositoryTest.java
+/app/src/test/java/com/eneik/production/EpidemiologicalProtocolApiTest.java
 /app/src/test/java/com/eneik/production/EpidemiologicalContentVerificationTest.java
 /app/src/test/java/com/eneik/production/SearchAnalyticsControllerTest.java
 /app/src/test/java/com/eneik/production/search/SearchQueryBuilderTest.java

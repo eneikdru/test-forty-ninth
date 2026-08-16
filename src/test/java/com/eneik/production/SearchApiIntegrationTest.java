@@ -1,7 +1,10 @@
 package com.eneik.production;
 
+import com.eneik.production.dto.SearchMetricsDTO;
 import com.eneik.production.models.persistence.MaterialEntity;
 import com.eneik.production.repository.MaterialRepository;
+import com.eneik.production.repository.SearchAnalyticsEventRepository;
+import com.eneik.production.service.SearchAnalyticsService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -24,8 +28,15 @@ class SearchApiIntegrationTest {
     @Autowired
     private MaterialRepository materialRepository;
 
+    @Autowired
+    private SearchAnalyticsEventRepository searchAnalyticsEventRepository;
+
+    @Autowired
+    private SearchAnalyticsService searchAnalyticsService;
+
     @BeforeEach
     void setUp() {
+        searchAnalyticsEventRepository.deleteAll();
         materialRepository.deleteAll();
     }
 
@@ -68,5 +79,18 @@ class SearchApiIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content", hasSize(3)))
                 .andExpect(jsonPath("$.totalElements", is(3)));
+
+        // Search yielding zero results
+        mockMvc.perform(get("/api/materials/search")
+                        .param("query", "NonExistentPathogen")
+                        .param("page", "0")
+                        .param("size", "10"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content", hasSize(0)))
+                .andExpect(jsonPath("$.totalElements", is(0)));
+
+        SearchMetricsDTO metrics = searchAnalyticsService.getAggregateMetrics();
+        assertEquals(4, metrics.getTotalSearches());
+        assertEquals(0.25, metrics.getZeroResultRate(), 0.001);
     }
 }

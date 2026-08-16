@@ -185,4 +185,56 @@ class TaskStateSyncServiceTest {
         assertEquals("done", result.getNewStatus());
         assertTrue(result.getMessage().contains("Atomic update failed"));
     }
+
+    @Test
+    @DisplayName("When internal task is STUCK but GitHub PR is MERGED, status is reconciled to done")
+    void syncTaskState_whenTaskStuckAndPrMerged_reconcilesToDone() {
+        InternalTaskEntity task = new InternalTaskEntity(
+                "dc09037e-cbf1-4e7e-a5a9-17f9c294ba71",
+                "Stuck task resolved",
+                "STUCK",
+                106,
+                "MERGED",
+                LocalDateTime.now(fixedClock),
+                LocalDateTime.now(fixedClock)
+        );
+
+        when(taskRepository.findById("dc09037e-cbf1-4e7e-a5a9-17f9c294ba71")).thenReturn(Optional.of(task));
+        when(gitHubPrClient.getPullRequestState(106)).thenReturn("MERGED");
+        when(taskRepository.updateStatusAtomically(eq("dc09037e-cbf1-4e7e-a5a9-17f9c294ba71"), eq("STUCK"), eq("done"), eq("MERGED"), any()))
+                .thenReturn(1);
+
+        TaskSyncResultDto result = syncService.syncTaskState("dc09037e-cbf1-4e7e-a5a9-17f9c294ba71");
+
+        assertTrue(result.isUpdated());
+        assertEquals("STUCK", result.getPreviousStatus());
+        assertEquals("done", result.getNewStatus());
+        assertEquals("MERGED", result.getGithubPrState());
+    }
+
+    @Test
+    @DisplayName("When internal task is STUCK but GitHub PR is OPEN, status is reconciled to IN_PROGRESS")
+    void syncTaskState_whenTaskStuckAndPrOpen_reconcilesToInProgress() {
+        InternalTaskEntity task = new InternalTaskEntity(
+                "dc09037e-cbf1-4e7e-a5a9-17f9c294ba71",
+                "Stuck task active",
+                "STUCK",
+                107,
+                "OPEN",
+                LocalDateTime.now(fixedClock),
+                LocalDateTime.now(fixedClock)
+        );
+
+        when(taskRepository.findById("dc09037e-cbf1-4e7e-a5a9-17f9c294ba71")).thenReturn(Optional.of(task));
+        when(gitHubPrClient.getPullRequestState(107)).thenReturn("OPEN");
+        when(taskRepository.updateStatusAtomically(eq("dc09037e-cbf1-4e7e-a5a9-17f9c294ba71"), eq("STUCK"), eq("IN_PROGRESS"), eq("OPEN"), any()))
+                .thenReturn(1);
+
+        TaskSyncResultDto result = syncService.syncTaskState("dc09037e-cbf1-4e7e-a5a9-17f9c294ba71");
+
+        assertTrue(result.isUpdated());
+        assertEquals("STUCK", result.getPreviousStatus());
+        assertEquals("IN_PROGRESS", result.getNewStatus());
+        assertEquals("OPEN", result.getGithubPrState());
+    }
 }

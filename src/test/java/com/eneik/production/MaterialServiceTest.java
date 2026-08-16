@@ -1,9 +1,12 @@
 package com.eneik.production;
 
 import com.eneik.production.dto.MaterialDto;
+import com.eneik.production.dto.SearchMetricsDTO;
 import com.eneik.production.models.persistence.MaterialEntity;
 import com.eneik.production.repository.MaterialRepository;
+import com.eneik.production.repository.SearchAnalyticsEventRepository;
 import com.eneik.production.service.MaterialService;
+import com.eneik.production.service.SearchAnalyticsService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +23,17 @@ class MaterialServiceTest {
     private MaterialRepository materialRepository;
 
     @Autowired
+    private SearchAnalyticsEventRepository searchAnalyticsEventRepository;
+
+    @Autowired
+    private SearchAnalyticsService searchAnalyticsService;
+
+    @Autowired
     private MaterialService materialService;
 
     @BeforeEach
     void setUp() {
+        searchAnalyticsEventRepository.deleteAll();
         materialRepository.deleteAll();
     }
 
@@ -49,5 +59,13 @@ class MaterialServiceTest {
 
         Page<MaterialDto> pageAll = materialService.searchMaterials("", PageRequest.of(0, 10));
         assertEquals(3, pageAll.getTotalElements());
+
+        // Perform zero result search to verify telemetry records empty query
+        Page<MaterialDto> pageEmpty = materialService.searchMaterials("nonexistent_term", PageRequest.of(0, 10));
+        assertEquals(0, pageEmpty.getTotalElements());
+
+        SearchMetricsDTO metrics = searchAnalyticsService.getAggregateMetrics();
+        assertEquals(4, metrics.getTotalSearches());
+        assertEquals(0.25, metrics.getZeroResultRate(), 0.001);
     }
 }
