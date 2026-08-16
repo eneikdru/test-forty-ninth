@@ -1,0 +1,150 @@
+openapi: 3.0.3
+info:
+  title: Epidemiology Knowledge Base - Material Search API
+  description: Backend API implementation for material search and document download in Epidemiology Knowledge Base.
+  version: 1.0.0
+paths:
+  /api/v1/materials/search:
+    get:
+      summary: Search epidemiological materials
+      operationId: searchMaterials
+      parameters:
+        - name: query
+          in: query
+          description: Text search query for material title, description, or content
+          required: false
+          schema:
+            type: string
+        - name: category
+          in: query
+          description: Category filter (e.g., protocol, guideline, research, data)
+          required: false
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Zero-based page index
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - name: size
+          in: query
+          description: Number of items per page
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 1
+            maximum: 100
+      responses:
+        '200':
+          description: Paginated search results returned successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MaterialSearchResponse'
+        '400':
+          description: Invalid request parameters
+  /api/v1/materials/{id}/download:
+    get:
+      summary: Download document stream for a specific material
+      operationId: downloadMaterialDocument
+      parameters:
+        - name: id
+          in: path
+          description: Unique identifier of the material document
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Document file stream returned with appropriate HTTP headers
+          headers:
+            Content-Type:
+              schema:
+                type: string
+              description: MIME type of the document (e.g., application/pdf)
+            Content-Disposition:
+              schema:
+                type: string
+              description: Attachment header with filename
+            Content-Length:
+              schema:
+                type: integer
+              description: Size of the file in bytes
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '404':
+          description: Document not found
+components:
+  schemas:
+    EpidemiologicalMaterial:
+      type: object
+      required:
+        - id
+        - title
+        - category
+        - fileName
+      properties:
+        id:
+          type: string
+          example: mat-101
+        title:
+          type: string
+          example: Cholera Outbreak Control Protocol
+        description:
+          type: string
+          example: Standard operating procedure for epidemiological field investigation.
+        category:
+          type: string
+          example: protocol
+        author:
+          type: string
+          example: Dr. Elena Rostova
+        publishDate:
+          type: string
+          format: date
+          example: '2026-01-15'
+        fileName:
+          type: string
+          example: cholera_protocol_v1.pdf
+        fileSizeBytes:
+          type: integer
+          example: 204800
+    PageMetadata:
+      type: object
+      required:
+        - page
+        - size
+        - totalElements
+        - totalPages
+      properties:
+        page:
+          type: integer
+          example: 0
+        size:
+          type: integer
+          example: 10
+        totalElements:
+          type: integer
+          example: 42
+        totalPages:
+          type: integer
+          example: 5
+    MaterialSearchResponse:
+      type: object
+      required:
+        - items
+        - page
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/EpidemiologicalMaterial'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
