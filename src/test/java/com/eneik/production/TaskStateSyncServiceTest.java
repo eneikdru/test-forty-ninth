@@ -237,4 +237,47 @@ class TaskStateSyncServiceTest {
         assertEquals("IN_PROGRESS", result.getNewStatus());
         assertEquals("OPEN", result.getGithubPrState());
     }
+
+    @Test
+    @DisplayName("syncAllTasksState reconciles multiple tasks marked 'done' with non-merged GitHub PR states")
+    void syncAllTasksState_reconcilesDoneTasksWithNonMergedPrStates() {
+        InternalTaskEntity task1 = new InternalTaskEntity(
+                "task-1", "Task 1", "done", 201, "OPEN",
+                LocalDateTime.now(fixedClock), LocalDateTime.now(fixedClock)
+        );
+        InternalTaskEntity task2 = new InternalTaskEntity(
+                "task-2", "Task 2", "done", 202, "CLOSED",
+                LocalDateTime.now(fixedClock), LocalDateTime.now(fixedClock)
+        );
+        InternalTaskEntity task3 = new InternalTaskEntity(
+                "task-3", "Task 3", "done", null, "MISSING",
+                LocalDateTime.now(fixedClock), LocalDateTime.now(fixedClock)
+        );
+
+        when(taskRepository.findAll()).thenReturn(java.util.List.of(task1, task2, task3));
+        when(gitHubPrClient.getPullRequestState(201)).thenReturn("OPEN");
+        when(gitHubPrClient.getPullRequestState(202)).thenReturn("CLOSED");
+        when(gitHubPrClient.getPullRequestState(null)).thenReturn("MISSING");
+
+        when(taskRepository.updateStatusAtomically(eq("task-1"), eq("done"), eq("IN_PROGRESS"), eq("OPEN"), any())).thenReturn(1);
+        when(taskRepository.updateStatusAtomically(eq("task-2"), eq("done"), eq("BLOCKED"), eq("CLOSED"), any())).thenReturn(1);
+        when(taskRepository.updateStatusAtomically(eq("task-3"), eq("done"), eq("STUCK"), eq("MISSING"), any())).thenReturn(1);
+
+        java.util.List<TaskSyncResultDto> results = syncService.syncAllTasksState();
+
+        assertEquals(3, results.size());
+
+        assertTrue(results.get(0).isUpdated());
+        assertEquals("IN_PROGRESS", results.get(0).getNewStatus());
+
+        assertTrue(results.get(1).isUpdated());
+        assertEquals("BLOCKED", results.get(1).getNewStatus());
+
+        assertTrue(results.get(2).isUpdated());
+        assertEquals("STUCK", results.get(2).getNewStatus());
+
+        verify(taskRepository).updateStatusAtomically(eq("task-1"), eq("done"), eq("IN_PROGRESS"), eq("OPEN"), any());
+        verify(taskRepository).updateStatusAtomically(eq("task-2"), eq("done"), eq("BLOCKED"), eq("CLOSED"), any());
+        verify(taskRepository).updateStatusAtomically(eq("task-3"), eq("done"), eq("STUCK"), eq("MISSING"), any());
+    }
 }

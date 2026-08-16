@@ -127,4 +127,28 @@ class TaskStateSyncIntegrationTest {
         InternalTaskEntity updatedTask = taskRepository.findById(taskId).orElseThrow();
         assertEquals("IN_PROGRESS", updatedTask.getStatus());
     }
+
+    @Test
+    @DisplayName("Integration test: Synchronize all tasks via POST /api/tasks/sync reconciles 'done' tasks with non-merged PR states in database")
+    void testBulkTaskStateSyncIntegration() throws Exception {
+        LocalDateTime now = LocalDateTime.now();
+        InternalTaskEntity task1 = new InternalTaskEntity("2d1cb887-1111-4b71-a5a9-17f9c294ba01", "Desync task 1", "done", 301, "OPEN", now, now);
+        InternalTaskEntity task2 = new InternalTaskEntity("6bd5fbaf-2222-4b71-a5a9-17f9c294ba02", "Desync task 2", "done", 302, "CLOSED", now, now);
+        taskRepository.save(task1);
+        taskRepository.save(task2);
+
+        when(gitHubPrClient.getPullRequestState(301)).thenReturn("OPEN");
+        when(gitHubPrClient.getPullRequestState(302)).thenReturn("CLOSED");
+
+        mockMvc.perform(post("/api/tasks/sync")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(2));
+
+        InternalTaskEntity updated1 = taskRepository.findById("2d1cb887-1111-4b71-a5a9-17f9c294ba01").orElseThrow();
+        InternalTaskEntity updated2 = taskRepository.findById("6bd5fbaf-2222-4b71-a5a9-17f9c294ba02").orElseThrow();
+
+        assertEquals("IN_PROGRESS", updated1.getStatus());
+        assertEquals("BLOCKED", updated2.getStatus());
+    }
 }

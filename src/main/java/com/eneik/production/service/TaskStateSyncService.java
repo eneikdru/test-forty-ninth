@@ -13,6 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Service responsible for reconciling internal task statuses with GitHub Pull Request states.
+ * Reconciles tasks marked 'done' or other states when conflicting GitHub PR states are observed,
+ * using atomically-guarded database updates to prevent concurrent update races.
+ */
 @Service
 public class TaskStateSyncService {
 
