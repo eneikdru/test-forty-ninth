@@ -15,39 +15,85 @@ def validate_openapi_contract(filepath: str):
     assert "components" in spec, "Missing 'components' section"
     assert "schemas" in spec["components"], "Missing 'schemas' in components"
 
-    # Search endpoint check
     paths = spec["paths"]
-    assert "/materials/search" in paths, "Missing '/materials/search' path"
-    search_get = paths["/materials/search"].get("get")
-    assert search_get is not None, "Missing GET method on '/materials/search'"
 
-    param_names = [p["name"] for p in search_get.get("parameters", [])]
-    expected_params = ["q", "category", "tags", "page", "size", "sortBy", "sortOrder"]
-    for param in expected_params:
-        assert param in param_names, f"Missing query parameter '{param}' in search endpoint"
+    if "material-search" in filepath:
+        # Search endpoint check
+        assert "/materials/search" in paths, "Missing '/materials/search' path"
+        search_get = paths["/materials/search"].get("get")
+        assert search_get is not None, "Missing GET method on '/materials/search'"
 
-    # Search responses check
-    responses = search_get.get("responses", {})
-    assert "200" in responses, "Missing 200 response for search endpoint"
-    assert "400" in responses, "Missing 400 response for search endpoint"
-    assert "500" in responses, "Missing 500 response for search endpoint"
+        param_names = [p["name"] for p in search_get.get("parameters", [])]
+        expected_params = ["q", "category", "tags", "page", "size", "sortBy", "sortOrder"]
+        for param in expected_params:
+            assert param in param_names, f"Missing query parameter '{param}' in search endpoint"
 
-    # Material detail endpoint check
-    assert "/materials/{id}" in paths, "Missing '/materials/{id}' path"
-    detail_get = paths["/materials/{id}"].get("get")
-    assert detail_get is not None, "Missing GET method on '/materials/{id}'"
-    detail_responses = detail_get.get("responses", {})
-    assert "200" in detail_responses, "Missing 200 response for detail endpoint"
-    assert "400" in detail_responses, "Missing 400 response for detail endpoint"
-    assert "404" in detail_responses, "Missing 404 response for detail endpoint"
+        # Search responses check
+        responses = search_get.get("responses", {})
+        assert "200" in responses, "Missing 200 response for search endpoint"
+        assert "400" in responses, "Missing 400 response for search endpoint"
+        assert "500" in responses, "Missing 500 response for search endpoint"
 
-    # Schemas check
-    schemas = spec["components"]["schemas"]
-    expected_schemas = ["MaterialSummary", "MaterialDetail", "PaginationMeta", "MaterialSearchResult", "ErrorResponse"]
-    for schema in expected_schemas:
-        assert schema in schemas, f"Missing schema component '{schema}'"
+        # Material detail endpoint check
+        assert "/materials/{id}" in paths, "Missing '/materials/{id}' path"
+        detail_get = paths["/materials/{id}"].get("get")
+        assert detail_get is not None, "Missing GET method on '/materials/{id}'"
+        detail_responses = detail_get.get("responses", {})
+        assert "200" in detail_responses, "Missing 200 response for detail endpoint"
+        assert "400" in detail_responses, "Missing 400 response for detail endpoint"
+        assert "404" in detail_responses, "Missing 404 response for detail endpoint"
 
-    print("OpenAPI contract validation PASSED successfully!")
+        # Schemas check
+        schemas = spec["components"]["schemas"]
+        expected_schemas = ["MaterialSummary", "MaterialDetail", "PaginationMeta", "MaterialSearchResult", "ErrorResponse"]
+        for schema in expected_schemas:
+            assert schema in schemas, f"Missing schema component '{schema}'"
+
+    elif "epidemiological-protocols" in filepath:
+        assert "/protocols/search" in paths, "Missing '/protocols/search' path"
+        search_get = paths["/protocols/search"].get("get")
+        assert search_get is not None, "Missing GET method on '/protocols/search'"
+
+        param_names = [p["name"] for p in search_get.get("parameters", [])]
+        expected_params = ["q", "category", "status", "authorOrganization", "publicationYear", "page", "size", "sortBy", "sortOrder"]
+        for param in expected_params:
+            assert param in param_names, f"Missing query parameter '{param}' in search endpoint"
+
+        responses = search_get.get("responses", {})
+        assert "200" in responses, "Missing 200 response for search endpoint"
+        assert "400" in responses, "Missing 400 response for search endpoint"
+        assert "500" in responses, "Missing 500 response for search endpoint"
+
+        assert "/protocols/{id}" in paths, "Missing '/protocols/{id}' path"
+        detail_get = paths["/protocols/{id}"].get("get")
+        assert detail_get is not None, "Missing GET method on '/protocols/{id}'"
+        detail_responses = detail_get.get("responses", {})
+        assert "200" in detail_responses, "Missing 200 response for detail endpoint"
+        assert "400" in detail_responses, "Missing 400 response for detail endpoint"
+        assert "404" in detail_responses, "Missing 404 response for detail endpoint"
+
+        assert "/protocols" in paths, "Missing '/protocols' path"
+        protocols_post = paths["/protocols"].get("post")
+        assert protocols_post is not None, "Missing POST method on '/protocols'"
+
+        schemas = spec["components"]["schemas"]
+        expected_schemas = [
+            "EpidemiologicalProtocolSummary",
+            "EpidemiologicalProtocolDetail",
+            "EpidemiologicalProtocolCreateRequest",
+            "EpidemiologicalProtocolUpdateRequest",
+            "EpidemiologicalProtocolSearchResult",
+            "PaginationMeta",
+            "ErrorResponse"
+        ]
+        for schema in expected_schemas:
+            assert schema in schemas, f"Missing schema component '{schema}'"
+
+    else:
+        schemas = spec["components"]["schemas"]
+        assert len(schemas) > 0, "No schemas found in components"
+
+    print(f"OpenAPI contract validation for {filepath} PASSED successfully!")
 
 if __name__ == "__main__":
     contract_path = sys.argv[1] if len(sys.argv) > 1 else "docs/contracts/material-search.openapi.yaml"
