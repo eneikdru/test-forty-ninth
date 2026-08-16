@@ -1,0 +1,520 @@
+openapi: 3.0.3
+info:
+  title: Epidemiological Protocols Management API
+  description: 'API contract for searching, viewing, creating, updating, and managing
+    epidemiological protocols in the Epidemiology Knowledge Base system.
+    '
+  version: 1.0.0
+servers:
+  - url: /api/v1
+    description: Base path for Epidemiology Knowledge Base v1 API
+paths:
+  /protocols:
+    get:
+      summary: Search and list epidemiological protocols
+      description: Search protocols using keywords, category/status filters, pagination, and sorting options.
+      operationId: searchProtocols
+      parameters:
+        - name: q
+          in: query
+          description: Search keyword matching title, code, summary, or author organization
+          required: false
+          schema:
+            type: string
+            example: COVID-19
+        - name: category
+          in: query
+          description: Filter by protocol category (e.g. Respiratory, Vector-Borne, Enteric)
+          required: false
+          schema:
+            type: string
+            example: Respiratory
+        - name: status
+          in: query
+          description: Filter by protocol status (e.g. APPROVED, DRAFT, ARCHIVED)
+          required: false
+          schema:
+            type: string
+            example: APPROVED
+        - name: page
+          in: query
+          description: Zero-based page index (default 0)
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+            example: 0
+        - name: size
+          in: query
+          description: Number of items per page (default 20, max 100)
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+            example: 20
+        - name: sortBy
+          in: query
+          description: Field name to sort by (e.g. createdAt, code, title, publicationYear)
+          required: false
+          schema:
+            type: string
+            enum:
+              - createdAt
+              - code
+              - title
+              - publicationYear
+            default: createdAt
+            example: createdAt
+        - name: sortOrder
+          in: query
+          description: Sort direction (asc or desc)
+          required: false
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+            default: desc
+            example: desc
+      responses:
+        '200':
+          description: Successfully retrieved paginated epidemiological protocol search results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EpidemiologicalProtocolSearchResult'
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                timestamp: '2026-08-16T12:00:00Z'
+                status: 400
+                error: Bad Request
+                code: INVALID_SEARCH_PARAMETER
+                message: Query parameter 'size' must be between 1 and 100
+                path: /api/v1/protocols
+        '500':
+          description: Internal server error during search execution
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      summary: Create a new epidemiological protocol
+      description: Add a new epidemiological protocol entity to the repository.
+      operationId: createProtocol
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateEpidemiologicalProtocolRequest'
+      responses:
+        '201':
+          description: Epidemiological protocol created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EpidemiologicalProtocol'
+        '400':
+          description: Invalid input payload or missing required fields
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Protocol code already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                timestamp: '2026-08-16T12:00:00Z'
+                status: 409
+                error: Conflict
+                code: DUPLICATE_PROTOCOL_CODE
+                message: Protocol with code 'EPI-PROTO-001' already exists
+                path: /api/v1/protocols
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /protocols/{id}:
+    get:
+      summary: Retrieve epidemiological protocol by ID
+      description: Fetch full details for a specific epidemiological protocol entity by its database primary key ID.
+      operationId: getProtocolById
+      parameters:
+        - name: id
+          in: path
+          description: Unique identifier of the protocol
+          required: true
+          schema:
+            type: integer
+            format: int64
+            example: 1
+      responses:
+        '200':
+          description: Protocol retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EpidemiologicalProtocol'
+        '400':
+          description: Invalid ID format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Protocol not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                timestamp: '2026-08-16T12:00:00Z'
+                status: 404
+                error: Not Found
+                code: PROTOCOL_NOT_FOUND
+                message: Epidemiological protocol with ID '999' was not found
+                path: /api/v1/protocols/999
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    put:
+      summary: Update existing epidemiological protocol
+      description: Update details of an existing epidemiological protocol entity.
+      operationId: updateProtocol
+      parameters:
+        - name: id
+          in: path
+          description: Unique identifier of the protocol
+          required: true
+          schema:
+            type: integer
+            format: int64
+            example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateEpidemiologicalProtocolRequest'
+      responses:
+        '200':
+          description: Protocol updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EpidemiologicalProtocol'
+        '400':
+          description: Invalid input payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Protocol not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Updated protocol code conflicts with another protocol
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      summary: Delete epidemiological protocol
+      description: Remove an epidemiological protocol from the repository.
+      operationId: deleteProtocol
+      parameters:
+        - name: id
+          in: path
+          description: Unique identifier of the protocol
+          required: true
+          schema:
+            type: integer
+            format: int64
+            example: 1
+      responses:
+        '204':
+          description: Protocol deleted successfully
+        '404':
+          description: Protocol not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    EpidemiologicalProtocol:
+      type: object
+      required:
+        - id
+        - code
+        - title
+        - category
+        - version
+        - status
+        - authorOrganization
+        - publicationYear
+        - createdAt
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Unique primary key identifier
+          example: 1
+        code:
+          type: string
+          description: Unique protocol code / identifier string
+          example: EPI-PROTO-001
+        title:
+          type: string
+          description: Title of the epidemiological protocol
+          example: COVID-19 Public Health Surveillance and Outbreak Investigation Protocol
+        category:
+          type: string
+          description: Domain category classification
+          example: Respiratory
+        version:
+          type: string
+          description: Version descriptor string
+          example: v3.2
+        status:
+          type: string
+          description: Lifecycle/approval status
+          example: APPROVED
+        summary:
+          type: string
+          nullable: true
+          description: Detailed abstract or summary of procedures
+          example: Comprehensive guidance for standard case definitions, contact tracing, and outbreak investigation protocols for SARS-CoV-2.
+        authorOrganization:
+          type: string
+          description: Authoring body or organization
+          example: World Health Organization
+        publicationYear:
+          type: integer
+          description: Year of publication
+          example: 2022
+        createdAt:
+          type: string
+          format: date-time
+          description: System creation timestamp
+          example: '2026-08-16T05:55:59Z'
+    CreateEpidemiologicalProtocolRequest:
+      type: object
+      required:
+        - code
+        - title
+        - category
+        - version
+        - status
+        - authorOrganization
+        - publicationYear
+      properties:
+        code:
+          type: string
+          maxLength: 100
+          description: Unique protocol code
+          example: EPI-PROTO-011
+        title:
+          type: string
+          maxLength: 512
+          description: Protocol title
+          example: Avian Influenza A(H5N1) Surveillance Protocol
+        category:
+          type: string
+          maxLength: 100
+          description: Protocol category
+          example: Zoonotic
+        version:
+          type: string
+          maxLength: 50
+          description: Protocol version string
+          example: v1.0
+        status:
+          type: string
+          maxLength: 50
+          description: Initial protocol status
+          example: DRAFT
+        summary:
+          type: string
+          nullable: true
+          description: Detailed summary or abstract
+          example: Standard operating procedures for human surveillance and contact tracing near infected poultry farms.
+        authorOrganization:
+          type: string
+          maxLength: 256
+          description: Authoring organization name
+          example: World Health Organization
+        publicationYear:
+          type: integer
+          description: Year of publication
+          example: 2024
+    UpdateEpidemiologicalProtocolRequest:
+      type: object
+      properties:
+        code:
+          type: string
+          maxLength: 100
+          description: Unique protocol code
+          example: EPI-PROTO-001
+        title:
+          type: string
+          maxLength: 512
+          description: Protocol title
+          example: Updated COVID-19 Public Health Surveillance Protocol
+        category:
+          type: string
+          maxLength: 100
+          description: Protocol category
+          example: Respiratory
+        version:
+          type: string
+          maxLength: 50
+          description: Protocol version string
+          example: v3.3
+        status:
+          type: string
+          maxLength: 50
+          description: Protocol status
+          example: APPROVED
+        summary:
+          type: string
+          nullable: true
+          description: Detailed summary or abstract
+          example: Updated guidance including post-vaccination monitoring...
+        authorOrganization:
+          type: string
+          maxLength: 256
+          description: Authoring organization name
+          example: World Health Organization
+        publicationYear:
+          type: integer
+          description: Year of publication
+          example: 2023
+    PaginationMeta:
+      type: object
+      required:
+        - page
+        - size
+        - totalElements
+        - totalPages
+        - isFirst
+        - isLast
+      properties:
+        page:
+          type: integer
+          description: Current zero-based page index
+          example: 0
+        size:
+          type: integer
+          description: Number of elements per page
+          example: 20
+        totalElements:
+          type: integer
+          format: int64
+          description: Total number of matching elements across all pages
+          example: 10
+        totalPages:
+          type: integer
+          description: Total number of available pages
+          example: 1
+        isFirst:
+          type: boolean
+          description: Indicates whether this is the first page
+          example: true
+        isLast:
+          type: boolean
+          description: Indicates whether this is the last page
+          example: true
+    EpidemiologicalProtocolSearchResult:
+      type: object
+      required:
+        - items
+        - pagination
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/EpidemiologicalProtocol'
+        pagination:
+          $ref: '#/components/schemas/PaginationMeta'
+    ErrorResponse:
+      type: object
+      required:
+        - timestamp
+        - status
+        - error
+        - code
+        - message
+        - path
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          description: Time when the error occurred
+          example: '2026-08-16T12:00:00Z'
+        status:
+          type: integer
+          description: HTTP status code
+          example: 400
+        error:
+          type: string
+          description: HTTP status text
+          example: Bad Request
+        code:
+          type: string
+          description: Business application error code
+          example: INVALID_SEARCH_PARAMETER
+        message:
+          type: string
+          description: Detailed, human-readable error description
+          example: Query parameter 'size' must be between 1 and 100
+        path:
+          type: string
+          description: Request path that triggered the error
+          example: /api/v1/protocols
+        details:
+          type: array
+          nullable: true
+          items:
+            type: object
+            required:
+              - field
+              - message
+            properties:
+              field:
+                type: string
+                example: code
+              message:
+                type: string
+                example: must not be blank
