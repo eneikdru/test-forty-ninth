@@ -9,3 +9,4 @@
 /app/src/test/java/com/eneik/production/TaskStateSyncIntegrationTest.java
 /app/src/test/java/com/eneik/production/BackupConfigurationTest.java
 /app/src/test/java/com/eneik/production/TaskStateSyncServiceTest.java
+/app/src/test/java/com/eneik/production/CategoriesAndTagsMigrationTest.java
