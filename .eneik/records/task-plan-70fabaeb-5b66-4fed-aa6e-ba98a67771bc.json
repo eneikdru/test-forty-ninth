@@ -1,0 +1,34 @@
+{
+  "epics": [
+    {
+      "existingEpicId": "c1be406c-64fa-4620-83c6-49abdc20c7c2",
+      "title": null,
+      "jtbd": null,
+      "kanoClass": null,
+      "cynefinDomain": null,
+      "sixSigmaMetric": null,
+      "tocConstraintRef": null,
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Investigate and resolve the underlying Flyway state synchronization root cause behind the failing PR #19 migration instead of masking it with 'IF NOT EXISTS'."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Resolve PR #19 Flyway synchronization root cause",
+          "roleTag": "BARCAN-TAG-08",
+          "jtbd": "When implementing the Flyway synchronization fix for this epic, I want to investigate and remove the IF NOT EXISTS masking, so that the underlying migration failure mechanism is identified and resolved.",
+          "acceptanceCriteria": "Given a Flyway database migration environment, When executing the migration that previously failed without IF NOT EXISTS, Then it should execute successfully and deterministically.\nGiven the PR #19 migration script, When reviewed, Then it must not contain the superficial IF NOT EXISTS check and must pass integration tests validating Flyway state.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Migration state determinism",
+          "sixSigmaMetric": "Decrease the number of masked Flyway state errors from 1 to 0.",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1"
+          ]
+        }
+      ]
+    }
+  ]
+}
