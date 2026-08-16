@@ -1,0 +1,296 @@
+{
+  "epics": [
+    {
+      "existingEpicId": "e7b14c4a-93ea-4aa6-95f0-2e4ff5ed7937",
+      "title": null,
+      "jtbd": null,
+      "kanoClass": null,
+      "cynefinDomain": null,
+      "sixSigmaMetric": "Reduce CI status reconciliation errors from a baseline of 50 errors per week to 0 errors per week.",
+      "tocConstraintRef": "Task tracking state alignment",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: The CI status reconciliation script is patched to handle discrepancies where internal status is [done] but GitHub PR is open.",
+        "R2: The patch correctly resolves specific ongoing discrepancies such as tasks dc09037e and 264f6d98."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Patch CI Status Reconciliation Script",
+          "roleTag": "BARCAN-TAG-05",
+          "jtbd": "When implementing the reconciliation patch for this epic, I want to update the synchronization logic, so that task state discrepancies are resolved without introducing new UI or API layers.",
+          "acceptanceCriteria": "Given a task internally marked as done but open in GitHub, When the reconciliation script is executed, Then the script updates the internal state to accurately reflect the GitHub PR status.\nGiven a known stuck task (e.g., dc09037e), When the script runs, Then the specific task is reconciled and removed from the stuck candidates list.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Reconciliation script execution bottleneck",
+          "sixSigmaMetric": "Decrease the number of stuck tasks due to state misalignment from a baseline of 10 to 0.",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2"
+          ]
+        }
+      ]
+    },
+    {
+      "existingEpicId": "6e2959ed-3e58-42d6-b8d1-be77197e3404",
+      "title": null,
+      "jtbd": null,
+      "kanoClass": null,
+      "cynefinDomain": null,
+      "sixSigmaMetric": "Increase the successful cataloging of epidemiological protocols from a baseline of 0 to 100% of submitted protocols.",
+      "tocConstraintRef": "Protocol management API availability",
+      "sourceIndex": 1,
+      "requirements": [
+        "R1: The system exposes REST API endpoints for creating, updating, and deleting epidemiological protocols based on the existing data model.",
+        "R2: The system provides a frontend UI component that consumes these API endpoints, allowing users to manage protocols.",
+        "R3: The UI must be usable on a mobile device and ensure what the user typed survives a failed submit.",
+        "R4: Destructive actions like deleting a protocol are confirmed before they happen.",
+        "R5: The user receives visible feedback on the success, failure, or progress of any protocol management action.",
+        "R6: Data changes must use an atomically-guarded update."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Epidemiological Protocols Management API Contract",
+          "roleTag": "BARCAN-TAG-12",
+          "jtbd": "When implementing the API contract for this epic, I want to define the OpenAPI specification for protocol management, so that parallel frontend and backend development can occur.",
+          "acceptanceCriteria": "Given the existing repository entities, When the OpenAPI specification is generated, Then it clearly defines all management endpoints.\nGiven the OpenAPI file, When it is validated, Then it passes without any validation errors.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "API contract finalization",
+          "sixSigmaMetric": "Decrease API contract validation errors from a baseline of 5 errors to 0.",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1"
+          ]
+        },
+        {
+          "title": "Epidemiological Protocols Management Backend API",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When implementing the backend API for this epic, I want to expose the management operations as REST controllers, so that the frontend can interact with the data.",
+          "acceptanceCriteria": "Given the API contract, When the REST controllers are implemented, Then they provide the required management endpoints and use atomically-guarded updates.\nGiven incoming protocol management requests, When they are processed, Then the changes are accurately and safely persisted to the database.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Backend controller implementation",
+          "sixSigmaMetric": "Increase the number of available management endpoints from a baseline of 0 to 3.",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R6"
+          ]
+        },
+        {
+          "title": "Epidemiological Protocols Management Frontend UI",
+          "roleTag": "BARCAN-TAG-11",
+          "jtbd": "When implementing the frontend UI for this epic, I want to build the management interface, so that users can interactively manage protocols.",
+          "acceptanceCriteria": "Given the management API endpoints, When the UI components are built, Then they successfully consume the API and provide visible feedback on actions.\nGiven a mobile user or a failed submit, When interacting with the UI, Then the layout is mobile-friendly and user input is fully preserved on failure.\nGiven a user accessing the UI, When they navigate the interface, Then it meets WCAG 2.1 level AA standards (keyboard operability, visible focus, labelled form controls, 4.5:1 text contrast).",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Frontend UI component delivery",
+          "sixSigmaMetric": "Increase the number of accessible management screens from a baseline of 0 to 1.",
+          "hasUi": true,
+          "requirementRefs": [
+            "R2",
+            "R3",
+            "R4",
+            "R5"
+          ]
+        },
+        {
+          "title": "Epidemiological Protocols Management QA Automation",
+          "roleTag": "BARCAN-TAG-06",
+          "jtbd": "When implementing QA automation for this epic, I want to write tests covering the new management API and UI, so that correct behavior is proven across the test pyramid.",
+          "acceptanceCriteria": "Given the new management API and UI, When the automated test suite executes, Then unit, integration, and E2E tests validate the complete management workflow.\nGiven the tests are running, When they complete, Then all tests pass and verify atomic updates, visible feedback, and error recovery.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Test coverage completeness",
+          "sixSigmaMetric": "Increase automated test coverage for protocol management from a baseline of 0% to 100%.",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4",
+            "R5",
+            "R6"
+          ]
+        }
+      ]
+    },
+    {
+      "existingEpicId": "e05f2da2-bc41-4357-a2cc-71ca56af54ca",
+      "title": null,
+      "jtbd": null,
+      "kanoClass": null,
+      "cynefinDomain": null,
+      "sixSigmaMetric": "Increase the successful retrieval rate of epidemiological protocols from a baseline of 0% to 100% of valid search queries.",
+      "tocConstraintRef": "Protocol search functionality availability",
+      "sourceIndex": 1,
+      "requirements": [
+        "R1: The system exposes a REST API endpoint for searching and retrieving epidemiological protocols.",
+        "R2: The system provides a frontend UI component for submitting search queries and viewing results.",
+        "R3: The UI must be usable on a mobile device.",
+        "R4: The user receives visible feedback on the success, failure, or progress of the search."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Epidemiological Protocols Search API Contract",
+          "roleTag": "BARCAN-TAG-12",
+          "jtbd": "When implementing the search API contract for this epic, I want to define the OpenAPI specification, so that parallel frontend and backend work can begin.",
+          "acceptanceCriteria": "Given the search requirements, When the OpenAPI specification is generated, Then it clearly defines the search and retrieval endpoints.\nGiven the OpenAPI file, When it is validated, Then it passes without any validation errors.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "API contract finalization",
+          "sixSigmaMetric": "Decrease API contract validation errors for search endpoints from a baseline of 5 to 0.",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1"
+          ]
+        },
+        {
+          "title": "Epidemiological Protocols Search Backend API",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When implementing the search backend API for this epic, I want to expose the search operations as REST controllers, so that the frontend can query the protocols.",
+          "acceptanceCriteria": "Given the search API contract, When the REST controllers are implemented, Then they correctly process queries and return matching protocols.\nGiven a search request, When it is processed, Then the results accurately reflect the underlying database entities.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Backend search implementation",
+          "sixSigmaMetric": "Increase the number of available search endpoints from a baseline of 0 to 1.",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1"
+          ]
+        },
+        {
+          "title": "Epidemiological Protocols Search Frontend UI",
+          "roleTag": "BARCAN-TAG-11",
+          "jtbd": "When implementing the search frontend UI for this epic, I want to build the interface for querying protocols, so that users can easily find needed information.",
+          "acceptanceCriteria": "Given the search API endpoints, When the UI components are built, Then they successfully send queries and display the retrieved protocols.\nGiven a user performing a search, When the UI processes the request, Then visible feedback is shown and the layout adapts to mobile devices.\nGiven a user accessing the UI, When they navigate the interface, Then it meets WCAG 2.1 level AA standards (keyboard operability, visible focus, labelled form controls, 4.5:1 text contrast).",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Frontend search component delivery",
+          "sixSigmaMetric": "Increase the number of accessible search screens from a baseline of 0 to 1.",
+          "hasUi": true,
+          "requirementRefs": [
+            "R2",
+            "R3",
+            "R4"
+          ]
+        },
+        {
+          "title": "Epidemiological Protocols Search QA Automation",
+          "roleTag": "BARCAN-TAG-06",
+          "jtbd": "When implementing QA automation for this epic, I want to write tests covering the new search API and UI, so that correct retrieval behavior is proven.",
+          "acceptanceCriteria": "Given the new search API and UI, When the automated test suite executes, Then unit, integration, and E2E tests validate the complete search workflow.\nGiven the tests are running, When they complete, Then all tests pass and verify accurate search results and visible feedback.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Test coverage completeness",
+          "sixSigmaMetric": "Increase automated test coverage for protocol search from a baseline of 0% to 100%.",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4"
+          ]
+        }
+      ]
+    },
+    {
+      "existingEpicId": "beecef84-6a7c-49eb-8226-94f38140bc76",
+      "title": null,
+      "jtbd": null,
+      "kanoClass": null,
+      "cynefinDomain": null,
+      "sixSigmaMetric": "Increase the visibility of knowledge base utilization from a baseline of 0 metrics to 3 fully implemented Goal-Question-Metric measurements.",
+      "tocConstraintRef": "System telemetry and measurement availability",
+      "sourceIndex": 1,
+      "requirements": [
+        "R1: The system implements metrics to track search success via the Goal-Question-Metric method.",
+        "R2: The metrics specifically measure whether searches result in retrievals, the time taken, and which searches yield no results."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Knowledge Base Utilization Telemetry Patch",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When implementing the measurement patch for this epic, I want to add telemetry directly to the search and retrieval existing code, so that search outcomes and performance are recorded.",
+          "acceptanceCriteria": "Given a search action being processed, When the query completes, Then telemetry records whether documents were retrieved and the total time taken.\nGiven a search yielding zero results, When the metrics are recorded, Then the specific empty query is tracked without requiring new API or UI layers.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Search metric instrumentation",
+          "sixSigmaMetric": "Decrease the number of unmeasured search queries from a baseline of 100% to 0%.",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2"
+          ]
+        }
+      ]
+    },
+    {
+      "existingEpicId": "06281c02-6bcc-4263-93ca-eb77d6b9eab1",
+      "title": null,
+      "jtbd": null,
+      "kanoClass": null,
+      "cynefinDomain": null,
+      "sixSigmaMetric": "Increase the availability of realistic initial content from a baseline of 0 protocols to 10 domain-specific pre-loaded protocols.",
+      "tocConstraintRef": "Acceptance and demonstration data availability",
+      "sourceIndex": 1,
+      "requirements": [
+        "R1: The database is pre-loaded with realistic, domain-specific epidemiological protocols so that search and cataloging workflows can be visually verified on a fresh install."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Baseline Epidemiological Content Seed",
+          "roleTag": "BARCAN-TAG-08",
+          "jtbd": "When implementing the data provisioning for this epic, I want to create a database seed containing realistic epidemiological protocols, so that the client can verify workflows on a fresh install.",
+          "acceptanceCriteria": "Given an empty database on a fresh install, When the seeding process runs, Then realistic, domain-specific epidemiological protocols are successfully inserted.\nGiven the seeded protocols, When workflows are tested, Then all search and cataloging capabilities can be visually verified.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Database content seeding process",
+          "sixSigmaMetric": "Increase the number of seeded domain-specific protocols from a baseline of 0 to 10.",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1"
+          ]
+        }
+      ]
+    },
+    {
+      "existingEpicId": "9731140a-8570-44a5-8ae1-3ec49f293ebb",
+      "title": null,
+      "jtbd": null,
+      "kanoClass": null,
+      "cynefinDomain": null,
+      "sixSigmaMetric": "Decrease the time to restore epidemiological data from a baseline of 60 minutes to under 15 minutes.",
+      "tocConstraintRef": "Disaster recovery readiness",
+      "sourceIndex": 1,
+      "requirements": [
+        "R1: Automated backups of the epidemiological database are configured and run regularly.",
+        "R2: A recovery process is proven and verified to ensure data availability during an incident."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Automated Backup and Restore Verification Patch",
+          "roleTag": "BARCAN-TAG-05",
+          "jtbd": "When implementing disaster recovery for this epic, I want to configure automated backups and verify a complete restore, so that critical epidemiological data is guaranteed to be available.",
+          "acceptanceCriteria": "Given the database containing critical epidemiological records, When the backup schedule triggers, Then an automated backup is successfully created and stored securely.\nGiven a recent backup, When a recovery is initiated, Then the data is fully restored and verified to be accurate.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Backup configuration and execution",
+          "sixSigmaMetric": "Increase the number of verified successful database restores from a baseline of 0 to 1 per week.",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2"
+          ]
+        }
+      ]
+    }
+  ]
+}
