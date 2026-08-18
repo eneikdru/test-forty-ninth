@@ -1,0 +1,68 @@
+{
+  "epics": [
+    {
+      "existingEpicId": null,
+      "title": "Frontend Build and Static Serving",
+      "jtbd": "When a real user accesses the launched product, I want to see the actual UI rather than a bare API, so that I can effectively interact with the application.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "clear",
+      "sixSigmaMetric": "Increase percentage of deployments successfully serving the frontend UI from 0% to 100%.",
+      "tocConstraintRef": "Frontend Delivery Pipeline",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: The Dockerfile successfully builds frontend assets by executing npm ci and npm run build.",
+        "R2: The backend is configured to serve the statically built frontend files to the end user."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Integrate Frontend Build and Static Serving",
+          "roleTag": "BARCAN-TAG-05",
+          "jtbd": "When implementing the build and serving steps for this epic, I want the Docker image to compile and serve the frontend, so that the final container presents a usable UI.",
+          "acceptanceCriteria": "Given the Docker build process, When the frontend is built, Then 'npm ci' and 'npm run build' complete successfully.\nGiven the running backend, When a user requests the root URL, Then the statically built frontend files are served instead of the API.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Docker build and backend routing",
+          "sixSigmaMetric": "Decrease occurrences of bare API display on root from 100% to 0%.",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2"
+          ]
+        }
+      ]
+    },
+    {
+      "existingEpicId": null,
+      "title": "Design Generator Implementable HTML Output Fix",
+      "jtbd": "When the design shop uses the design generator, I want the output to include an implementable HTML mockup, so that implementation can proceed without blockages.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "clear",
+      "sixSigmaMetric": "Increase generation success rate of implementable HTML mockups from 0% to 100%.",
+      "tocConstraintRef": "Design Generation Artifacts",
+      "sourceIndex": 1,
+      "requirements": [
+        "R1: The design generator is configured to produce valid HTML mockup code rather than just returning design metadata and images.",
+        "R2: The generated output is saved as mockup.html within the committed draft."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Patch Design Generator for HTML Mockup Production",
+          "roleTag": "BARCAN-TAG-04",
+          "jtbd": "When implementing the generator configuration for this epic, I want the system to output an implementable HTML file, so that the design session successfully creates a usable mockup artifact.",
+          "acceptanceCriteria": "Given the design generation is triggered, When the model is invoked, Then it returns HTML code.\nGiven the generated output, When saving the session draft, Then an implementable mockup.html file is correctly committed.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "AI Model Output Format",
+          "sixSigmaMetric": "Reduce missing mockup.html errors from 100% to 0%.",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2"
+          ]
+        }
+      ]
+    }
+  ]
+}
