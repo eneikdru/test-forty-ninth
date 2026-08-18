@@ -1,0 +1,18 @@
+{
+  "gaps": [
+    {
+      "title": "Missing Management API Endpoints for Materials",
+      "roleTag": "BARCAN-TAG-02",
+      "jtbd": "When managing epidemiological materials in the catalog, I want full CRUD (Create, Read, Update, Delete) capabilities so that I can modify or remove outdated/incorrect entries.",
+      "acceptanceCriteria": "Given an existing material in the database, When a client makes a GET, PUT, or DELETE request to the materials endpoint, Then the material should be successfully retrieved, updated, or removed accordingly.",
+      "reason": "COVERAGE gap: The original brief explicitly requires 'управления' (management) of materials. While material creation and search are implemented, `MaterialController` is missing endpoints to get by ID (for metadata, only file download exists), update, or delete existing materials, preventing true lifecycle management."
+    },
+    {
+      "title": "Missing Authentication and Role-Based Access Control",
+      "roleTag": "BARCAN-TAG-05",
+      "jtbd": "When interacting with the knowledge base, I want the system to enforce authentication and authorization so that only authorized personnel can upload or modify sensitive epidemiological protocols and materials.",
+      "acceptanceCriteria": "Given a user attempting to mutate data (create/update/delete), When they send a request, Then the system should verify their authentication token and role before processing the request.",
+      "reason": "DOMAIN-STANDARD gap: A system that manages critical medical/epidemiological data and protocols must securely identify its users and restrict data modification to authorized personnel. There is currently no authentication or authorization mechanism in place."
+    }
+  ]
+}
