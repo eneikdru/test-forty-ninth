@@ -1,0 +1,66 @@
+{
+  "epics": [
+    {
+      "existingEpicId": null,
+      "title": "Frontend Build and Serving Integration",
+      "jtbd": "When the end customer accesses the deployed application, I want to see the actual user interface rather than a bare API, so that I can interact with the product visually.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "clear",
+      "sixSigmaMetric": "Reduce the percentage of deployed instances serving a bare API instead of the UI from 100% to 0%.",
+      "tocConstraintRef": "Frontend deployment visibility",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: The Dockerfile must build the frontend using npm ci and npm run build.",
+        "R2: The built static output must be served by the backend at the root path."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Configure Docker and Backend for Frontend Serving",
+          "roleTag": "BARCAN-TAG-05",
+          "jtbd": "When implementing the Docker and backend changes for this epic, I want to build the frontend and serve its static output, so that the deployed image presents a functional UI to the user.",
+          "acceptanceCriteria": "Given a deployed instance built from the updated Dockerfile,\nWhen a user accesses the root path of the backend service,\nThen the built static frontend application is successfully served,\nAnd an automated test verifies that the HTTP response contains the valid frontend HTML.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Docker build configuration",
+          "sixSigmaMetric": "Decrease the number of build configuration errors preventing frontend serving from 1 to 0.",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2"
+          ]
+        }
+      ]
+    },
+    {
+      "existingEpicId": null,
+      "title": "HTML Mockup Generation Fix",
+      "jtbd": "When the end customer uses the application, I want the interface to be built from correctly generated HTML mockups, so that the application provides a functional and usable design.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "clear",
+      "sixSigmaMetric": "Increase the success rate of the design generator producing implementable mockup.html files from 0% to 100%.",
+      "tocConstraintRef": "Design generation output format",
+      "sourceIndex": 1,
+      "requirements": [
+        "R1: The design generator configuration must be updated to output an implementable mockup.html instead of an image asset."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Update Design Generator Output Format",
+          "roleTag": "BARCAN-TAG-04",
+          "jtbd": "When implementing the design generator fix for this epic, I want to adjust the AI model configuration, so that it successfully generates implementable HTML mockups instead of images.",
+          "acceptanceCriteria": "Given the design generation tooling configuration,\nWhen the design generator is triggered to create a mockup,\nThen the system outputs a valid mockup.html file instead of an image asset,\nAnd the generated artifact passes a syntax check confirming it is implementable HTML.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Design artifact generation",
+          "sixSigmaMetric": "Increase the proportion of generated mockups containing valid HTML from 0% to 100%.",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1"
+          ]
+        }
+      ]
+    }
+  ]
+}
