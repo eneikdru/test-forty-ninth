@@ -1,0 +1,68 @@
+{
+    "epics": [
+        {
+            "existingEpicId": null,
+            "title": "Frontend Build and Delivery Integration",
+            "jtbd": "When a real user opens the launched product, I want the backend to serve the built static UI output, so that the actual UI is visible rather than a bare API.",
+            "kanoClass": "Must-Be",
+            "cynefinDomain": "clear",
+            "sixSigmaMetric": "Increase the percentage of successful static UI loads from 0% to 100% on a fresh Docker deployment.",
+            "tocConstraintRef": "Frontend Delivery Bottleneck",
+            "sourceIndex": 0,
+            "requirements": [
+                "R1: The Docker image build process must execute 'npm ci && npm run build' within the frontend directory.",
+                "R2: The backend service must be configured to statically serve the compiled frontend assets from its route."
+            ],
+            "coverageComplete": true,
+            "slices": [
+                {
+                    "title": "Integrate Frontend Build into Docker and Backend Delivery",
+                    "roleTag": "BARCAN-TAG-05",
+                    "jtbd": "When implementing the Docker multi-stage build and Spring Boot static resource mapping for this epic, I want the frontend to be compiled and served automatically, so that the launched product displays the actual UI.",
+                    "acceptanceCriteria": "Given a fresh clone of the repository\nWhen I run docker build and docker run\nThen the container starts up and serves the compiled frontend HTML at the root URL.\nGiven the application is running\nWhen I make a GET request to the root URL\nThen it returns a 200 OK and serves index.html instead of a 404 or backend JSON response.",
+                    "leanValue": "essential",
+                    "cynefinDomain": "clear",
+                    "tocConstraintRef": "Docker Image Packaging",
+                    "sixSigmaMetric": "Reduce manual frontend deployment steps from 2 to 0.",
+                    "hasUi": false,
+                    "requirementRefs": [
+                        "R1",
+                        "R2"
+                    ]
+                }
+            ]
+        },
+        {
+            "existingEpicId": null,
+            "title": "Design Mockup Generation AI Model Fix",
+            "jtbd": "When the design generator runs, I want it to output an implementable HTML/CSS mockup, so that the design session can proceed and real frontend code can be written.",
+            "kanoClass": "Must-Be",
+            "cynefinDomain": "clear",
+            "sixSigmaMetric": "Increase the proportion of valid implementable HTML mockup artifacts produced by the design generator from 0% to 100%.",
+            "tocConstraintRef": "Design Mockup Output Generation",
+            "sourceIndex": 1,
+            "requirements": [
+                "R1: The design generator must use a model configuration (e.g., changing from a pure image generator to a text/code generation model) that produces implementable HTML code.",
+                "R2: The generated output artifact must explicitly contain 'mockup.html' to allow the frontend implementation session to proceed."
+            ],
+            "coverageComplete": true,
+            "slices": [
+                {
+                    "title": "Update AI Model Target for HTML Design Generation",
+                    "roleTag": "BARCAN-TAG-04",
+                    "jtbd": "When implementing the generator configuration fix for this epic, I want the requested model to output HTML code rather than an image, so that a valid mockup.html is saved into the design directory.",
+                    "acceptanceCriteria": "Given the design generation script or configuration\nWhen the design generator is executed\nThen it requests an HTML payload from an appropriate model rather than gemini-3.1-flash-image.\nGiven a completed generation run\nWhen examining the output directory\nThen a valid mockup.html file is present and not just metadata or image artifacts.",
+                    "leanValue": "essential",
+                    "cynefinDomain": "clear",
+                    "tocConstraintRef": "AI Model Parameter Selection",
+                    "sixSigmaMetric": "Decrease the rate of design generation producing non-HTML artifacts from 100% to 0%.",
+                    "hasUi": false,
+                    "requirementRefs": [
+                        "R1",
+                        "R2"
+                    ]
+                }
+            ]
+        }
+    ]
+}
