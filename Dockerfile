@@ -1,6 +1,16 @@
-# Multi-stage Dockerfile for Eneik Epidemiology Knowledge Base Backend
+# Multi-stage Dockerfile for Eneik Epidemiology Knowledge Base
 
-# Build stage
+# Frontend build stage
+FROM node:20-alpine AS frontend-builder
+WORKDIR /app/frontend
+
+COPY frontend/package*.json ./
+RUN npm ci
+
+COPY frontend/ ./
+RUN npm run build
+
+# Backend build stage
 FROM maven:3.9.6-eclipse-temurin-17 AS builder
 WORKDIR /app
 
@@ -8,6 +18,8 @@ COPY pom.xml .
 RUN mvn dependency:go-offline -B || true
 
 COPY src ./src
+COPY --from=frontend-builder /app/frontend/dist ./src/main/resources/static
+
 RUN mvn clean package -DskipTests
 
 # Runtime stage
