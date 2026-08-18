@@ -13,7 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -91,7 +91,7 @@ public class DataRestorationVerificationTest {
         newEvent.setFilters("{\"category\":\"Enteric\"}");
         newEvent.setResultCount(5);
         newEvent.setExecutionTimeMs(42L);
-        newEvent.setCreatedAt(LocalDateTime.now());
+        newEvent.setCreatedAt(OffsetDateTime.now());
 
         analyticsRepository.save(newEvent);
 

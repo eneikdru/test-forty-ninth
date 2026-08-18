@@ -7,7 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Entity
 @Table(name = "search_analytics_events")
@@ -33,7 +33,7 @@ public class SearchAnalyticsEventEntity {
     private Long executionTimeMs;
 
     @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    private OffsetDateTime createdAt;
 
     public SearchAnalyticsEventEntity() {
     }
@@ -49,7 +49,7 @@ public class SearchAnalyticsEventEntity {
     @PrePersist
     public void prePersist() {
         if (this.createdAt == null) {
-            this.createdAt = LocalDateTime.now();
+            this.createdAt = OffsetDateTime.now();
         }
     }
 
@@ -101,11 +101,11 @@ public class SearchAnalyticsEventEntity {
         this.executionTimeMs = executionTimeMs;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public OffsetDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(OffsetDateTime createdAt) {
         this.createdAt = createdAt;
     }
 }
