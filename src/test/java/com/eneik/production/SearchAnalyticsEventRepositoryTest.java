@@ -6,7 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -20,7 +21,7 @@ public class SearchAnalyticsEventRepositoryTest {
 
     @Test
     public void testSaveAndQuerySearchAnalyticsEvents() {
-        LocalDateTime baseTime = LocalDateTime.of(2026, 8, 16, 10, 0, 0);
+        OffsetDateTime baseTime = OffsetDateTime.of(2026, 8, 16, 10, 0, 0, 0, ZoneOffset.UTC);
 
         SearchAnalyticsEventEntity event1 = new SearchAnalyticsEventEntity(
                 "COVID-19 protocol", "user_1", "{\"category\":\"protocol\"}", 15, 120L
