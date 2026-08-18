@@ -1,0 +1,18 @@
+{
+  "gaps": [
+    {
+      "title": "Material cataloging omitted from application layer",
+      "roleTag": "BARCAN-TAG-02",
+      "jtbd": "When uploading or retrieving materials, I want to associate them with categories and tags, so that the cataloging requirement of the system is fulfilled.",
+      "acceptanceCriteria": "Given a material upload request containing category and tags, When it is saved, Then the MaterialEntity is correctly associated with the category and tag entities in the database.",
+      "reason": "literal brief requirement: The brief requires 'каталогизации ... материалами' (cataloging materials). While the DB schema exists for categories/tags, MaterialEntity.java and MaterialService.java completely ignore these fields."
+    },
+    {
+      "title": "Missing authentication and authorization for management operations",
+      "roleTag": "BARCAN-TAG-02",
+      "jtbd": "When performing management actions like creating or deleting protocols, I want the system to verify my identity and permissions, so that unauthorized users cannot alter critical epidemiological data.",
+      "acceptanceCriteria": "Given an unauthenticated request to a POST/PUT/DELETE endpoint, When the request is received, Then it is rejected with a 401 Unauthorized status.",
+      "reason": "domain-standard expectation: The brief asks for a web system for 'управления' (managing) epidemiological data. Such a system intrinsically requires authentication/authorization to prevent unauthorized modifications to sensitive public health information."
+    }
+  ]
+}
