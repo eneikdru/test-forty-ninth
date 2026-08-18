@@ -4,7 +4,7 @@ import fs from 'fs';
 import path from 'path';
 
 async function generateScreenshots() {
-  const targetDir = path.resolve(process.cwd(), '../.eneik/records/design-check-427c07c7-5702-4997-96d4-46ea74742822');
+  const targetDir = path.resolve(process.cwd(), '../.eneik/records/design-check-ab74be69-fea9-4ae0-812a-ce08c57fc00c');
   if (!fs.existsSync(targetDir)) {
     fs.mkdirSync(targetDir, { recursive: true });
   }
@@ -25,7 +25,7 @@ async function generateScreenshots() {
   });
   const desktopPage = await desktopContext.newPage();
   await desktopPage.goto('http://localhost:5173');
-  await desktopPage.waitForSelector('[data-testid="protocol-search-input"]');
+  await desktopPage.waitForSelector('[data-testid="search-input"]');
 
   const desktopPath = path.join(targetDir, 'desktop-1440.png');
   await desktopPage.screenshot({ path: desktopPath, fullPage: false });
@@ -40,7 +40,7 @@ async function generateScreenshots() {
   });
   const mobilePage = await mobileContext.newPage();
   await mobilePage.goto('http://localhost:5173');
-  await mobilePage.waitForSelector('[data-testid="protocol-search-input"]');
+  await mobilePage.waitForSelector('[data-testid="search-input"]');
 
   const mobilePath = path.join(targetDir, 'mobile-375.png');
   await mobilePage.screenshot({ path: mobilePath, fullPage: false });
