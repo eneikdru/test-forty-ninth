@@ -520,7 +520,7 @@
           <button
             type="button"
             aria-label="Submit search"
-            class="absolute right-2 px-3 py-1 bg-primary text-on-primary font-label-md text-label-md rounded-DEFAULT hover:bg-primary-container hover:text-on-primary-container transition-colors focus:ring-2 focus:ring-primary focus:outline-none"
+            class="absolute right-2 px-3 py-1.5 bg-primary text-on-primary font-label-md text-label-md rounded-DEFAULT hover:bg-primary-container hover:text-on-primary-container transition-colors focus:ring-2 focus:ring-primary focus:outline-none min-h-[36px] flex items-center justify-center"
             on:click={() => executeSearch(searchQuery)}
             data-testid="search-submit"
           >
@@ -533,7 +533,7 @@
       <div class="flex items-center gap-2">
         <button
           type="button"
-          class="px-3 py-2 bg-primary text-on-primary font-label-md text-label-md rounded-DEFAULT hover:bg-primary-container hover:text-on-primary-container transition-colors focus:ring-2 focus:ring-primary focus:outline-none flex items-center gap-1 shrink-0"
+          class="px-3 py-2 bg-primary text-on-primary font-label-md text-label-md rounded-DEFAULT hover:bg-primary-container hover:text-on-primary-container transition-colors focus:ring-2 focus:ring-primary focus:outline-none flex items-center gap-1 shrink-0 min-h-[44px]"
           on:click={openCreateForm}
           data-testid="add-material-btn"
         >
@@ -560,7 +560,7 @@
 
       <button
         type="button"
-        class={`px-3 py-1.5 rounded-full border font-label-md text-label-md transition-colors flex items-center gap-1 flex-shrink-0 focus:ring-2 focus:ring-primary focus:outline-none ${
+        class={`px-3 py-1.5 rounded-full border font-label-md text-label-md transition-colors flex items-center gap-1 flex-shrink-0 focus:ring-2 focus:ring-primary focus:outline-none min-h-[36px] ${
           selectedCategory === '' ? 'bg-primary-container text-on-primary-container border-transparent' : 'bg-surface-container-lowest border-outline-variant text-on-surface-variant hover:bg-surface-container-high'
         }`}
         on:click={() => { selectedCategory = ''; executeSearch(); }}
@@ -639,7 +639,7 @@
         </div>
         <button
           type="button"
-          class="px-4 py-2 bg-error text-on-error font-label-md text-label-md rounded-DEFAULT hover:opacity-90 transition-opacity focus:ring-2 focus:ring-primary focus:outline-none flex-shrink-0"
+          class="px-4 py-2 bg-error text-on-error font-label-md text-label-md rounded-DEFAULT hover:opacity-90 transition-opacity focus:ring-2 focus:ring-primary focus:outline-none flex-shrink-0 min-h-[44px]"
           on:click={retryDownload}
           data-testid="retry-btn"
         >
@@ -822,7 +822,7 @@
         <div class="flex flex-wrap justify-center gap-3 pt-2">
           <button
             type="button"
-            class="px-4 py-2 bg-primary text-on-primary font-label-md text-label-md rounded-DEFAULT hover:bg-primary-container hover:text-on-primary-container transition-colors focus:ring-2 focus:ring-primary focus:outline-none"
+            class="px-4 py-2 bg-primary text-on-primary font-label-md text-label-md rounded-DEFAULT hover:bg-primary-container hover:text-on-primary-container transition-colors focus:ring-2 focus:ring-primary focus:outline-none min-h-[44px]"
             on:click={resetFilters}
             data-testid="reset-filters-btn"
           >
