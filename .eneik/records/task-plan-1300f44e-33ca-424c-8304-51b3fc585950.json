@@ -1,0 +1,68 @@
+{
+    "epics": [
+        {
+            "existingEpicId": null,
+            "title": "Frontend Build and Static Serving Integration",
+            "jtbd": "When a real user opens the launched product, I want the backend to serve the built static frontend output, so that the user sees the actual UI instead of a bare API.",
+            "kanoClass": "Must-Be",
+            "cynefinDomain": "clear",
+            "sixSigmaMetric": "Increase proportion of successful frontend requests from 0% to 100% on the root path.",
+            "tocConstraintRef": "Docker build and backend static serving configuration",
+            "sourceIndex": 0,
+            "requirements": [
+                "R1: The Dockerfile must run npm ci and npm run build in the frontend/ directory.",
+                "R2: The backend must be configured to serve the built static output from the frontend."
+            ],
+            "coverageComplete": true,
+            "slices": [
+                {
+                    "title": "Update Dockerfile and backend configuration to serve frontend",
+                    "roleTag": "BARCAN-TAG-05",
+                    "jtbd": "When implementing the frontend build for this epic, I want to update the Dockerfile and backend serving logic, so that the actual UI is visible to the user.",
+                    "acceptanceCriteria": "Given the Docker build process\nWhen building the image\nThen npm ci and npm run build are executed for the frontend.\nGiven a deployed application\nWhen a user requests the root path\nThen the backend serves the compiled static UI instead of a bare API.\nGiven the CI pipeline\nWhen the backend tests run\nThen they assert that static resources are correctly served.",
+                    "leanValue": "essential",
+                    "cynefinDomain": "clear",
+                    "tocConstraintRef": "Dockerfile build stages",
+                    "sixSigmaMetric": "Increase proportion of successful frontend UI loads from 0% to 100%.",
+                    "hasUi": false,
+                    "requirementRefs": [
+                        "R1",
+                        "R2"
+                    ]
+                }
+            ]
+        },
+        {
+            "existingEpicId": null,
+            "title": "Implementable HTML Design Generation Fix",
+            "jtbd": "When the design shop triggers generation, I want the output to include an implementable mockup.html, so that UI implementation can proceed without being blocked.",
+            "kanoClass": "Must-Be",
+            "cynefinDomain": "clear",
+            "sixSigmaMetric": "Increase the percentage of generation runs producing implementable HTML from 0% to 100%.",
+            "tocConstraintRef": "Design generation tool configuration",
+            "sourceIndex": 1,
+            "requirements": [
+                "R1: The design generator must use a model capable of outputting HTML rather than gemini-3.1-flash-image.",
+                "R2: The generator output must include a valid mockup.html file instead of only metadata."
+            ],
+            "coverageComplete": true,
+            "slices": [
+                {
+                    "title": "Patch design generator to produce HTML",
+                    "roleTag": "BARCAN-TAG-04",
+                    "jtbd": "When implementing the generator fix for this epic, I want to change the model and output instructions, so that an implementable mockup.html is reliably created.",
+                    "acceptanceCriteria": "Given the design generation script\nWhen executed\nThen it calls an HTML-capable model instead of gemini-3.1-flash-image.\nGiven a completed generation run\nWhen examining the draft folder\nThen a mockup.html file is present for implementation.\nGiven the generator test suite\nWhen the tests are run\nThen the tests assert that a valid HTML payload is requested and produced.",
+                    "leanValue": "essential",
+                    "cynefinDomain": "clear",
+                    "tocConstraintRef": "Generator model selection",
+                    "sixSigmaMetric": "Reduce the rate of missing mockup.html artifacts from 100% to 0%.",
+                    "hasUi": false,
+                    "requirementRefs": [
+                        "R1",
+                        "R2"
+                    ]
+                }
+            ]
+        }
+    ]
+}
