@@ -1,0 +1,66 @@
+{
+  "epics": [
+    {
+      "existingEpicId": null,
+      "title": "Frontend Image Build Integration",
+      "jtbd": "When the end customer opens the launched product, I want to see the actual UI, so that I can interact with the system instead of a bare API.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "clear",
+      "sixSigmaMetric": "Increase the percentage of successful static frontend asset deliveries on the root URL from 0% to 100%.",
+      "tocConstraintRef": "Deployment Pipeline - Frontend artifacts missing from production Docker image.",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: The Dockerfile compiles the frontend directory using npm ci and npm run build during the image build process.",
+        "R2: The backend is configured to serve the resulting static output from the root URL."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Dockerfile Frontend Build Patch",
+          "roleTag": "BARCAN-TAG-05",
+          "jtbd": "When implementing the Dockerfile frontend build patch for this epic, I want the image to compile and serve static assets, so that the epic's outcome of showing the actual UI is achieved.",
+          "acceptanceCriteria": "Given a fresh clone of the repository\nWhen I build the Docker image and run it locally\nThen the image builds successfully including the frontend assets\nGiven a user accesses the running container on its root URL\nWhen the request is processed\nThen the backend serves the built frontend UI instead of a bare API",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Image packaging process omitting frontend artifacts.",
+          "sixSigmaMetric": "Reduce missing frontend asset errors on image boot from 100% to 0%.",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2"
+          ]
+        }
+      ]
+    },
+    {
+      "existingEpicId": null,
+      "title": "Design Generation Mockup Output Fix",
+      "jtbd": "When the design shop triggers design generation, I want the output to be an implementable HTML mockup, so that the frontend implementation session has a concrete asset to work against.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "clear",
+      "sixSigmaMetric": "Increase the design generation success rate for producing a valid mockup.html from 0% to 100%.",
+      "tocConstraintRef": "Design-to-Implementation Handover - generator returning un-implementable image messages.",
+      "sourceIndex": 1,
+      "requirements": [
+        "R1: The design generation configuration or prompt is patched to output a concrete implementable mockup.html instead of a gemini-3.1-flash-image response."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Design Generation Configuration Patch",
+          "roleTag": "BARCAN-TAG-04",
+          "jtbd": "When implementing the design generator patch for this epic, I want the generation script to output an implementable mockup.html, so that the epic's outcome of unblocking the design shop is achieved.",
+          "acceptanceCriteria": "Given the design generation process is triggered\nWhen it executes with the patched configuration or prompt\nThen the generation succeeds and produces a mockup.html file\nGiven the generated mockup.html file\nWhen an implementer reviews its contents\nThen it contains concrete implementable HTML rather than just an image metadata message",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Generator returning un-implementable image messages.",
+          "sixSigmaMetric": "Increase HTML mockup generation success rate from 0% to 100%.",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1"
+          ]
+        }
+      ]
+    }
+  ]
+}
