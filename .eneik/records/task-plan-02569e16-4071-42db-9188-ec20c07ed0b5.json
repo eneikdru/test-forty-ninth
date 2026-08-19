@@ -1,0 +1,34 @@
+{
+  "epics": [
+    {
+      "existingEpicId": "c1be406c-64fa-4620-83c6-49abdc20c7c2",
+      "title": null,
+      "jtbd": null,
+      "kanoClass": null,
+      "cynefinDomain": null,
+      "sixSigmaMetric": "Reduce infrastructure-related deployment blocking issues from current baseline to 0",
+      "tocConstraintRef": "Development and deployment environment stability",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Update the MinIO image tag in the deployment configuration from the unresolvable RELEASE.2023-09-20T22-40-07Z to a valid release"
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Fix unresolvable MinIO image tag in Docker compose",
+          "roleTag": "BARCAN-TAG-05",
+          "jtbd": "When implementing R1 for this epic, I want to update the MinIO docker image tag to a valid release, so that the product runtime environment boots successfully and technical debt is eliminated.",
+          "acceptanceCriteria": "Given the docker compose configuration referencing an unresolvable MinIO image tag,\nWhen the configuration is updated to a valid Docker Hub MinIO image tag,\nThen the 'docker compose up' command successfully pulls the image and the runtime environment boots without reference errors.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Local development environment boot process",
+          "sixSigmaMetric": "Reduce Docker boot failure rate from 100% to 0% for the MinIO service",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1"
+          ]
+        }
+      ]
+    }
+  ]
+}
