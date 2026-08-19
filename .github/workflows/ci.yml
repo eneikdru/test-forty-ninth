@@ -22,4 +22,4 @@ jobs:
           java-version: '17'
 
       - name: Run Maven tests
-        run: mvn clean test
+        run: mvn clean test -DSECURITY_USER_NAME=testuser -DSECURITY_USER_PASSWORD=testpass

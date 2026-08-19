@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.eneik.production.EpidemiologicalProtocolSearchWorkflowTest" time="0.091" tests="4" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.eneik.production.BackupConfigurationTest" time="7.52" tests="2" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="21"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -44,7 +44,7 @@
     <property name="localRepository" value="/home/jules/.m2/repository"/>
     <property name="java.vendor.url.bug" value="https://bugs.launchpad.net/ubuntu/+source/openjdk-21"/>
     <property name="java.io.tmpdir" value="/tmp"/>
-    <property name="com.zaxxer.hikari.pool_number" value="4"/>
+    <property name="com.zaxxer.hikari.pool_number" value="1"/>
     <property name="java.version" value="21.0.10"/>
     <property name="user.dir" value="/app"/>
     <property name="SECURITY_USER_NAME" value="testuser"/>
@@ -61,20 +61,61 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="65.0"/>
   </properties>
-  <testcase name="testSearchNoResultsFound" classname="com.eneik.production.EpidemiologicalProtocolSearchWorkflowTest" time="0.035">
-    <system-out><![CDATA[2026-08-19T13:53:58.426Z  INFO 48159 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.eneik.production.EpidemiologicalProtocolSearchWorkflowTest]: EpidemiologicalProtocolSearchWorkflowTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2026-08-19T13:53:58.428Z  INFO 48159 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.eneik.production.Application for test class com.eneik.production.EpidemiologicalProtocolSearchWorkflowTest
-Hibernate: select epe1_0.id,epe1_0.author_organization,epe1_0.category,epe1_0.code,epe1_0.created_at,epe1_0.publication_year,epe1_0.status,epe1_0.summary,epe1_0.title,epe1_0.version from epidemiological_protocols epe1_0 where (lower(epe1_0.title) like ? escape '' or lower(epe1_0.code) like ? escape '' or lower(epe1_0.summary) like ? escape '' or lower(epe1_0.author_organization) like ? escape '') order by epe1_0.created_at desc offset ? rows fetch first ? rows only
+  <testcase name="testDockerfileAndDockerComposeExist" classname="com.eneik.production.BackupConfigurationTest" time="0.61">
+    <system-out><![CDATA[13:53:44.942 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.eneik.production.BackupConfigurationTest]: BackupConfigurationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+13:53:45.061 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.eneik.production.Application for test class com.eneik.production.BackupConfigurationTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.5)
+
+2026-08-19T13:53:45.472Z  INFO 48159 --- [           main] c.e.production.BackupConfigurationTest   : Starting BackupConfigurationTest using Java 21.0.10 with PID 48159 (started by jules in /app)
+2026-08-19T13:53:45.474Z  INFO 48159 --- [           main] c.e.production.BackupConfigurationTest   : No active profile set, falling back to 1 default profile: "default"
+2026-08-19T13:53:46.338Z  INFO 48159 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-08-19T13:53:46.420Z  INFO 48159 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 73 ms. Found 4 JPA repository interfaces.
+2026-08-19T13:53:47.011Z  INFO 48159 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-08-19T13:53:47.222Z  INFO 48159 --- [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:testdb user=SA
+2026-08-19T13:53:47.225Z  INFO 48159 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-08-19T13:53:47.367Z  INFO 48159 --- [           main] o.f.c.internal.license.VersionPrinter    : Flyway Community Edition 9.22.3 by Redgate
+2026-08-19T13:53:47.368Z  INFO 48159 --- [           main] o.f.c.internal.license.VersionPrinter    : See release notes here: https://rd.gt/416ObMi
+2026-08-19T13:53:47.368Z  INFO 48159 --- [           main] o.f.c.internal.license.VersionPrinter    :
+2026-08-19T13:53:47.379Z  INFO 48159 --- [           main] o.f.c.i.resource.ResourceNameValidator   : 1 SQL migrations were detected but not run because they did not follow the filename convention.
+2026-08-19T13:53:47.379Z  INFO 48159 --- [           main] o.f.c.i.resource.ResourceNameValidator   : Set 'validateMigrationNaming' to true to fail fast and see a list of the invalid file names.
+2026-08-19T13:53:47.420Z  INFO 48159 --- [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:h2:mem:testdb (H2 2.2)
+2026-08-19T13:53:47.433Z  WARN 48159 --- [           main] o.f.c.internal.database.base.Database    : Flyway upgrade recommended: H2 2.2.224 is newer than this version of Flyway and support has not been tested. The latest supported version of H2 is 2.2.220.
+2026-08-19T13:53:47.464Z  INFO 48159 --- [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table "PUBLIC"."flyway_schema_history" does not exist yet
+2026-08-19T13:53:47.467Z  INFO 48159 --- [           main] o.f.core.internal.command.DbValidate     : Successfully validated 7 migrations (execution time 00:00.023s)
+2026-08-19T13:53:47.474Z  INFO 48159 --- [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "PUBLIC"."flyway_schema_history" ...
+2026-08-19T13:53:47.503Z  INFO 48159 --- [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "PUBLIC": << Empty Schema >>
+2026-08-19T13:53:47.510Z  INFO 48159 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20260816054204525 - create categories and tags schema"
+2026-08-19T13:53:47.544Z  INFO 48159 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20260816054723620 - create materials table"
+2026-08-19T13:53:47.559Z  INFO 48159 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20260816055043275 - create search analytics events table"
+2026-08-19T13:53:47.571Z  INFO 48159 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20260816055559715 - seed epidemiological protocols"
+2026-08-19T13:53:47.586Z  INFO 48159 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20260816065637846 - create internal tasks table"
+2026-08-19T13:53:47.595Z  INFO 48159 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20260816122837666 - seed baseline epidemiological protocols"
+2026-08-19T13:53:47.602Z  INFO 48159 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20260819025141204 - add category and tags to materials"
+2026-08-19T13:53:47.619Z  INFO 48159 --- [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 7 migrations to schema "PUBLIC", now at version v20260819025141204 (execution time 00:00.057s)
+2026-08-19T13:53:47.721Z  INFO 48159 --- [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-08-19T13:53:47.777Z  INFO 48159 --- [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.4.Final
+2026-08-19T13:53:47.815Z  INFO 48159 --- [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-08-19T13:53:48.058Z  INFO 48159 --- [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-08-19T13:53:49.188Z  INFO 48159 --- [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-08-19T13:53:49.239Z  INFO 48159 --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-08-19T13:53:49.529Z  INFO 48159 --- [           main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-08-19T13:53:50.707Z  WARN 48159 --- [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-08-19T13:53:50.968Z  INFO 48159 --- [           main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2026-08-19T13:53:51.227Z  INFO 48159 --- [           main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@49648d97, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@1d691240, org.springframework.security.web.context.SecurityContextHolderFilter@3374a30c, org.springframework.security.web.header.HeaderWriterFilter@3228b5a1, org.springframework.web.filter.CorsFilter@69789fec, org.springframework.security.web.authentication.logout.LogoutFilter@70d7282a, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@73a4efb4, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@6d0e90d5, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@1276caf2, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@4fa0e166, org.springframework.security.web.session.SessionManagementFilter@24c036b7, org.springframework.security.web.access.ExceptionTranslationFilter@5be86750, org.springframework.security.web.access.intercept.AuthorizationFilter@3eb60858]
+2026-08-19T13:53:51.618Z  INFO 48159 --- [           main] c.e.production.BackupConfigurationTest   : Started BackupConfigurationTest in 6.412 seconds (process running for 7.717)
 ]]></system-out>
+    <system-err><![CDATA[WARNING: A Java agent has been loaded dynamically (/home/jules/.m2/repository/net/bytebuddy/byte-buddy-agent/1.14.13/byte-buddy-agent-1.14.13.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+]]></system-err>
   </testcase>
-  <testcase name="testInvalidSortParameterReturns400" classname="com.eneik.production.EpidemiologicalProtocolSearchWorkflowTest" time="0.012"/>
-  <testcase name="testSearchCombinedParameters" classname="com.eneik.production.EpidemiologicalProtocolSearchWorkflowTest" time="0.015">
-    <system-out><![CDATA[Hibernate: select epe1_0.id,epe1_0.author_organization,epe1_0.category,epe1_0.code,epe1_0.created_at,epe1_0.publication_year,epe1_0.status,epe1_0.summary,epe1_0.title,epe1_0.version from epidemiological_protocols epe1_0 where (lower(epe1_0.title) like ? escape '' or lower(epe1_0.code) like ? escape '' or lower(epe1_0.summary) like ? escape '' or lower(epe1_0.author_organization) like ? escape '') and lower(epe1_0.category)=? and upper(epe1_0.status)=? order by epe1_0.created_at desc offset ? rows fetch first ? rows only
-]]></system-out>
-  </testcase>
-  <testcase name="testSearchSortingAndPagination" classname="com.eneik.production.EpidemiologicalProtocolSearchWorkflowTest" time="0.014">
-    <system-out><![CDATA[Hibernate: select epe1_0.id,epe1_0.author_organization,epe1_0.category,epe1_0.code,epe1_0.created_at,epe1_0.publication_year,epe1_0.status,epe1_0.summary,epe1_0.title,epe1_0.version from epidemiological_protocols epe1_0 where 1=1 order by epe1_0.publication_year offset ? rows fetch first ? rows only
-Hibernate: select count(epe1_0.id) from epidemiological_protocols epe1_0 where 1=1
-]]></system-out>
-  </testcase>
+  <testcase name="testBackupScriptExistsAndIsExecutable" classname="com.eneik.production.BackupConfigurationTest" time="0.005"/>
 </testsuite>
