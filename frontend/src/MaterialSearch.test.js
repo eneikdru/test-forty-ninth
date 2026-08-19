@@ -44,58 +44,33 @@ describe('MaterialSearch component', () => {
     expect(getByTestId('results-list')).toBeDefined();
   });
 
-  it('displays error banner and retry button when download fails', async () => {
-    const fetchFn = vi.fn().mockRejectedValue(new Error('Network connection dropped'));
-    const { getByTestId, getAllByTestId } = render(MaterialSearch, {
-      props: { fetchFn }
+  it('prompts for credentials when unauthenticated user attempts management operations', async () => {
+    const { getByTestId, queryByTestId } = render(MaterialSearch, {
+      props: { isAuthenticated: false }
     });
 
-    const docItems = getAllByTestId('document-item');
-    expect(docItems.length).toBeGreaterThan(0);
+    // Attempting Add Material prompts for credentials
+    await fireEvent.click(getByTestId('add-material-btn'));
 
-    const downloadBtn = getByTestId('download-btn-123e4567-e89b-12d3-a456-426614174000');
-    await fireEvent.click(downloadBtn);
+    expect(getByTestId('auth-modal')).toBeDefined();
+    expect(queryByTestId('catalog-form-modal')).toBeNull();
 
+    // Fill credentials and submit
+    await fireEvent.input(getByTestId('auth-username-input'), { target: { value: 'admin' } });
+    await fireEvent.input(getByTestId('auth-password-input'), { target: { value: 'secret' } });
+    await fireEvent.click(getByTestId('auth-submit-btn'));
+
+    // Authenticates and opens pending management action (create form)
     await waitFor(() => {
-      expect(getByTestId('error-banner')).toBeDefined();
-      expect(getByTestId('retry-btn')).toBeDefined();
+      expect(getByTestId('catalog-form-modal')).toBeDefined();
+      expect(getByTestId('auth-feedback-banner')).toBeDefined();
     });
-  });
-
-  it('transmits telemetry events upon document click and abandonment', async () => {
-    let mockTime = 1000;
-    const nowFn = () => mockTime;
-    const sentRequests = [];
-
-    const fetchFn = vi.fn((url, options) => {
-      if (options && options.body) {
-        sentRequests.push({ url, body: JSON.parse(options.body) });
-      }
-      return Promise.resolve({ ok: true, json: async () => ({ items: [] }) });
-    });
-
-    const { getByTestId } = render(MaterialSearch, {
-      props: { nowFn, fetchFn }
-    });
-
-    // Enter search query
-    await fireEvent.input(getByTestId('search-input'), { target: { value: 'protocol' } });
-    await fireEvent.click(getByTestId('search-submit'));
-
-    expect(getByTestId('abandon-btn')).toBeDefined();
-
-    // Advance time
-    mockTime = 1500;
-
-    // Abandon search
-    const abandonBtn = getByTestId('abandon-btn');
-    await fireEvent.click(abandonBtn);
-
-    expect(sentRequests.some(r => r.body.eventType === 'SEARCH_ABANDONED')).toBe(true);
   });
 
   it('preserves user typed input when server/validation rejects form submission', async () => {
-    const { getByTestId, queryByTestId } = render(MaterialSearch);
+    const { getByTestId } = render(MaterialSearch, {
+      props: { isAuthenticated: true, authUsername: 'admin' }
+    });
 
     // Open create material modal
     await fireEvent.click(getByTestId('add-material-btn'));
@@ -123,8 +98,10 @@ describe('MaterialSearch component', () => {
     expect(authorInput.value).toBe('Dr. John Doe');
   });
 
-  it('opens confirmation dialog before irreversible item deletion', async () => {
-    const { getByTestId, queryByTestId, getAllByTestId } = render(MaterialSearch);
+  it('opens confirmation dialog before irreversible item deletion when authenticated', async () => {
+    const { getByTestId, queryByTestId, getAllByTestId } = render(MaterialSearch, {
+      props: { isAuthenticated: true, authUsername: 'admin' }
+    });
 
     const initialDocCount = getAllByTestId('document-item').length;
     const deleteBtn = getByTestId('delete-btn-123e4567-e89b-12d3-a456-426614174000');

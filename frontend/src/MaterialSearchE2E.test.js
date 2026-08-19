@@ -50,7 +50,9 @@ describe('MaterialSearch E2E Flow', () => {
   });
 
   it('allows an administrator to successfully upload, edit, and delete a document', async () => {
-    const { getByTestId, queryByTestId, queryByText, getByText } = render(MaterialSearch);
+    const { getByTestId, queryByTestId, queryByText, getByText } = render(MaterialSearch, {
+      props: { isAuthenticated: true, authUsername: 'admin' }
+    });
 
     // 1. Upload / Add a new document
     const addBtn = getByTestId('add-material-btn');
@@ -78,7 +80,6 @@ describe('MaterialSearch E2E Flow', () => {
     expect(getByText('Novel Nipah Virus Containment Protocol')).not.toBeNull();
 
     // 2. Edit the document
-    // Get the newly created item's edit button or find by testid
     const documentTitleEl = getByText('Novel Nipah Virus Containment Protocol');
     const article = documentTitleEl.closest('article');
     const docId = article.getAttribute('data-doc-id');

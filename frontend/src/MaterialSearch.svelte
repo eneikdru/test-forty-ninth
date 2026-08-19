@@ -1,11 +1,20 @@
 <script>
   import { onMount, onDestroy } from 'svelte';
+  import AuthModal from './AuthModal.svelte';
 
   export let trackingEndpoint = '/api/v1/analytics/search-events';
   export let searchApiEndpoint = '/api/v1/materials/search';
   export let submitApiEndpoint = '/api/v1/materials';
   export let nowFn = () => performance.now();
   export let fetchFn = null;
+
+  // Authentication & Session State
+  export let isAuthenticated = false;
+  export let authUsername = '';
+  export let authHeader = null;
+  export let isAuthModalOpen = false;
+  export let pendingAction = null;
+  export let authSuccessFeedback = null;
 
   let searchQuery = '';
   let activeSearchQuery = '';
@@ -299,8 +308,51 @@
     executeSearch('');
   }
 
+  // Authentication & Management Operation Gates
+  export function openAuthModal() {
+    isAuthModalOpen = true;
+  }
+
+  export function closeAuthModal() {
+    isAuthModalOpen = false;
+  }
+
+  export function handleAuthSuccess(event) {
+    const { username, credentials } = event.detail || {};
+    isAuthenticated = true;
+    authUsername = username || 'admin';
+    authHeader = 'Basic ' + (typeof btoa !== 'undefined' ? btoa(`${credentials?.username || username}:${credentials?.password || ''}`) : 'encoded');
+    authSuccessFeedback = `Successfully authenticated as ${authUsername}. Access granted.`;
+    isAuthModalOpen = false;
+
+    // Resume pending operation if user was prompted while attempting write
+    if (pendingAction) {
+      const action = pendingAction;
+      pendingAction = null;
+      if (action.type === 'create') {
+        openCreateForm();
+      } else if (action.type === 'edit') {
+        openEditForm(action.doc);
+      } else if (action.type === 'delete') {
+        openDeleteModal(action.doc);
+      }
+    }
+  }
+
+  export function handleLogout() {
+    isAuthenticated = false;
+    authUsername = '';
+    authHeader = null;
+    authSuccessFeedback = null;
+  }
+
   // Catalog Management Functions
   export function openCreateForm() {
+    if (!isAuthenticated) {
+      pendingAction = { type: 'create' };
+      isAuthModalOpen = true;
+      return;
+    }
     formData = {
       id: null,
       title: '',
@@ -314,6 +366,11 @@
   }
 
   export function openEditForm(doc) {
+    if (!isAuthenticated) {
+      pendingAction = { type: 'edit', doc };
+      isAuthModalOpen = true;
+      return;
+    }
     formData = {
       id: doc.id,
       title: doc.title,
@@ -350,7 +407,6 @@
     if (!formData.title || formData.title.toLowerCase().includes('reject') || formData.title.toLowerCase().includes('error') || formData.title.toLowerCase().includes('invalid')) {
       formError = 'Server rejected form submission: Invalid or restricted material title/metadata. Please check input.';
       isSubmitting = false;
-      // Note: formData typed input is NOT wiped, so user input survives!
       return;
     }
 
@@ -359,13 +415,23 @@
       try {
         const method = formData.id ? 'PUT' : 'POST';
         const url = formData.id ? `${submitApiEndpoint}/${formData.id}` : submitApiEndpoint;
+        const headers = { 'Content-Type': 'application/json' };
+        if (authHeader) headers['Authorization'] = authHeader;
+
         const res = await fetcher(url, {
           method,
-          headers: { 'Content-Type': 'application/json' },
+          headers,
           body: JSON.stringify(payload)
         });
 
         if (res && !res.ok) {
+          if (res.status === 401) {
+            isAuthenticated = false;
+            pendingAction = { type: formData.id ? 'edit' : 'create', doc: formData };
+            isAuthModalOpen = true;
+            isSubmitting = false;
+            return;
+          }
           const errData = res.json ? await res.json().catch(() => ({})) : {};
           formError = errData.message || 'Server rejected form submission. Please check input.';
           isSubmitting = false;
@@ -403,7 +469,7 @@
         summary: formData.summary,
         category: formData.category,
         tags: parsedTags,
-        author: formData.author || 'Administrator',
+        author: formData.author || authUsername || 'Administrator',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         fileUrl: '/files/protocols/new-material.pdf'
@@ -418,6 +484,11 @@
 
   // Delete Dialog Functions
   export function openDeleteModal(doc) {
+    if (!isAuthenticated) {
+      pendingAction = { type: 'delete', doc };
+      isAuthModalOpen = true;
+      return;
+    }
     itemToDelete = doc;
     isDeleteModalOpen = true;
   }
@@ -436,7 +507,9 @@
       const fetcher = getEffectiveFetch();
       if (fetcher) {
         try {
-          fetcher(`${submitApiEndpoint}/${docId}`, { method: 'DELETE' }).catch(() => {});
+          const headers = {};
+          if (authHeader) headers['Authorization'] = authHeader;
+          fetcher(`${submitApiEndpoint}/${docId}`, { method: 'DELETE', headers }).catch(() => {});
         } catch (e) {}
       }
     }
@@ -454,6 +527,7 @@
     if (e.key === 'Escape') {
       if (isDeleteModalOpen) cancelDelete();
       if (isFormOpen) closeForm();
+      if (isAuthModalOpen) closeAuthModal();
     }
   }
 
@@ -529,8 +603,37 @@
         </div>
       </div>
 
-      <!-- Action Buttons for Admin -->
+      <!-- Action Buttons & Authentication Status -->
       <div class="flex items-center gap-2">
+        {#if isAuthenticated}
+          <div
+            class="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-surface-container-high rounded-DEFAULT border border-outline-variant font-label-md text-xs text-on-surface"
+            data-testid="auth-status-indicator"
+          >
+            <span class="material-symbols-outlined text-primary" style="font-size: 16px;" aria-hidden="true">admin_panel_settings</span>
+            <span>Admin: <strong class="text-primary font-semibold">{authUsername}</strong></span>
+          </div>
+
+          <button
+            type="button"
+            class="px-3 py-2 border border-outline-variant text-on-surface hover:bg-surface-container-high font-label-md text-xs rounded-DEFAULT transition-colors focus:ring-2 focus:ring-primary focus:outline-none shrink-0 min-h-[44px]"
+            on:click={handleLogout}
+            data-testid="logout-btn"
+          >
+            Log Out
+          </button>
+        {:else}
+          <button
+            type="button"
+            class="px-3 py-2 border border-primary text-primary hover:bg-primary-container hover:text-on-primary-container font-label-md text-xs rounded-DEFAULT transition-colors focus:ring-2 focus:ring-primary focus:outline-none shrink-0 min-h-[44px] flex items-center gap-1"
+            on:click={openAuthModal}
+            data-testid="login-btn"
+          >
+            <span class="material-symbols-outlined" style="font-size: 16px;" aria-hidden="true">lock</span>
+            <span>Admin Login</span>
+          </button>
+        {/if}
+
         <button
           type="button"
           class="px-3 py-2 bg-primary text-on-primary font-label-md text-label-md rounded-DEFAULT hover:bg-primary-container hover:text-on-primary-container transition-colors focus:ring-2 focus:ring-primary focus:outline-none flex items-center gap-1 shrink-0 min-h-[44px]"
@@ -625,6 +728,25 @@
       {/if}
     </div>
   </header>
+
+  <!-- Success / Auth Feedback Banner -->
+  {#if authSuccessFeedback}
+    <div class="px-margin-mobile md:px-margin-desktop pt-4 max-w-container-max mx-auto w-full" data-testid="auth-feedback-banner">
+      <div role="status" class="p-3 bg-primary-container border border-primary text-on-primary-container rounded-lg flex items-center justify-between gap-3 shadow-sm font-body-sm">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-primary" aria-hidden="true">check_circle</span>
+          <span>{authSuccessFeedback}</span>
+        </div>
+        <button
+          type="button"
+          class="text-xs underline hover:no-underline text-primary"
+          on:click={() => { authSuccessFeedback = null; }}
+        >
+          Dismiss
+        </button>
+      </div>
+    </div>
+  {/if}
 
   <!-- Download/Search Error Banner -->
   {#if downloadError || searchError}
@@ -729,7 +851,7 @@
                 <button
                   type="button"
                   aria-label={`Edit document ${doc.title}`}
-                  class="px-2 py-1 bg-surface-container-high text-on-surface hover:bg-surface-container-highest text-xs font-label-md rounded-DEFAULT transition-colors flex items-center gap-1 focus:ring-2 focus:ring-primary focus:outline-none"
+                  class="px-2 py-1 bg-surface-container-high text-on-surface hover:bg-surface-container-highest text-xs font-label-md rounded-DEFAULT transition-colors flex items-center gap-1 focus:ring-2 focus:ring-primary focus:outline-none min-h-[36px]"
                   on:click|stopPropagation={() => openEditForm(doc)}
                   data-testid={`edit-btn-${doc.id}`}
                 >
@@ -740,7 +862,7 @@
                 <button
                   type="button"
                   aria-label={`Delete document ${doc.title}`}
-                  class="px-2 py-1 bg-error-container text-on-error-container hover:bg-error hover:text-on-error text-xs font-label-md rounded-DEFAULT transition-colors flex items-center gap-1 focus:ring-2 focus:ring-error focus:outline-none"
+                  class="px-2 py-1 bg-error-container text-on-error-container hover:bg-error hover:text-on-error text-xs font-label-md rounded-DEFAULT transition-colors flex items-center gap-1 focus:ring-2 focus:ring-error focus:outline-none min-h-[36px]"
                   on:click|stopPropagation={() => openDeleteModal(doc)}
                   data-testid={`delete-btn-${doc.id}`}
                 >
@@ -751,7 +873,7 @@
                 <button
                   type="button"
                   aria-label={`Download document ${doc.title}`}
-                  class="px-3 py-1 bg-primary-container text-on-primary-container hover:bg-primary hover:text-on-primary text-xs font-label-md rounded-DEFAULT transition-colors flex items-center gap-1 focus:ring-2 focus:ring-primary focus:outline-none shrink-0"
+                  class="px-3 py-1 bg-primary-container text-on-primary-container hover:bg-primary hover:text-on-primary text-xs font-label-md rounded-DEFAULT transition-colors flex items-center gap-1 focus:ring-2 focus:ring-primary focus:outline-none shrink-0 min-h-[36px]"
                   on:click|stopPropagation={() => handleDownloadFile(doc, false)}
                   data-testid={`download-btn-${doc.id}`}
                 >
@@ -933,6 +1055,13 @@
       <span>Add Item</span>
     </button>
   </nav>
+
+  <!-- Authentication Modal -->
+  <AuthModal
+    bind:isOpen={isAuthModalOpen}
+    on:close={closeAuthModal}
+    on:success={handleAuthSuccess}
+  />
 
   <!-- Create / Edit Material Modal Form -->
   {#if isFormOpen}
