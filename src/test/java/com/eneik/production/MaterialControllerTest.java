@@ -134,6 +134,66 @@ class MaterialControllerTest {
     }
 
     @Test
+    void testCreateMaterialUnauthenticatedReturns401() throws Exception {
+        byte[] fileBytes = "PDF report content".getBytes();
+        MockMultipartFile file = new MockMultipartFile("file", "report.pdf", "application/pdf", fileBytes);
+
+        mockMvc.perform(multipart("/api/materials")
+                        .file(file)
+                        .param("title", "Epidemiological Report 2026"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithMockUser(username="regularUser", roles={"USER"})
+    void testCreateMaterialForbiddenReturns403() throws Exception {
+        byte[] fileBytes = "PDF report content".getBytes();
+        MockMultipartFile file = new MockMultipartFile("file", "report.pdf", "application/pdf", fileBytes);
+
+        mockMvc.perform(multipart("/api/materials")
+                        .file(file)
+                        .param("title", "Epidemiological Report 2026"))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void testUpdateMaterialUnauthenticatedReturns401() throws Exception {
+        mockMvc.perform(multipart("/api/materials/1")
+                        .with(request -> {
+                            request.setMethod("PUT");
+                            return request;
+                        })
+                        .param("title", "Updated Title"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithMockUser(username="regularUser", roles={"USER"})
+    void testUpdateMaterialForbiddenReturns403() throws Exception {
+        mockMvc.perform(multipart("/api/materials/1")
+                        .with(request -> {
+                            request.setMethod("PUT");
+                            return request;
+                        })
+                        .param("title", "Updated Title"))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void testDeleteMaterialUnauthenticatedReturns401() throws Exception {
+        mockMvc.perform(delete("/api/materials/1"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithMockUser(username="regularUser", roles={"USER"})
+    void testDeleteMaterialForbiddenReturns403() throws Exception {
+        mockMvc.perform(delete("/api/materials/1"))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(username="user",roles={"ADMIN"})
     void testUpdateMaterialSuccess() throws Exception {
         MaterialEntity material = new MaterialEntity("Original Title", "Original Desc", "Original Content", "report", List.of("oldtag"), "orig.pdf", "application/pdf", "orig bytes".getBytes());
         MaterialEntity saved = materialRepository.save(material);
@@ -175,6 +235,7 @@ class MaterialControllerTest {
     }
 
     @Test
+    @WithMockUser(username="user",roles={"ADMIN"})
     void testUpdateMaterialValidationErrorMissingTitle() throws Exception {
         MaterialEntity material = new MaterialEntity("Original Title", "Original Desc", "Original Content", null, null, null);
         MaterialEntity saved = materialRepository.save(material);
@@ -191,6 +252,7 @@ class MaterialControllerTest {
     }
 
     @Test
+    @WithMockUser(username="user",roles={"ADMIN"})
     void testUpdateMaterialNotFound() throws Exception {
         mockMvc.perform(multipart("/api/materials/99999")
                         .with(request -> {
@@ -202,6 +264,7 @@ class MaterialControllerTest {
     }
 
     @Test
+    @WithMockUser(username="user",roles={"ADMIN"})
     void testDeleteMaterialSuccess() throws Exception {
         MaterialEntity material = new MaterialEntity("Title to delete", "Desc", "Content", null, null, null);
         MaterialEntity saved = materialRepository.save(material);
@@ -213,6 +276,7 @@ class MaterialControllerTest {
     }
 
     @Test
+    @WithMockUser(username="user",roles={"ADMIN"})
     void testDeleteMaterialNotFound() throws Exception {
         mockMvc.perform(delete("/api/materials/99999"))
                 .andExpect(status().isNotFound());

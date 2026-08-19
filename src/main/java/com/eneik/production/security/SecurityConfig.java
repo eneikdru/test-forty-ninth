@@ -2,6 +2,7 @@ package com.eneik.production.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
@@ -37,6 +38,9 @@ public class SecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/v1/protocols/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/materials", "/api/materials/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/api/materials", "/api/materials/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/materials", "/api/materials/**").hasRole("ADMIN")
                 .anyRequest().permitAll()
             )
             .httpBasic(withDefaults());
