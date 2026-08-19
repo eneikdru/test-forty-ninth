@@ -3,6 +3,7 @@ package com.eneik.production;
 import com.eneik.production.models.persistence.InternalTaskEntity;
 import com.eneik.production.repository.InternalTaskRepository;
 import com.eneik.production.service.GitHubPrClient;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

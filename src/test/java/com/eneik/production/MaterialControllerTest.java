@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -36,6 +37,7 @@ class MaterialControllerTest {
     }
 
     @Test
+    @WithMockUser(username="user",roles={"ADMIN"})
     void testSearchMaterialsEndpoint() throws Exception {
         MaterialEntity m1 = new MaterialEntity("Flu Guidelines", "Seasonal influenza management", "Text", "flu.pdf", "application/pdf", "dummy pdf content".getBytes());
         MaterialEntity m2 = new MaterialEntity("COVID Protocol", "Coronavirus response details", "Text", "covid.pdf", "application/pdf", "dummy covid content".getBytes());
@@ -54,6 +56,7 @@ class MaterialControllerTest {
     }
 
     @Test
+    @WithMockUser(username="user",roles={"ADMIN"})
     void testDownloadDocumentEndpoint() throws Exception {
         byte[] contentBytes = "Sample document file binary content".getBytes();
         MaterialEntity material = new MaterialEntity("Sample Doc", "Description", "Content", "test_doc.pdf", "application/pdf", contentBytes);
@@ -68,12 +71,14 @@ class MaterialControllerTest {
     }
 
     @Test
+    @WithMockUser(username="user",roles={"ADMIN"})
     void testDownloadDocumentNotFound() throws Exception {
         mockMvc.perform(get("/api/materials/99999/download"))
                 .andExpect(status().isNotFound());
     }
 
     @Test
+    @WithMockUser(username="user",roles={"ADMIN"})
     void testCreateMaterialSuccess() throws Exception {
         byte[] fileBytes = "PDF report content".getBytes();
         MockMultipartFile file = new MockMultipartFile("file", "report.pdf", "application/pdf", fileBytes);
@@ -99,6 +104,7 @@ class MaterialControllerTest {
     }
 
     @Test
+    @WithMockUser(username="user",roles={"ADMIN"})
     void testCreateMaterialValidationErrorMissingTitle() throws Exception {
         mockMvc.perform(multipart("/api/materials")
                         .param("description", "Missing title description"))

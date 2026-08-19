@@ -2,6 +2,7 @@ package com.eneik.production;
 
 import com.eneik.production.dto.SearchMetricsDTO;
 import com.eneik.production.models.persistence.MaterialEntity;
+import org.springframework.security.test.context.support.WithMockUser;
 import com.eneik.production.repository.MaterialRepository;
 import com.eneik.production.repository.SearchAnalyticsEventRepository;
 import com.eneik.production.service.SearchAnalyticsService;

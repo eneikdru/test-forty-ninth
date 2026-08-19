@@ -2,6 +2,7 @@ package com.eneik.production;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
@@ -20,6 +21,7 @@ public class StaticResourcesTest {
     private MockMvc mockMvc;
 
     @Test
+    @WithMockUser(username="user",roles={"ADMIN"})
     public void testRootServesStaticUI() throws Exception {
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
@@ -27,6 +29,7 @@ public class StaticResourcesTest {
     }
 
     @Test
+    @WithMockUser(username="user",roles={"ADMIN"})
     public void testIndexHtmlServesStaticUI() throws Exception {
         mockMvc.perform(get("/index.html"))
                 .andExpect(status().isOk())
