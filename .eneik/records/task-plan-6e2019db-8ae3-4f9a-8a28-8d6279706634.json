@@ -1,0 +1,34 @@
+{
+  "epics": [
+    {
+      "existingEpicId": "c1be406c-64fa-4620-83c6-49abdc20c7c2",
+      "title": null,
+      "jtbd": null,
+      "kanoClass": null,
+      "cynefinDomain": "clear",
+      "sixSigmaMetric": "reduce critical product runtime failures from 1 to 0",
+      "tocConstraintRef": "local environment startup bottleneck",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Patch the docker-compose.yml file to replace the unresolvable MinIO image tag with a valid, pullable release"
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Patch unresolvable MinIO Docker image tag",
+          "roleTag": "BARCAN-TAG-05",
+          "jtbd": "When implementing the MinIO image fix for this epic, I want to replace the failing tag with a known-good release, so that technical debt is eliminated and infrastructure standards are strictly upheld.",
+          "acceptanceCriteria": "Given a docker-compose.yml file with an unresolvable MinIO image tag,\nWhen the docker-compose config is loaded and the image is pulled,\nThen the MinIO image tag is valid and resolvable, confirming a successful container pull.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "docker image pull reliability",
+          "sixSigmaMetric": "reduce unresolvable docker image startup failures from 1 to 0",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1"
+          ]
+        }
+      ]
+    }
+  ]
+}
