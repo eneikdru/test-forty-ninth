@@ -1,0 +1,34 @@
+{
+  "epics": [
+    {
+      "existingEpicId": "c1be406c-64fa-4620-83c6-49abdc20c7c2",
+      "title": null,
+      "jtbd": null,
+      "kanoClass": null,
+      "cynefinDomain": null,
+      "sixSigmaMetric": "Reduce Docker Compose boot failures due to MinIO image pull errors from 100% to 0%",
+      "tocConstraintRef": "Local environment Docker Compose boot process",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Update the MinIO image tag in the Docker Compose configuration to a resolvable and valid version."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Update MinIO Docker image tag",
+          "roleTag": "BARCAN-TAG-05",
+          "jtbd": "When implementing the MinIO tag fix for this epic, I want to patch the docker-compose configuration with a valid image tag, so that all confirmed falsification findings are resolved and the infrastructure starts successfully.",
+          "acceptanceCriteria": "Given a Docker Compose configuration with an invalid MinIO image tag,\nWhen the image tag is updated to a resolvable version,\nThen executing the Docker Compose boot command should successfully pull the image and start the container without errors.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "MinIO Docker image resolution",
+          "sixSigmaMetric": "Decrease MinIO image resolution error count from 1 to 0",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1"
+          ]
+        }
+      ]
+    }
+  ]
+}
