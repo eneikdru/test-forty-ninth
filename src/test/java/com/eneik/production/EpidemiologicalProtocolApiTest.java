@@ -76,6 +76,12 @@ public class EpidemiologicalProtocolApiTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.pagination.totalElements", is(15)));
 
+        // Test filter by recordType
+        mockMvc.perform(get("/api/v1/protocols")
+                        .param("recordType", "PROTOCOL"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.pagination.totalElements", is(15)));
+
         // Test sorting by title ascending
         mockMvc.perform(get("/api/v1/protocols")
                         .param("sortBy", "title")
@@ -129,7 +135,8 @@ public class EpidemiologicalProtocolApiTest {
                 "DRAFT",
                 "Protocol for novel pathogen rapid response.",
                 "Global Health Inst",
-                2025
+                2025,
+                "PROTOCOL"
         );
 
         // Success 201
@@ -139,7 +146,31 @@ public class EpidemiologicalProtocolApiTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", notNullValue()))
                 .andExpect(jsonPath("$.code", is("EPI-PROTO-NEW-01")))
-                .andExpect(jsonPath("$.title", is("Novel Virus Response Protocol")));
+                .andExpect(jsonPath("$.title", is("Novel Virus Response Protocol")))
+                .andExpect(jsonPath("$.recordType", is("PROTOCOL")));
+
+        // Create DATA record
+        CreateEpidemiologicalProtocolRequest createDataReq = new CreateEpidemiologicalProtocolRequest(
+                "EPI-DATA-NEW-01",
+                "Novel Virus Epidemiological Data",
+                "Respiratory",
+                "v1.0",
+                "DRAFT",
+                "Data for novel pathogen rapid response.",
+                "Global Health Inst",
+                2025,
+                "DATA"
+        );
+
+        // Success 201
+        mockMvc.perform(post("/api/v1/protocols")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(createDataReq)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id", notNullValue()))
+                .andExpect(jsonPath("$.code", is("EPI-DATA-NEW-01")))
+                .andExpect(jsonPath("$.title", is("Novel Virus Epidemiological Data")))
+                .andExpect(jsonPath("$.recordType", is("DATA")));
 
         // Duplicate Code Conflict 409
         CreateEpidemiologicalProtocolRequest duplicateReq = new CreateEpidemiologicalProtocolRequest(
@@ -150,7 +181,8 @@ public class EpidemiologicalProtocolApiTest {
                 "DRAFT",
                 "Test duplicate code",
                 "Test Org",
-                2025
+                2025,
+                "PROTOCOL"
         );
 
         mockMvc.perform(post("/api/v1/protocols")
@@ -172,7 +204,8 @@ public class EpidemiologicalProtocolApiTest {
                 "APPROVED",
                 "Updated guidance notes.",
                 "WHO",
-                2023
+                2023,
+                "PROTOCOL"
         );
 
         mockMvc.perform(put("/api/v1/protocols/1")
@@ -181,7 +214,8 @@ public class EpidemiologicalProtocolApiTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.title", is("Updated COVID-19 Surveillance Protocol")))
-                .andExpect(jsonPath("$.version", is("v3.3")));
+                .andExpect(jsonPath("$.version", is("v3.3")))
+                .andExpect(jsonPath("$.recordType", is("PROTOCOL")));
 
         // NotFound 404 for non-existent protocol ID
         mockMvc.perform(put("/api/v1/protocols/99999")
@@ -199,7 +233,8 @@ public class EpidemiologicalProtocolApiTest {
                 "APPROVED",
                 "Summary",
                 "Org",
-                2024
+                2024,
+                "PROTOCOL"
         );
         mockMvc.perform(put("/api/v1/protocols/1")
                         .contentType(MediaType.APPLICATION_JSON)

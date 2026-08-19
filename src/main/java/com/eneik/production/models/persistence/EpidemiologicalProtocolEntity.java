@@ -40,6 +40,9 @@ public class EpidemiologicalProtocolEntity {
     @Column(name = "publication_year", nullable = false)
     private Integer publicationYear;
 
+    @Column(name = "record_type", nullable = false, length = 50)
+    private String recordType;
+
     @Column(name = "created_at", nullable = false, insertable = false, updatable = false)
     private LocalDateTime createdAt;
 
@@ -54,7 +57,8 @@ public class EpidemiologicalProtocolEntity {
             String status,
             String summary,
             String authorOrganization,
-            Integer publicationYear) {
+            Integer publicationYear,
+            String recordType) {
         this.code = code;
         this.title = title;
         this.category = category;
@@ -63,6 +67,7 @@ public class EpidemiologicalProtocolEntity {
         this.summary = summary;
         this.authorOrganization = authorOrganization;
         this.publicationYear = publicationYear;
+        this.recordType = recordType;
     }
 
     public Long getId() {
@@ -135,6 +140,14 @@ public class EpidemiologicalProtocolEntity {
 
     public void setPublicationYear(Integer publicationYear) {
         this.publicationYear = publicationYear;
+    }
+
+    public String getRecordType() {
+        return recordType;
+    }
+
+    public void setRecordType(String recordType) {
+        this.recordType = recordType;
     }
 
     public LocalDateTime getCreatedAt() {

@@ -31,7 +31,8 @@ public interface EpidemiologicalProtocolRepository extends JpaRepository<Epidemi
            "p.status = COALESCE(:status, p.status), " +
            "p.summary = COALESCE(:summary, p.summary), " +
            "p.authorOrganization = COALESCE(:authorOrganization, p.authorOrganization), " +
-           "p.publicationYear = COALESCE(:publicationYear, p.publicationYear) " +
+           "p.publicationYear = COALESCE(:publicationYear, p.publicationYear), " +
+           "p.recordType = COALESCE(:recordType, p.recordType) " +
            "WHERE p.id = :id AND p.status = :expectedStatus")
     int updateProtocolWithStatusGuard(
             @Param("id") Long id,
@@ -43,5 +44,6 @@ public interface EpidemiologicalProtocolRepository extends JpaRepository<Epidemi
             @Param("status") String status,
             @Param("summary") String summary,
             @Param("authorOrganization") String authorOrganization,
-            @Param("publicationYear") Integer publicationYear);
+            @Param("publicationYear") Integer publicationYear,
+            @Param("recordType") String recordType);
 }

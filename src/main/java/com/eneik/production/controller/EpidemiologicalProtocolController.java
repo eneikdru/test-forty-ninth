@@ -38,13 +38,14 @@ public class EpidemiologicalProtocolController {
             @RequestParam(name = "q", required = false) String q,
             @RequestParam(name = "category", required = false) String category,
             @RequestParam(name = "status", required = false) String status,
+            @RequestParam(name = "recordType", required = false) String recordType,
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "20") int size,
             @RequestParam(name = "sortBy", defaultValue = "createdAt") String sortBy,
             @RequestParam(name = "sortOrder", defaultValue = "desc") String sortOrder) {
 
         EpidemiologicalProtocolSearchResult result = protocolService.searchProtocols(
-                q, category, status, page, size, sortBy, sortOrder);
+                q, category, status, recordType, page, size, sortBy, sortOrder);
         return ResponseEntity.ok(result);
     }
 

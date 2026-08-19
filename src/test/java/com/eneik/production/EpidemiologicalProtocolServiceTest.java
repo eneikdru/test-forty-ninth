@@ -45,7 +45,8 @@ class EpidemiologicalProtocolServiceTest {
                 "DRAFT",
                 "Test summary",
                 "Test Org",
-                2026
+                2026,
+                "PROTOCOL"
         );
 
         EpidemiologicalProtocolDto created = service.createProtocol(req);
@@ -62,7 +63,8 @@ class EpidemiologicalProtocolServiceTest {
                 "DRAFT",
                 "Test",
                 "Org",
-                2026
+                2026,
+                "PROTOCOL"
         );
         assertThrows(IllegalArgumentException.class, () -> service.createProtocol(invalidReq));
 
@@ -73,35 +75,35 @@ class EpidemiologicalProtocolServiceTest {
     @Test
     void testSearchProtocolsPaginationAndFiltering() {
         CreateEpidemiologicalProtocolRequest p1 = new CreateEpidemiologicalProtocolRequest(
-                "EPI-UNIT-101", "Influenza Surveillance", "Respiratory", "v1.0", "APPROVED", "Flu tracking", "CDC", 2025);
+                "EPI-UNIT-101", "Influenza Surveillance", "Respiratory", "v1.0", "APPROVED", "Flu tracking", "CDC", 2025, "PROTOCOL");
         CreateEpidemiologicalProtocolRequest p2 = new CreateEpidemiologicalProtocolRequest(
-                "EPI-UNIT-102", "Dengue Containment", "Vector-Borne", "v2.0", "APPROVED", "Mosquito control", "WHO", 2026);
+                "EPI-UNIT-102", "Dengue Containment", "Vector-Borne", "v2.0", "APPROVED", "Mosquito control", "WHO", 2026, "PROTOCOL");
         CreateEpidemiologicalProtocolRequest p3 = new CreateEpidemiologicalProtocolRequest(
-                "EPI-UNIT-103", "Cholera Water Protocol", "Enteric", "v1.0", "DRAFT", "Water testing", "PAHO", 2024);
+                "EPI-UNIT-103", "Cholera Water Protocol", "Enteric", "v1.0", "DRAFT", "Water testing", "PAHO", 2024, "PROTOCOL");
 
         service.createProtocol(p1);
         service.createProtocol(p2);
         service.createProtocol(p3);
 
         // Search by keyword
-        EpidemiologicalProtocolSearchResult searchResult = service.searchProtocols("Influenza", null, null, 0, 10, "createdAt", "desc");
+        EpidemiologicalProtocolSearchResult searchResult = service.searchProtocols("Influenza", null, null, null, 0, 10, "createdAt", "desc");
         assertEquals(1, searchResult.getItems().size());
         assertEquals("EPI-UNIT-101", searchResult.getItems().get(0).getCode());
 
         // Filter by category
-        EpidemiologicalProtocolSearchResult catResult = service.searchProtocols(null, "Vector-Borne", null, 0, 10, "createdAt", "desc");
+        EpidemiologicalProtocolSearchResult catResult = service.searchProtocols(null, "Vector-Borne", null, null, 0, 10, "createdAt", "desc");
         assertEquals(1, catResult.getItems().size());
         assertEquals("EPI-UNIT-102", catResult.getItems().get(0).getCode());
 
         // Filter by status
-        EpidemiologicalProtocolSearchResult statusResult = service.searchProtocols(null, null, "APPROVED", 0, 10, "createdAt", "desc");
+        EpidemiologicalProtocolSearchResult statusResult = service.searchProtocols(null, null, "APPROVED", null, 0, 10, "createdAt", "desc");
         assertEquals(2, statusResult.getItems().size());
 
         // Invalid pagination arguments
-        assertThrows(IllegalArgumentException.class, () -> service.searchProtocols(null, null, null, -1, 10, "createdAt", "desc"));
-        assertThrows(IllegalArgumentException.class, () -> service.searchProtocols(null, null, null, 0, 0, "createdAt", "desc"));
-        assertThrows(IllegalArgumentException.class, () -> service.searchProtocols(null, null, null, 0, 101, "createdAt", "desc"));
-        assertThrows(IllegalArgumentException.class, () -> service.searchProtocols(null, null, null, 0, 10, "invalidField", "desc"));
+        assertThrows(IllegalArgumentException.class, () -> service.searchProtocols(null, null, null, null, -1, 10, "createdAt", "desc"));
+        assertThrows(IllegalArgumentException.class, () -> service.searchProtocols(null, null, null, null, 0, 0, "createdAt", "desc"));
+        assertThrows(IllegalArgumentException.class, () -> service.searchProtocols(null, null, null, null, 0, 101, "createdAt", "desc"));
+        assertThrows(IllegalArgumentException.class, () -> service.searchProtocols(null, null, null, null, 0, 10, "invalidField", "desc"));
     }
 
     @Test
@@ -114,7 +116,8 @@ class EpidemiologicalProtocolServiceTest {
                 "DRAFT",
                 "Original summary",
                 "Org A",
-                2025
+                2025,
+                "PROTOCOL"
         );
         EpidemiologicalProtocolDto created = service.createProtocol(req);
 
@@ -126,7 +129,8 @@ class EpidemiologicalProtocolServiceTest {
                 "APPROVED",
                 "Updated summary",
                 "Org A",
-                2026
+                2026,
+                "PROTOCOL"
         );
 
         EpidemiologicalProtocolDto updated = service.updateProtocol(created.getId(), updateReq);
@@ -144,7 +148,8 @@ class EpidemiologicalProtocolServiceTest {
                 "APPROVED",
                 "Conflicting summary",
                 "Org A",
-                2026
+                2026,
+                "PROTOCOL"
         );
         assertEquals(0, updatedRows);
     }
@@ -159,7 +164,8 @@ class EpidemiologicalProtocolServiceTest {
                 "DRAFT",
                 "Delete summary",
                 "Org B",
-                2025
+                2025,
+                "PROTOCOL"
         );
         EpidemiologicalProtocolDto created = service.createProtocol(req);
 

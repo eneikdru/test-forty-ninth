@@ -14,6 +14,7 @@ public class EpidemiologicalProtocolDto {
     private String summary;
     private String authorOrganization;
     private Integer publicationYear;
+    private String recordType;
     private LocalDateTime createdAt;
 
     public EpidemiologicalProtocolDto() {
@@ -29,6 +30,7 @@ public class EpidemiologicalProtocolDto {
             String summary,
             String authorOrganization,
             Integer publicationYear,
+            String recordType,
             LocalDateTime createdAt) {
         this.id = id;
         this.code = code;
@@ -39,6 +41,7 @@ public class EpidemiologicalProtocolDto {
         this.summary = summary;
         this.authorOrganization = authorOrganization;
         this.publicationYear = publicationYear;
+        this.recordType = recordType;
         this.createdAt = createdAt;
     }
 
@@ -56,6 +59,7 @@ public class EpidemiologicalProtocolDto {
                 entity.getSummary(),
                 entity.getAuthorOrganization(),
                 entity.getPublicationYear(),
+                entity.getRecordType(),
                 entity.getCreatedAt()
         );
     }
@@ -130,6 +134,14 @@ public class EpidemiologicalProtocolDto {
 
     public void setPublicationYear(Integer publicationYear) {
         this.publicationYear = publicationYear;
+    }
+
+    public String getRecordType() {
+        return recordType;
+    }
+
+    public void setRecordType(String recordType) {
+        this.recordType = recordType;
     }
 
     public LocalDateTime getCreatedAt() {
