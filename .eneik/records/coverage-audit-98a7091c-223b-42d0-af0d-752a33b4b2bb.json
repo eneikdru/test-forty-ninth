@@ -1,0 +1,18 @@
+{
+  "gaps": [
+    {
+      "title": "Missing Material Management Endpoints",
+      "roleTag": "BARCAN-TAG-02",
+      "jtbd": "When managing epidemiological materials, I want to update and delete existing records, so that I can keep the knowledge base accurate and relevant.",
+      "acceptanceCriteria": "Given an existing material record, When a client sends a PUT or DELETE request to the Material API, Then the material is correctly updated or removed from the system.",
+      "reason": "The brief explicitly requests 'управления эпидемиологическими материалами' (managing epidemiological materials). The Material API only supports reading and creating; Update and Delete are absent despite frontend UI elements assuming their existence."
+    },
+    {
+      "title": "Missing Authentication and Session Management",
+      "roleTag": "BARCAN-TAG-08",
+      "jtbd": "When accessing the epidemiological knowledge base, I want to authenticate my identity, so that only authorized personnel can add, modify, or view sensitive protocols.",
+      "acceptanceCriteria": "Given a user attempting to access the system, When they provide valid credentials, Then they are granted an authenticated session with appropriate role-based permissions.",
+      "reason": "DOMAIN-STANDARD expectation: Any system designed for 'managing epidemiological materials, protocols, and data' inherently handles sensitive medical or institutional knowledge, which requires a standard login/session security model to prevent unauthorized tampering."
+    }
+  ]
+}
