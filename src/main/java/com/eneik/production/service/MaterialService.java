@@ -82,4 +82,40 @@ public class MaterialService {
         MaterialEntity saved = materialRepository.save(entity);
         return MaterialDto.fromEntity(saved);
     }
+
+    @Transactional
+    public Optional<MaterialDto> updateMaterial(Long id, MaterialUploadDto uploadDto) {
+        Optional<MaterialEntity> optionalMaterial = materialRepository.findById(id);
+        if (optionalMaterial.isEmpty()) {
+            return Optional.empty();
+        }
+
+        MaterialEntity entity = optionalMaterial.get();
+        entity.setTitle(uploadDto.getTitle());
+        entity.setDescription(uploadDto.getDescription());
+        entity.setContent(uploadDto.getContent());
+
+        MultipartFile file = uploadDto.getFile();
+        if (file != null && !file.isEmpty()) {
+            entity.setFileName(file.getOriginalFilename());
+            entity.setContentType(file.getContentType());
+            try {
+                entity.setFileData(file.getBytes());
+            } catch (IOException e) {
+                throw new IllegalArgumentException("Failed to read uploaded file data", e);
+            }
+        }
+
+        MaterialEntity saved = materialRepository.save(entity);
+        return Optional.of(MaterialDto.fromEntity(saved));
+    }
+
+    @Transactional
+    public boolean deleteMaterial(Long id) {
+        if (!materialRepository.existsById(id)) {
+            return false;
+        }
+        materialRepository.deleteById(id);
+        return true;
+    }
 }

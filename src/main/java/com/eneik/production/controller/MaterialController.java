@@ -17,11 +17,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -104,6 +106,45 @@ public class MaterialController {
 
         MaterialDto created = materialService.createMaterial(uploadDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
+    }
+
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> updateMaterial(
+            @PathVariable("id") Long id,
+            @ModelAttribute MaterialUploadDto uploadDto,
+            HttpServletRequest request) {
+        List<FieldErrorDto> fieldErrors = new ArrayList<>();
+        if (uploadDto == null || uploadDto.getTitle() == null || uploadDto.getTitle().trim().isEmpty()) {
+            fieldErrors.add(new FieldErrorDto("title", "Title is required"));
+        }
+
+        if (!fieldErrors.isEmpty()) {
+            ErrorResponse errorResponse = new ErrorResponse(
+                    HttpStatus.BAD_REQUEST.value(),
+                    HttpStatus.BAD_REQUEST.getReasonPhrase(),
+                    "VALIDATION_ERROR",
+                    "Invalid material update request",
+                    request.getRequestURI(),
+                    fieldErrors
+            );
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        }
+
+        Optional<MaterialDto> updated = materialService.updateMaterial(id, uploadDto);
+        if (updated.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(updated.get());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteMaterial(@PathVariable("id") Long id) {
+        boolean deleted = materialService.deleteMaterial(id);
+        if (!deleted) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.noContent().build();
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
