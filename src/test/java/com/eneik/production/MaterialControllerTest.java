@@ -16,6 +16,8 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -111,5 +113,82 @@ class MaterialControllerTest {
                 .andExpect(jsonPath("$.details[0].message", is("Title is required")));
 
         assertEquals(0, materialRepository.count());
+    }
+
+    @Test
+    void testUpdateMaterialSuccess() throws Exception {
+        MaterialEntity material = new MaterialEntity("Original Title", "Original Desc", "Original Content", "orig.pdf", "application/pdf", "orig bytes".getBytes());
+        MaterialEntity saved = materialRepository.save(material);
+
+        byte[] updatedFileBytes = "Updated PDF report content".getBytes();
+        MockMultipartFile file = new MockMultipartFile("file", "updated_report.pdf", "application/pdf", updatedFileBytes);
+
+        mockMvc.perform(multipart("/api/materials/{id}", saved.getId())
+                        .file(file)
+                        .with(request -> {
+                            request.setMethod("PUT");
+                            return request;
+                        })
+                        .param("title", "Updated Title")
+                        .param("description", "Updated Desc")
+                        .param("content", "Updated Content"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(saved.getId().intValue())))
+                .andExpect(jsonPath("$.title", is("Updated Title")))
+                .andExpect(jsonPath("$.description", is("Updated Desc")))
+                .andExpect(jsonPath("$.content", is("Updated Content")))
+                .andExpect(jsonPath("$.fileName", is("updated_report.pdf")))
+                .andExpect(jsonPath("$.contentType", is("application/pdf")));
+
+        MaterialEntity updated = materialRepository.findById(saved.getId()).orElseThrow();
+        assertEquals("Updated Title", updated.getTitle());
+        assertEquals("Updated Desc", updated.getDescription());
+        assertEquals("Updated Content", updated.getContent());
+        assertEquals("updated_report.pdf", updated.getFileName());
+        assertArrayEquals(updatedFileBytes, updated.getFileData());
+    }
+
+    @Test
+    void testUpdateMaterialValidationErrorMissingTitle() throws Exception {
+        MaterialEntity material = new MaterialEntity("Original Title", "Original Desc", "Original Content", null, null, null);
+        MaterialEntity saved = materialRepository.save(material);
+
+        mockMvc.perform(multipart("/api/materials/{id}", saved.getId())
+                        .with(request -> {
+                            request.setMethod("PUT");
+                            return request;
+                        })
+                        .param("description", "Updated Desc Without Title"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code", is("VALIDATION_ERROR")))
+                .andExpect(jsonPath("$.details[0].field", is("title")));
+    }
+
+    @Test
+    void testUpdateMaterialNotFound() throws Exception {
+        mockMvc.perform(multipart("/api/materials/99999")
+                        .with(request -> {
+                            request.setMethod("PUT");
+                            return request;
+                        })
+                        .param("title", "Updated Title"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void testDeleteMaterialSuccess() throws Exception {
+        MaterialEntity material = new MaterialEntity("Title to delete", "Desc", "Content", null, null, null);
+        MaterialEntity saved = materialRepository.save(material);
+
+        mockMvc.perform(delete("/api/materials/{id}", saved.getId()))
+                .andExpect(status().isNoContent());
+
+        assertFalse(materialRepository.existsById(saved.getId()));
+    }
+
+    @Test
+    void testDeleteMaterialNotFound() throws Exception {
+        mockMvc.perform(delete("/api/materials/99999"))
+                .andExpect(status().isNotFound());
     }
 }
