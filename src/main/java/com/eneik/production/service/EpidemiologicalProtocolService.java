@@ -30,7 +30,7 @@ public class EpidemiologicalProtocolService {
     }
 
     public EpidemiologicalProtocolSearchResult searchProtocols(
-            String q, String category, String status, int page, int size, String sortBy, String sortOrder) {
+            String q, String category, String status, String recordType, int page, int size, String sortBy, String sortOrder) {
 
         if (page < 0) {
             throw new IllegalArgumentException("Query parameter 'page' must be greater than or equal to 0");
@@ -79,6 +79,10 @@ public class EpidemiologicalProtocolService {
                 predicates.add(cb.equal(cb.upper(root.get("status")), status.toUpperCase().trim()));
             }
 
+            if (recordType != null && !recordType.isBlank()) {
+                predicates.add(cb.equal(cb.upper(root.get("recordType")), recordType.toUpperCase().trim()));
+            }
+
             return cb.and(predicates.toArray(new Predicate[0]));
         };
 
@@ -121,7 +125,8 @@ public class EpidemiologicalProtocolService {
                 request.getStatus(),
                 request.getSummary(),
                 request.getAuthorOrganization(),
-                request.getPublicationYear()
+                request.getPublicationYear(),
+                request.getRecordType() != null && !request.getRecordType().isBlank() ? request.getRecordType() : "PROTOCOL"
         );
 
         EpidemiologicalProtocolEntity saved = repository.save(entity);
@@ -149,6 +154,7 @@ public class EpidemiologicalProtocolService {
         String newSummary = request.getSummary() != null ? request.getSummary() : existing.getSummary();
         String newAuthorOrg = request.getAuthorOrganization() != null ? request.getAuthorOrganization() : existing.getAuthorOrganization();
         Integer newPubYear = request.getPublicationYear() != null ? request.getPublicationYear() : existing.getPublicationYear();
+        String newRecordType = request.getRecordType() != null ? request.getRecordType() : existing.getRecordType();
 
         int rowsUpdated = repository.updateProtocolWithStatusGuard(
                 id,
@@ -160,7 +166,8 @@ public class EpidemiologicalProtocolService {
                 newStatus,
                 newSummary,
                 newAuthorOrg,
-                newPubYear
+                newPubYear,
+                newRecordType
         );
 
         if (rowsUpdated == 0) {

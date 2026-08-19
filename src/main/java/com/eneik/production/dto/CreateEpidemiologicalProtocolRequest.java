@@ -10,6 +10,7 @@ public class CreateEpidemiologicalProtocolRequest {
     private String summary;
     private String authorOrganization;
     private Integer publicationYear;
+    private String recordType;
 
     public CreateEpidemiologicalProtocolRequest() {
     }
@@ -22,7 +23,8 @@ public class CreateEpidemiologicalProtocolRequest {
             String status,
             String summary,
             String authorOrganization,
-            Integer publicationYear) {
+            Integer publicationYear,
+            String recordType) {
         this.code = code;
         this.title = title;
         this.category = category;
@@ -31,6 +33,7 @@ public class CreateEpidemiologicalProtocolRequest {
         this.summary = summary;
         this.authorOrganization = authorOrganization;
         this.publicationYear = publicationYear;
+        this.recordType = recordType;
     }
 
     public String getCode() {
@@ -95,5 +98,13 @@ public class CreateEpidemiologicalProtocolRequest {
 
     public void setPublicationYear(Integer publicationYear) {
         this.publicationYear = publicationYear;
+    }
+
+    public String getRecordType() {
+        return recordType;
+    }
+
+    public void setRecordType(String recordType) {
+        this.recordType = recordType;
     }
 }
