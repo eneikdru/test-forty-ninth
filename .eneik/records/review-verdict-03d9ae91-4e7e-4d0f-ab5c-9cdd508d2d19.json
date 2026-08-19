@@ -1,0 +1,19 @@
+{
+  "verdicts": [
+    {
+      "sourceIndex": 0,
+      "verdict": "block",
+      "criticalReason": "The PR diff contains changes across a massive number of unrelated files (240 files changed, 20901 insertions), including modifying/deleting task plan files in `.eneik/records` and modifying product code in controllers and services, which directly contradicts the task boundaries 'Adjust only the build, Docker, or deployment setting needed for this JTBD slice' and 'Never create, write, modify, or commit anything under a path starting with .eneik/'.",
+      "concerns": [
+        {
+          "text": "Modifies files in `.eneik/` which is strictly forbidden.",
+          "severity": "critical"
+        },
+        {
+          "text": "Massive number of unrelated file changes, well beyond the stated scope of modifying Docker/build configurations.",
+          "severity": "critical"
+        }
+      ]
+    }
+  ]
+}
