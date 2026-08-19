@@ -1,0 +1,2 @@
+ALTER TABLE materials DROP COLUMN IF EXISTS tags;
+ALTER TABLE materials DROP COLUMN IF EXISTS category;

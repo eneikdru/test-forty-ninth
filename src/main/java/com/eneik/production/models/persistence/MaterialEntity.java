@@ -37,6 +37,12 @@ public class MaterialEntity {
     @Column(name = "file_data")
     private byte[] fileData;
 
+    @Column(length = 100)
+    private String category;
+
+    @Column(length = 1000)
+    private String tags;
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
@@ -50,6 +56,17 @@ public class MaterialEntity {
         this.fileName = fileName;
         this.contentType = contentType;
         this.fileData = fileData;
+    }
+
+    public MaterialEntity(String title, String description, String content, String fileName, String contentType, byte[] fileData, String category, String tags) {
+        this.title = title;
+        this.description = description;
+        this.content = content;
+        this.fileName = fileName;
+        this.contentType = contentType;
+        this.fileData = fileData;
+        this.category = category;
+        this.tags = tags;
     }
 
     @PrePersist
@@ -113,6 +130,22 @@ public class MaterialEntity {
 
     public void setFileData(byte[] fileData) {
         this.fileData = fileData;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
     }
 
     public LocalDateTime getCreatedAt() {

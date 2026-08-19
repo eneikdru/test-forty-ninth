@@ -89,11 +89,17 @@ class MaterialControllerTest {
                         .file(file)
                         .param("title", "Epidemiological Report 2026")
                         .param("description", "Annual influenza surveillance data")
-                        .param("content", "Full text of epidemiological findings..."))
+                        .param("content", "Full text of epidemiological findings...")
+                        .param("category", "report")
+                        .param("tags", "influenza", "surveillance"))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", notNullValue()))
                 .andExpect(jsonPath("$.title", is("Epidemiological Report 2026")))
                 .andExpect(jsonPath("$.description", is("Annual influenza surveillance data")))
+                .andExpect(jsonPath("$.category", is("report")))
+                .andExpect(jsonPath("$.tags", hasSize(2)))
+                .andExpect(jsonPath("$.tags[0]", is("influenza")))
+                .andExpect(jsonPath("$.tags[1]", is("surveillance")))
                 .andExpect(jsonPath("$.fileName", is("report.pdf")))
                 .andExpect(jsonPath("$.contentType", is("application/pdf")));
 
@@ -102,6 +108,8 @@ class MaterialControllerTest {
         assertEquals("Epidemiological Report 2026", saved.getTitle());
         assertEquals("report.pdf", saved.getFileName());
         assertEquals("application/pdf", saved.getContentType());
+        assertEquals("report", saved.getCategory());
+        assertEquals("influenza,surveillance", saved.getTags());
         assertArrayEquals(fileBytes, saved.getFileData());
     }
 
@@ -137,12 +145,18 @@ class MaterialControllerTest {
                         })
                         .param("title", "Updated Title")
                         .param("description", "Updated Desc")
-                        .param("content", "Updated Content"))
+                        .param("content", "Updated Content")
+                        .param("category", "protocol")
+                        .param("tags", "ebola", "outbreak"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(saved.getId().intValue())))
                 .andExpect(jsonPath("$.title", is("Updated Title")))
                 .andExpect(jsonPath("$.description", is("Updated Desc")))
                 .andExpect(jsonPath("$.content", is("Updated Content")))
+                .andExpect(jsonPath("$.category", is("protocol")))
+                .andExpect(jsonPath("$.tags", hasSize(2)))
+                .andExpect(jsonPath("$.tags[0]", is("ebola")))
+                .andExpect(jsonPath("$.tags[1]", is("outbreak")))
                 .andExpect(jsonPath("$.fileName", is("updated_report.pdf")))
                 .andExpect(jsonPath("$.contentType", is("application/pdf")));
 
@@ -150,6 +164,8 @@ class MaterialControllerTest {
         assertEquals("Updated Title", updated.getTitle());
         assertEquals("Updated Desc", updated.getDescription());
         assertEquals("Updated Content", updated.getContent());
+        assertEquals("protocol", updated.getCategory());
+        assertEquals("ebola,outbreak", updated.getTags());
         assertEquals("updated_report.pdf", updated.getFileName());
         assertArrayEquals(updatedFileBytes, updated.getFileData());
     }

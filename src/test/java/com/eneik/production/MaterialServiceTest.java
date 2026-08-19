@@ -1,8 +1,11 @@
 package com.eneik.production;
 
 import com.eneik.production.dto.MaterialDto;
+import com.eneik.production.dto.MaterialUploadDto;
 import com.eneik.production.dto.SearchMetricsDTO;
 import com.eneik.production.models.persistence.MaterialEntity;
+import java.util.List;
+import java.util.Optional;
 import com.eneik.production.repository.MaterialRepository;
 import com.eneik.production.repository.SearchAnalyticsEventRepository;
 import com.eneik.production.service.MaterialService;
@@ -67,5 +70,40 @@ class MaterialServiceTest {
         SearchMetricsDTO metrics = searchAnalyticsService.getAggregateMetrics();
         assertEquals(4, metrics.getTotalSearches());
         assertEquals(0.25, metrics.getZeroResultRate(), 0.001);
+    }
+
+    @Test
+    void testCreateAndUpdateMaterialWithCategoryAndTags() {
+        MaterialUploadDto uploadDto = new MaterialUploadDto();
+        uploadDto.setTitle("Epidemiological Surveillance Guide");
+        uploadDto.setDescription("Description");
+        uploadDto.setContent("Content");
+        uploadDto.setCategory("protocol");
+        uploadDto.setTags(List.of("influenza", "surveillance"));
+
+        MaterialDto created = materialService.createMaterial(uploadDto);
+        assertNotNull(created.getId());
+        assertEquals("protocol", created.getCategory());
+        assertEquals(List.of("influenza", "surveillance"), created.getTags());
+
+        // Verify direct DB persistence
+        MaterialEntity entityInDb = materialRepository.findById(created.getId()).orElseThrow();
+        assertEquals("protocol", entityInDb.getCategory());
+        assertEquals("influenza,surveillance", entityInDb.getTags());
+
+        // Test update
+        uploadDto.setTitle("Updated Guide");
+        uploadDto.setCategory("guideline");
+        uploadDto.setTags(List.of("covid", "outbreak"));
+
+        Optional<MaterialDto> updatedOpt = materialService.updateMaterial(created.getId(), uploadDto);
+        assertTrue(updatedOpt.isPresent());
+        MaterialDto updated = updatedOpt.get();
+        assertEquals("guideline", updated.getCategory());
+        assertEquals(List.of("covid", "outbreak"), updated.getTags());
+
+        MaterialEntity updatedEntityInDb = materialRepository.findById(created.getId()).orElseThrow();
+        assertEquals("guideline", updatedEntityInDb.getCategory());
+        assertEquals("covid,outbreak", updatedEntityInDb.getTags());
     }
 }

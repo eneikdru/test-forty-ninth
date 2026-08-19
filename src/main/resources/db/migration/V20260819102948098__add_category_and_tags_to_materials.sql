@@ -1,0 +1,2 @@
+ALTER TABLE materials ADD COLUMN category VARCHAR(100);
+ALTER TABLE materials ADD COLUMN tags VARCHAR(1000);
