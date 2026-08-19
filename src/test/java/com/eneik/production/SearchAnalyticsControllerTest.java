@@ -1,5 +1,8 @@
 package com.eneik.production;
 
+import com.eneik.production.repository.SearchAnalyticsEventRepository;
+import org.junit.jupiter.api.BeforeEach;
+
 import com.eneik.production.dto.SearchEventRequestDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -23,6 +26,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 public class SearchAnalyticsControllerTest {
+
+    @Autowired
+    private SearchAnalyticsEventRepository repository;
+
+    @BeforeEach
+    public void setup() {
+        repository.deleteAll();
+    }
 
     @Autowired
     private MockMvc mockMvc;

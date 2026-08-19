@@ -1,8 +1,0 @@
-MERGE INTO epidemiological_protocols (code, title, category, version, status, summary, author_organization, publication_year)
-KEY (code)
-VALUES
-('EPI-PROTO-011', 'Avian Influenza A (H5N1) Field Outbreak Investigation Protocol', 'Zoonotic', 'v2.0', 'APPROVED', 'Guidelines for poultry flock exposure assessment, human contact monitoring, PPE requirements, and antiviral prophylaxis triggers.', 'CDC / WHO Joint Taskforce', 2023),
-('EPI-PROTO-012', 'Marburg Virus Outbreak Containment and Contact Tracing Protocol', 'Viral Hemorrhagic Fever', 'v1.3', 'APPROVED', 'Field containment procedures, barrier nursing standards, contact tracing protocols, and safe burial guidelines for Marburg virus disease outbreaks.', 'World Health Organization', 2023),
-('EPI-PROTO-013', 'Meningococcal Meningitis Epidemic Early Warning and Vaccination Framework', 'Bacterial Meningitis', 'v2.5', 'APPROVED', 'Surveillance threshold definitions, cerebrospinal fluid collection, reactive mass vaccination triggers, and case management protocols.', 'MSF / WHO Meningitis Working Group', 2022),
-('EPI-PROTO-014', 'Rift Valley Fever Vector-Borne Outbreak Surveillance Protocol', 'Vector-Borne', 'v1.2', 'APPROVED', 'Sentinel animal herd surveillance, climate forecasting integration, vector control, and human sentinel site monitoring for Rift Valley Fever.', 'Food and Agriculture Organization / WHO', 2021),
-('EPI-PROTO-015', 'Lassa Fever Surveillance and Clinical Outbreak Control Protocol', 'Viral Hemorrhagic Fever', 'v2.0', 'APPROVED', 'Rodent reservoir management, hospital infection control, ribavirin treatment protocols, and community awareness standards.', 'Nigeria Centre for Disease Control', 2023);
