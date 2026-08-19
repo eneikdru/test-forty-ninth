@@ -1,0 +1,64 @@
+{
+  "epics": [
+    {
+      "existingEpicId": "6e2959ed-3e58-42d6-b8d1-be77197e3404",
+      "title": null,
+      "jtbd": null,
+      "kanoClass": null,
+      "cynefinDomain": null,
+      "sixSigmaMetric": null,
+      "tocConstraintRef": null,
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: The backend MaterialEntity and Service must persist taxonomy fields (category and tags)"
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Patch MaterialEntity and Service for Cataloging Persistence",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When implementing Material Cataloging Persistence for this epic, I want to modify the existing MaterialEntity and Service to capture taxonomy fields, so that category and tags are persisted in the database.",
+          "acceptanceCriteria": "Given a material with category and tags,\nWhen the material is submitted,\nThen the backend successfully persists these fields in the database.\nGiven automated tests,\nWhen the test suite is executed,\nThen it successfully verifies the persistence of the taxonomy fields.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Material taxonomy data mapping constraint",
+          "sixSigmaMetric": "Increase cataloging metadata persistence rate from 0% to 100%",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1"
+          ]
+        }
+      ]
+    },
+    {
+      "existingEpicId": "e9f12eb2-7924-4e56-baa6-96f8ecd2ae54",
+      "title": null,
+      "jtbd": null,
+      "kanoClass": null,
+      "cynefinDomain": null,
+      "sixSigmaMetric": null,
+      "tocConstraintRef": null,
+      "sourceIndex": 1,
+      "requirements": [
+        "R1: The /api/materials endpoints must restrict POST, PUT, and DELETE operations to authenticated users"
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Patch Material Endpoints to Enforce Authentication",
+          "roleTag": "BARCAN-TAG-07",
+          "jtbd": "When implementing Material Management Access Control for this epic, I want to secure the write endpoints, so that unauthenticated actors cannot corrupt epidemiological records.",
+          "acceptanceCriteria": "Given an unauthenticated request,\nWhen attempting to POST, PUT, or DELETE to /api/materials,\nThen the server responds with 401 Unauthorized.\nGiven the security test suite (e.g. *Test.java),\nWhen tests are run,\nThen negative error states for 401 Unauthorized are explicitly verified.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Material management write access vulnerability",
+          "sixSigmaMetric": "Reduce unauthorized material modification rate from 100% to 0%",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1"
+          ]
+        }
+      ]
+    }
+  ]
+}
