@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.eneik.production.EpidemiologicalProtocolSearchWorkflowTest" time="0.089" tests="4" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.eneik.production.MaterialControllerTest" time="0.489" tests="16" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="21"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -44,7 +44,7 @@
     <property name="localRepository" value="/home/jules/.m2/repository"/>
     <property name="java.vendor.url.bug" value="https://bugs.launchpad.net/ubuntu/+source/openjdk-21"/>
     <property name="java.io.tmpdir" value="/tmp"/>
-    <property name="com.zaxxer.hikari.pool_number" value="4"/>
+    <property name="com.zaxxer.hikari.pool_number" value="3"/>
     <property name="java.version" value="21.0.10"/>
     <property name="user.dir" value="/app"/>
     <property name="SECURITY_USER_NAME" value="testuser"/>
@@ -61,20 +61,113 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="65.0"/>
   </properties>
-  <testcase name="testSearchNoResultsFound" classname="com.eneik.production.EpidemiologicalProtocolSearchWorkflowTest" time="0.034">
-    <system-out><![CDATA[2026-08-19T16:40:35.820Z  INFO 140625 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.eneik.production.EpidemiologicalProtocolSearchWorkflowTest]: EpidemiologicalProtocolSearchWorkflowTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2026-08-19T16:40:35.824Z  INFO 140625 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.eneik.production.Application for test class com.eneik.production.EpidemiologicalProtocolSearchWorkflowTest
-Hibernate: select epe1_0.id,epe1_0.author_organization,epe1_0.category,epe1_0.code,epe1_0.created_at,epe1_0.publication_year,epe1_0.status,epe1_0.summary,epe1_0.title,epe1_0.version from epidemiological_protocols epe1_0 where (lower(epe1_0.title) like ? escape '' or lower(epe1_0.code) like ? escape '' or lower(epe1_0.summary) like ? escape '' or lower(epe1_0.author_organization) like ? escape '') order by epe1_0.created_at desc offset ? rows fetch first ? rows only
+  <testcase name="testDeleteMaterialNotFound" classname="com.eneik.production.MaterialControllerTest" time="0.031">
+    <system-out><![CDATA[2026-08-19T16:40:33.244Z  INFO 140625 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.eneik.production.MaterialControllerTest]: MaterialControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-19T16:40:33.249Z  INFO 140625 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.eneik.production.Application for test class com.eneik.production.MaterialControllerTest
+Hibernate: select me1_0.id,me1_0.category,me1_0.content,me1_0.content_type,me1_0.created_at,me1_0.description,me1_0.file_data,me1_0.file_name,me1_0.title from materials me1_0
+Hibernate: select count(*) from materials me1_0 where me1_0.id=?
 ]]></system-out>
   </testcase>
-  <testcase name="testInvalidSortParameterReturns400" classname="com.eneik.production.EpidemiologicalProtocolSearchWorkflowTest" time="0.011"/>
-  <testcase name="testSearchCombinedParameters" classname="com.eneik.production.EpidemiologicalProtocolSearchWorkflowTest" time="0.014">
-    <system-out><![CDATA[Hibernate: select epe1_0.id,epe1_0.author_organization,epe1_0.category,epe1_0.code,epe1_0.created_at,epe1_0.publication_year,epe1_0.status,epe1_0.summary,epe1_0.title,epe1_0.version from epidemiological_protocols epe1_0 where (lower(epe1_0.title) like ? escape '' or lower(epe1_0.code) like ? escape '' or lower(epe1_0.summary) like ? escape '' or lower(epe1_0.author_organization) like ? escape '') and lower(epe1_0.category)=? and upper(epe1_0.status)=? order by epe1_0.created_at desc offset ? rows fetch first ? rows only
+  <testcase name="testDeleteMaterialUnauthenticatedReturns401" classname="com.eneik.production.MaterialControllerTest" time="0.011">
+    <system-out><![CDATA[Hibernate: select me1_0.id,me1_0.category,me1_0.content,me1_0.content_type,me1_0.created_at,me1_0.description,me1_0.file_data,me1_0.file_name,me1_0.title from materials me1_0
 ]]></system-out>
   </testcase>
-  <testcase name="testSearchSortingAndPagination" classname="com.eneik.production.EpidemiologicalProtocolSearchWorkflowTest" time="0.013">
-    <system-out><![CDATA[Hibernate: select epe1_0.id,epe1_0.author_organization,epe1_0.category,epe1_0.code,epe1_0.created_at,epe1_0.publication_year,epe1_0.status,epe1_0.summary,epe1_0.title,epe1_0.version from epidemiological_protocols epe1_0 where 1=1 order by epe1_0.publication_year offset ? rows fetch first ? rows only
-Hibernate: select count(epe1_0.id) from epidemiological_protocols epe1_0 where 1=1
+  <testcase name="testUpdateMaterialNotFound" classname="com.eneik.production.MaterialControllerTest" time="0.036">
+    <system-out><![CDATA[Hibernate: select me1_0.id,me1_0.category,me1_0.content,me1_0.content_type,me1_0.created_at,me1_0.description,me1_0.file_data,me1_0.file_name,me1_0.title from materials me1_0
+Hibernate: select me1_0.id,me1_0.category,me1_0.content,me1_0.content_type,me1_0.created_at,me1_0.description,me1_0.file_data,me1_0.file_name,me1_0.title,t1_0.material_id,t1_0.tag from materials me1_0 left join material_tag_names t1_0 on me1_0.id=t1_0.material_id where me1_0.id=?
+]]></system-out>
+  </testcase>
+  <testcase name="testUpdateMaterialSuccess" classname="com.eneik.production.MaterialControllerTest" time="0.083">
+    <system-out><![CDATA[Hibernate: select me1_0.id,me1_0.category,me1_0.content,me1_0.content_type,me1_0.created_at,me1_0.description,me1_0.file_data,me1_0.file_name,me1_0.title from materials me1_0
+Hibernate: insert into materials (category,content,content_type,created_at,description,file_data,file_name,title,id) values (?,?,?,?,?,?,?,?,default)
+Hibernate: insert into material_tag_names (material_id,tag) values (?,?)
+Hibernate: select me1_0.id,me1_0.category,me1_0.content,me1_0.content_type,me1_0.created_at,me1_0.description,me1_0.file_data,me1_0.file_name,me1_0.title,t1_0.material_id,t1_0.tag from materials me1_0 left join material_tag_names t1_0 on me1_0.id=t1_0.material_id where me1_0.id=?
+Hibernate: update materials set category=?,content=?,content_type=?,description=?,file_data=?,file_name=?,title=? where id=?
+Hibernate: delete from material_tag_names where material_id=?
+Hibernate: insert into material_tag_names (material_id,tag) values (?,?)
+Hibernate: insert into material_tag_names (material_id,tag) values (?,?)
+Hibernate: select me1_0.id,me1_0.category,me1_0.content,me1_0.content_type,me1_0.created_at,me1_0.description,me1_0.file_data,me1_0.file_name,me1_0.title,t1_0.material_id,t1_0.tag from materials me1_0 left join material_tag_names t1_0 on me1_0.id=t1_0.material_id where me1_0.id=?
+]]></system-out>
+  </testcase>
+  <testcase name="testUpdateMaterialUnauthenticatedReturns401" classname="com.eneik.production.MaterialControllerTest" time="0.026">
+    <system-out><![CDATA[Hibernate: select me1_0.id,me1_0.category,me1_0.content,me1_0.content_type,me1_0.created_at,me1_0.description,me1_0.file_data,me1_0.file_name,me1_0.title from materials me1_0
+Hibernate: select t1_0.material_id,t1_0.tag from material_tag_names t1_0 where t1_0.material_id=?
+Hibernate: delete from material_tag_names where material_id=?
+Hibernate: delete from materials where id=?
+]]></system-out>
+  </testcase>
+  <testcase name="testUpdateMaterialForbiddenReturns403" classname="com.eneik.production.MaterialControllerTest" time="0.011">
+    <system-out><![CDATA[Hibernate: select me1_0.id,me1_0.category,me1_0.content,me1_0.content_type,me1_0.created_at,me1_0.description,me1_0.file_data,me1_0.file_name,me1_0.title from materials me1_0
+]]></system-out>
+  </testcase>
+  <testcase name="testCreateMaterialValidationErrorMissingTitle" classname="com.eneik.production.MaterialControllerTest" time="0.025">
+    <system-out><![CDATA[Hibernate: select me1_0.id,me1_0.category,me1_0.content,me1_0.content_type,me1_0.created_at,me1_0.description,me1_0.file_data,me1_0.file_name,me1_0.title from materials me1_0
+Hibernate: select count(*) from materials me1_0
+]]></system-out>
+  </testcase>
+  <testcase name="testSearchMaterialsEndpoint" classname="com.eneik.production.MaterialControllerTest" time="0.064">
+    <system-out><![CDATA[Hibernate: select me1_0.id,me1_0.category,me1_0.content,me1_0.content_type,me1_0.created_at,me1_0.description,me1_0.file_data,me1_0.file_name,me1_0.title from materials me1_0
+Hibernate: insert into materials (category,content,content_type,created_at,description,file_data,file_name,title,id) values (?,?,?,?,?,?,?,?,default)
+Hibernate: insert into materials (category,content,content_type,created_at,description,file_data,file_name,title,id) values (?,?,?,?,?,?,?,?,default)
+Hibernate: select me1_0.id,me1_0.category,me1_0.content,me1_0.content_type,me1_0.created_at,me1_0.description,me1_0.file_data,me1_0.file_name,me1_0.title from materials me1_0 where (? is null or ?='' or lower(me1_0.title) like lower(('%'||?||'%')) escape '' or lower(me1_0.description) like lower(('%'||?||'%')) escape '' or lower(me1_0.content) like lower(('%'||?||'%')) escape '') offset ? rows fetch first ? rows only
+Hibernate: select t1_0.material_id,t1_0.tag from material_tag_names t1_0 where t1_0.material_id=?
+Hibernate: insert into search_analytics_events (created_at,execution_time_ms,filters,query,result_count,user_id,id) values (?,?,?,?,?,?,default)
+]]></system-out>
+  </testcase>
+  <testcase name="testDownloadDocumentNotFound" classname="com.eneik.production.MaterialControllerTest" time="0.033">
+    <system-out><![CDATA[Hibernate: select me1_0.id,me1_0.category,me1_0.content,me1_0.content_type,me1_0.created_at,me1_0.description,me1_0.file_data,me1_0.file_name,me1_0.title from materials me1_0
+Hibernate: select t1_0.material_id,t1_0.tag from material_tag_names t1_0 where t1_0.material_id=?
+Hibernate: select t1_0.material_id,t1_0.tag from material_tag_names t1_0 where t1_0.material_id=?
+Hibernate: delete from materials where id=?
+Hibernate: delete from materials where id=?
+Hibernate: select me1_0.id,me1_0.category,me1_0.content,me1_0.content_type,me1_0.created_at,me1_0.description,me1_0.file_data,me1_0.file_name,me1_0.title,t1_0.material_id,t1_0.tag from materials me1_0 left join material_tag_names t1_0 on me1_0.id=t1_0.material_id where me1_0.id=?
+]]></system-out>
+  </testcase>
+  <testcase name="testDownloadDocumentEndpoint" classname="com.eneik.production.MaterialControllerTest" time="0.024">
+    <system-out><![CDATA[Hibernate: select me1_0.id,me1_0.category,me1_0.content,me1_0.content_type,me1_0.created_at,me1_0.description,me1_0.file_data,me1_0.file_name,me1_0.title from materials me1_0
+Hibernate: insert into materials (category,content,content_type,created_at,description,file_data,file_name,title,id) values (?,?,?,?,?,?,?,?,default)
+Hibernate: select me1_0.id,me1_0.category,me1_0.content,me1_0.content_type,me1_0.created_at,me1_0.description,me1_0.file_data,me1_0.file_name,me1_0.title,t1_0.material_id,t1_0.tag from materials me1_0 left join material_tag_names t1_0 on me1_0.id=t1_0.material_id where me1_0.id=?
+]]></system-out>
+  </testcase>
+  <testcase name="testCreateMaterialForbiddenReturns403" classname="com.eneik.production.MaterialControllerTest" time="0.017">
+    <system-out><![CDATA[Hibernate: select me1_0.id,me1_0.category,me1_0.content,me1_0.content_type,me1_0.created_at,me1_0.description,me1_0.file_data,me1_0.file_name,me1_0.title from materials me1_0
+Hibernate: select t1_0.material_id,t1_0.tag from material_tag_names t1_0 where t1_0.material_id=?
+Hibernate: delete from materials where id=?
+]]></system-out>
+  </testcase>
+  <testcase name="testDeleteMaterialSuccess" classname="com.eneik.production.MaterialControllerTest" time="0.019">
+    <system-out><![CDATA[Hibernate: select me1_0.id,me1_0.category,me1_0.content,me1_0.content_type,me1_0.created_at,me1_0.description,me1_0.file_data,me1_0.file_name,me1_0.title from materials me1_0
+Hibernate: insert into materials (category,content,content_type,created_at,description,file_data,file_name,title,id) values (?,?,?,?,?,?,?,?,default)
+Hibernate: select count(*) from materials me1_0 where me1_0.id=?
+Hibernate: select me1_0.id,me1_0.category,me1_0.content,me1_0.content_type,me1_0.created_at,me1_0.description,me1_0.file_data,me1_0.file_name,me1_0.title,t1_0.material_id,t1_0.tag from materials me1_0 left join material_tag_names t1_0 on me1_0.id=t1_0.material_id where me1_0.id=?
+Hibernate: delete from materials where id=?
+Hibernate: select count(*) from materials me1_0 where me1_0.id=?
+]]></system-out>
+  </testcase>
+  <testcase name="testDeleteMaterialForbiddenReturns403" classname="com.eneik.production.MaterialControllerTest" time="0.009">
+    <system-out><![CDATA[Hibernate: select me1_0.id,me1_0.category,me1_0.content,me1_0.content_type,me1_0.created_at,me1_0.description,me1_0.file_data,me1_0.file_name,me1_0.title from materials me1_0
+]]></system-out>
+  </testcase>
+  <testcase name="testCreateMaterialSuccess" classname="com.eneik.production.MaterialControllerTest" time="0.024">
+    <system-out><![CDATA[Hibernate: select me1_0.id,me1_0.category,me1_0.content,me1_0.content_type,me1_0.created_at,me1_0.description,me1_0.file_data,me1_0.file_name,me1_0.title from materials me1_0
+Hibernate: insert into materials (category,content,content_type,created_at,description,file_data,file_name,title,id) values (?,?,?,?,?,?,?,?,default)
+Hibernate: insert into material_tag_names (material_id,tag) values (?,?)
+Hibernate: insert into material_tag_names (material_id,tag) values (?,?)
+Hibernate: select count(*) from materials me1_0
+Hibernate: select me1_0.id,me1_0.category,me1_0.content,me1_0.content_type,me1_0.created_at,me1_0.description,me1_0.file_data,me1_0.file_name,me1_0.title from materials me1_0
+Hibernate: select t1_0.material_id,t1_0.tag from material_tag_names t1_0 where t1_0.material_id=?
+]]></system-out>
+  </testcase>
+  <testcase name="testCreateMaterialUnauthenticatedReturns401" classname="com.eneik.production.MaterialControllerTest" time="0.018">
+    <system-out><![CDATA[Hibernate: select me1_0.id,me1_0.category,me1_0.content,me1_0.content_type,me1_0.created_at,me1_0.description,me1_0.file_data,me1_0.file_name,me1_0.title from materials me1_0
+Hibernate: select t1_0.material_id,t1_0.tag from material_tag_names t1_0 where t1_0.material_id=?
+Hibernate: delete from material_tag_names where material_id=?
+Hibernate: delete from materials where id=?
+]]></system-out>
+  </testcase>
+  <testcase name="testUpdateMaterialValidationErrorMissingTitle" classname="com.eneik.production.MaterialControllerTest" time="0.014">
+    <system-out><![CDATA[Hibernate: select me1_0.id,me1_0.category,me1_0.content,me1_0.content_type,me1_0.created_at,me1_0.description,me1_0.file_data,me1_0.file_name,me1_0.title from materials me1_0
+Hibernate: insert into materials (category,content,content_type,created_at,description,file_data,file_name,title,id) values (?,?,?,?,?,?,?,?,default)
 ]]></system-out>
   </testcase>
 </testsuite>

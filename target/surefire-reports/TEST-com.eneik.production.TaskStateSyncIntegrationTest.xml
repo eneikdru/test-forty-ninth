@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.eneik.production.EpidemiologicalProtocolSearchWorkflowTest" time="0.089" tests="4" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.eneik.production.TaskStateSyncIntegrationTest" time="1.854" tests="5" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="21"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -44,7 +44,7 @@
     <property name="localRepository" value="/home/jules/.m2/repository"/>
     <property name="java.vendor.url.bug" value="https://bugs.launchpad.net/ubuntu/+source/openjdk-21"/>
     <property name="java.io.tmpdir" value="/tmp"/>
-    <property name="com.zaxxer.hikari.pool_number" value="4"/>
+    <property name="com.zaxxer.hikari.pool_number" value="3"/>
     <property name="java.version" value="21.0.10"/>
     <property name="user.dir" value="/app"/>
     <property name="SECURITY_USER_NAME" value="testuser"/>
@@ -61,20 +61,93 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="65.0"/>
   </properties>
-  <testcase name="testSearchNoResultsFound" classname="com.eneik.production.EpidemiologicalProtocolSearchWorkflowTest" time="0.034">
-    <system-out><![CDATA[2026-08-19T16:40:35.820Z  INFO 140625 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.eneik.production.EpidemiologicalProtocolSearchWorkflowTest]: EpidemiologicalProtocolSearchWorkflowTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2026-08-19T16:40:35.824Z  INFO 140625 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.eneik.production.Application for test class com.eneik.production.EpidemiologicalProtocolSearchWorkflowTest
-Hibernate: select epe1_0.id,epe1_0.author_organization,epe1_0.category,epe1_0.code,epe1_0.created_at,epe1_0.publication_year,epe1_0.status,epe1_0.summary,epe1_0.title,epe1_0.version from epidemiological_protocols epe1_0 where (lower(epe1_0.title) like ? escape '' or lower(epe1_0.code) like ? escape '' or lower(epe1_0.summary) like ? escape '' or lower(epe1_0.author_organization) like ? escape '') order by epe1_0.created_at desc offset ? rows fetch first ? rows only
+  <testcase name="testTaskStateSyncIntegration_stuckTask_reconcilesToInProgress" classname="com.eneik.production.TaskStateSyncIntegrationTest" time="0.093">
+    <system-out><![CDATA[2026-08-19T16:40:31.379Z  INFO 140625 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.eneik.production.TaskStateSyncIntegrationTest]: TaskStateSyncIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-19T16:40:31.387Z  INFO 140625 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.eneik.production.Application for test class com.eneik.production.TaskStateSyncIntegrationTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.5)
+
+2026-08-19T16:40:31.461Z  INFO 140625 --- [           main] c.e.p.TaskStateSyncIntegrationTest       : Starting TaskStateSyncIntegrationTest using Java 21.0.10 with PID 140625 (started by jules in /app)
+2026-08-19T16:40:31.463Z  INFO 140625 --- [           main] c.e.p.TaskStateSyncIntegrationTest       : No active profile set, falling back to 1 default profile: "default"
+2026-08-19T16:40:31.693Z  INFO 140625 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-08-19T16:40:31.712Z  INFO 140625 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 17 ms. Found 4 JPA repository interfaces.
+2026-08-19T16:40:32.120Z  INFO 140625 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Starting...
+2026-08-19T16:40:32.124Z  INFO 140625 --- [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-3 - Added connection conn20: url=jdbc:h2:mem:testdb user=SA
+2026-08-19T16:40:32.125Z  INFO 140625 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Start completed.
+2026-08-19T16:40:32.139Z  INFO 140625 --- [           main] o.f.c.i.resource.ResourceNameValidator   : 1 SQL migrations were detected but not run because they did not follow the filename convention.
+2026-08-19T16:40:32.139Z  INFO 140625 --- [           main] o.f.c.i.resource.ResourceNameValidator   : Set 'validateMigrationNaming' to true to fail fast and see a list of the invalid file names.
+2026-08-19T16:40:32.141Z  INFO 140625 --- [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:h2:mem:testdb (H2 2.2)
+2026-08-19T16:40:32.144Z  WARN 140625 --- [           main] o.f.c.internal.database.base.Database    : Flyway upgrade recommended: H2 2.2.224 is newer than this version of Flyway and support has not been tested. The latest supported version of H2 is 2.2.220.
+2026-08-19T16:40:32.155Z  INFO 140625 --- [           main] o.f.core.internal.command.DbValidate     : Successfully validated 7 migrations (execution time 00:00.008s)
+2026-08-19T16:40:32.161Z  INFO 140625 --- [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "PUBLIC": 20260819025141204
+2026-08-19T16:40:32.162Z  INFO 140625 --- [           main] o.f.core.internal.command.DbMigrate      : Schema "PUBLIC" is up to date. No migration necessary.
+2026-08-19T16:40:32.210Z  INFO 140625 --- [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-08-19T16:40:32.215Z  INFO 140625 --- [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-08-19T16:40:32.224Z  INFO 140625 --- [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-08-19T16:40:32.402Z  INFO 140625 --- [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-08-19T16:40:32.405Z  INFO 140625 --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-08-19T16:40:32.632Z  WARN 140625 --- [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-08-19T16:40:32.772Z  INFO 140625 --- [           main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2026-08-19T16:40:32.867Z  INFO 140625 --- [           main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@149ad42f, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@779406fe, org.springframework.security.web.context.SecurityContextHolderFilter@46650468, org.springframework.security.web.header.HeaderWriterFilter@fc2e91, org.springframework.web.filter.CorsFilter@47fe4f78, org.springframework.security.web.authentication.logout.LogoutFilter@129e23fc, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@777898ff, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@5fa7931b, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@3e4ea6d8, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@74f29818, org.springframework.security.web.session.SessionManagementFilter@4b113562, org.springframework.security.web.access.ExceptionTranslationFilter@79bc0ceb, org.springframework.security.web.access.intercept.AuthorizationFilter@3af15569]
+2026-08-19T16:40:32.983Z  INFO 140625 --- [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-08-19T16:40:32.984Z  INFO 140625 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-08-19T16:40:32.985Z  INFO 140625 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-08-19T16:40:32.999Z  INFO 140625 --- [           main] c.e.p.TaskStateSyncIntegrationTest       : Started TaskStateSyncIntegrationTest in 1.609 seconds (process running for 11.907)
+Hibernate: select ite1_0.id,ite1_0.created_at,ite1_0.github_pr_number,ite1_0.github_pr_state,ite1_0.status,ite1_0.title,ite1_0.updated_at from internal_tasks ite1_0
+Hibernate: select ite1_0.id,ite1_0.created_at,ite1_0.github_pr_number,ite1_0.github_pr_state,ite1_0.status,ite1_0.title,ite1_0.updated_at from internal_tasks ite1_0 where ite1_0.id=?
+Hibernate: insert into internal_tasks (created_at,github_pr_number,github_pr_state,status,title,updated_at,id) values (?,?,?,?,?,?,?)
+Hibernate: select ite1_0.id,ite1_0.created_at,ite1_0.github_pr_number,ite1_0.github_pr_state,ite1_0.status,ite1_0.title,ite1_0.updated_at from internal_tasks ite1_0 where ite1_0.id=?
+Hibernate: update internal_tasks set status=?,github_pr_state=?,updated_at=? where id=? and status=?
+Hibernate: select ite1_0.id,ite1_0.created_at,ite1_0.github_pr_number,ite1_0.github_pr_state,ite1_0.status,ite1_0.title,ite1_0.updated_at from internal_tasks ite1_0 where ite1_0.id=?
 ]]></system-out>
   </testcase>
-  <testcase name="testInvalidSortParameterReturns400" classname="com.eneik.production.EpidemiologicalProtocolSearchWorkflowTest" time="0.011"/>
-  <testcase name="testSearchCombinedParameters" classname="com.eneik.production.EpidemiologicalProtocolSearchWorkflowTest" time="0.014">
-    <system-out><![CDATA[Hibernate: select epe1_0.id,epe1_0.author_organization,epe1_0.category,epe1_0.code,epe1_0.created_at,epe1_0.publication_year,epe1_0.status,epe1_0.summary,epe1_0.title,epe1_0.version from epidemiological_protocols epe1_0 where (lower(epe1_0.title) like ? escape '' or lower(epe1_0.code) like ? escape '' or lower(epe1_0.summary) like ? escape '' or lower(epe1_0.author_organization) like ? escape '') and lower(epe1_0.category)=? and upper(epe1_0.status)=? order by epe1_0.created_at desc offset ? rows fetch first ? rows only
+  <testcase name="testBulkTaskStateSyncIntegration" classname="com.eneik.production.TaskStateSyncIntegrationTest" time="0.047">
+    <system-out><![CDATA[Hibernate: select ite1_0.id,ite1_0.created_at,ite1_0.github_pr_number,ite1_0.github_pr_state,ite1_0.status,ite1_0.title,ite1_0.updated_at from internal_tasks ite1_0
+Hibernate: delete from internal_tasks where id=?
+Hibernate: select ite1_0.id,ite1_0.created_at,ite1_0.github_pr_number,ite1_0.github_pr_state,ite1_0.status,ite1_0.title,ite1_0.updated_at from internal_tasks ite1_0 where ite1_0.id=?
+Hibernate: insert into internal_tasks (created_at,github_pr_number,github_pr_state,status,title,updated_at,id) values (?,?,?,?,?,?,?)
+Hibernate: select ite1_0.id,ite1_0.created_at,ite1_0.github_pr_number,ite1_0.github_pr_state,ite1_0.status,ite1_0.title,ite1_0.updated_at from internal_tasks ite1_0 where ite1_0.id=?
+Hibernate: insert into internal_tasks (created_at,github_pr_number,github_pr_state,status,title,updated_at,id) values (?,?,?,?,?,?,?)
+Hibernate: select ite1_0.id,ite1_0.created_at,ite1_0.github_pr_number,ite1_0.github_pr_state,ite1_0.status,ite1_0.title,ite1_0.updated_at from internal_tasks ite1_0
+Hibernate: update internal_tasks set status=?,github_pr_state=?,updated_at=? where id=? and status=?
+Hibernate: update internal_tasks set status=?,github_pr_state=?,updated_at=? where id=? and status=?
+Hibernate: select ite1_0.id,ite1_0.created_at,ite1_0.github_pr_number,ite1_0.github_pr_state,ite1_0.status,ite1_0.title,ite1_0.updated_at from internal_tasks ite1_0 where ite1_0.id=?
+Hibernate: select ite1_0.id,ite1_0.created_at,ite1_0.github_pr_number,ite1_0.github_pr_state,ite1_0.status,ite1_0.title,ite1_0.updated_at from internal_tasks ite1_0 where ite1_0.id=?
 ]]></system-out>
   </testcase>
-  <testcase name="testSearchSortingAndPagination" classname="com.eneik.production.EpidemiologicalProtocolSearchWorkflowTest" time="0.013">
-    <system-out><![CDATA[Hibernate: select epe1_0.id,epe1_0.author_organization,epe1_0.category,epe1_0.code,epe1_0.created_at,epe1_0.publication_year,epe1_0.status,epe1_0.summary,epe1_0.title,epe1_0.version from epidemiological_protocols epe1_0 where 1=1 order by epe1_0.publication_year offset ? rows fetch first ? rows only
-Hibernate: select count(epe1_0.id) from epidemiological_protocols epe1_0 where 1=1
+  <testcase name="testTaskStateSyncIntegration" classname="com.eneik.production.TaskStateSyncIntegrationTest" time="0.024">
+    <system-out><![CDATA[Hibernate: select ite1_0.id,ite1_0.created_at,ite1_0.github_pr_number,ite1_0.github_pr_state,ite1_0.status,ite1_0.title,ite1_0.updated_at from internal_tasks ite1_0
+Hibernate: delete from internal_tasks where id=?
+Hibernate: delete from internal_tasks where id=?
+Hibernate: select ite1_0.id,ite1_0.created_at,ite1_0.github_pr_number,ite1_0.github_pr_state,ite1_0.status,ite1_0.title,ite1_0.updated_at from internal_tasks ite1_0 where ite1_0.id=?
+Hibernate: insert into internal_tasks (created_at,github_pr_number,github_pr_state,status,title,updated_at,id) values (?,?,?,?,?,?,?)
+Hibernate: select ite1_0.id,ite1_0.created_at,ite1_0.github_pr_number,ite1_0.github_pr_state,ite1_0.status,ite1_0.title,ite1_0.updated_at from internal_tasks ite1_0 where ite1_0.id=?
+Hibernate: update internal_tasks set status=?,github_pr_state=?,updated_at=? where id=? and status=?
+Hibernate: select ite1_0.id,ite1_0.created_at,ite1_0.github_pr_number,ite1_0.github_pr_state,ite1_0.status,ite1_0.title,ite1_0.updated_at from internal_tasks ite1_0 where ite1_0.id=?
+]]></system-out>
+  </testcase>
+  <testcase name="testAtomicUpdateQuery" classname="com.eneik.production.TaskStateSyncIntegrationTest" time="0.019">
+    <system-out><![CDATA[Hibernate: select ite1_0.id,ite1_0.created_at,ite1_0.github_pr_number,ite1_0.github_pr_state,ite1_0.status,ite1_0.title,ite1_0.updated_at from internal_tasks ite1_0
+Hibernate: delete from internal_tasks where id=?
+Hibernate: insert into internal_tasks (created_at,github_pr_number,github_pr_state,status,title,updated_at,id) values (?,?,?,?,?,?,?)
+Hibernate: update internal_tasks set status=?,github_pr_state=?,updated_at=? where id=? and status=?
+Hibernate: update internal_tasks set status=?,github_pr_state=?,updated_at=? where id=? and status=?
+]]></system-out>
+  </testcase>
+  <testcase name="testTaskStateSyncIntegration_prClosed_reconcilesToBlocked" classname="com.eneik.production.TaskStateSyncIntegrationTest" time="0.027">
+    <system-out><![CDATA[Hibernate: select ite1_0.id,ite1_0.created_at,ite1_0.github_pr_number,ite1_0.github_pr_state,ite1_0.status,ite1_0.title,ite1_0.updated_at from internal_tasks ite1_0
+Hibernate: delete from internal_tasks where id=?
+Hibernate: select ite1_0.id,ite1_0.created_at,ite1_0.github_pr_number,ite1_0.github_pr_state,ite1_0.status,ite1_0.title,ite1_0.updated_at from internal_tasks ite1_0 where ite1_0.id=?
+Hibernate: insert into internal_tasks (created_at,github_pr_number,github_pr_state,status,title,updated_at,id) values (?,?,?,?,?,?,?)
+Hibernate: select ite1_0.id,ite1_0.created_at,ite1_0.github_pr_number,ite1_0.github_pr_state,ite1_0.status,ite1_0.title,ite1_0.updated_at from internal_tasks ite1_0 where ite1_0.id=?
+Hibernate: update internal_tasks set status=?,github_pr_state=?,updated_at=? where id=? and status=?
+Hibernate: select ite1_0.id,ite1_0.created_at,ite1_0.github_pr_number,ite1_0.github_pr_state,ite1_0.status,ite1_0.title,ite1_0.updated_at from internal_tasks ite1_0 where ite1_0.id=?
 ]]></system-out>
   </testcase>
 </testsuite>

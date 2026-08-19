@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.eneik.production.EpidemiologicalProtocolSearchWorkflowTest" time="0.089" tests="4" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.eneik.production.DataRestorationVerificationTest" time="1.482" tests="1" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="21"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -61,20 +61,45 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="65.0"/>
   </properties>
-  <testcase name="testSearchNoResultsFound" classname="com.eneik.production.EpidemiologicalProtocolSearchWorkflowTest" time="0.034">
-    <system-out><![CDATA[2026-08-19T16:40:35.820Z  INFO 140625 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.eneik.production.EpidemiologicalProtocolSearchWorkflowTest]: EpidemiologicalProtocolSearchWorkflowTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2026-08-19T16:40:35.824Z  INFO 140625 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.eneik.production.Application for test class com.eneik.production.EpidemiologicalProtocolSearchWorkflowTest
-Hibernate: select epe1_0.id,epe1_0.author_organization,epe1_0.category,epe1_0.code,epe1_0.created_at,epe1_0.publication_year,epe1_0.status,epe1_0.summary,epe1_0.title,epe1_0.version from epidemiological_protocols epe1_0 where (lower(epe1_0.title) like ? escape '' or lower(epe1_0.code) like ? escape '' or lower(epe1_0.summary) like ? escape '' or lower(epe1_0.author_organization) like ? escape '') order by epe1_0.created_at desc offset ? rows fetch first ? rows only
-]]></system-out>
-  </testcase>
-  <testcase name="testInvalidSortParameterReturns400" classname="com.eneik.production.EpidemiologicalProtocolSearchWorkflowTest" time="0.011"/>
-  <testcase name="testSearchCombinedParameters" classname="com.eneik.production.EpidemiologicalProtocolSearchWorkflowTest" time="0.014">
-    <system-out><![CDATA[Hibernate: select epe1_0.id,epe1_0.author_organization,epe1_0.category,epe1_0.code,epe1_0.created_at,epe1_0.publication_year,epe1_0.status,epe1_0.summary,epe1_0.title,epe1_0.version from epidemiological_protocols epe1_0 where (lower(epe1_0.title) like ? escape '' or lower(epe1_0.code) like ? escape '' or lower(epe1_0.summary) like ? escape '' or lower(epe1_0.author_organization) like ? escape '') and lower(epe1_0.category)=? and upper(epe1_0.status)=? order by epe1_0.created_at desc offset ? rows fetch first ? rows only
-]]></system-out>
-  </testcase>
-  <testcase name="testSearchSortingAndPagination" classname="com.eneik.production.EpidemiologicalProtocolSearchWorkflowTest" time="0.013">
-    <system-out><![CDATA[Hibernate: select epe1_0.id,epe1_0.author_organization,epe1_0.category,epe1_0.code,epe1_0.created_at,epe1_0.publication_year,epe1_0.status,epe1_0.summary,epe1_0.title,epe1_0.version from epidemiological_protocols epe1_0 where 1=1 order by epe1_0.publication_year offset ? rows fetch first ? rows only
-Hibernate: select count(epe1_0.id) from epidemiological_protocols epe1_0 where 1=1
+  <testcase name="testFullRestoreAndCriticalWorkflowVerification(Path)" classname="com.eneik.production.DataRestorationVerificationTest" time="0.143">
+    <system-out><![CDATA[2026-08-19T16:40:34.262Z  INFO 140625 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.eneik.production.DataRestorationVerificationTest]: DataRestorationVerificationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-19T16:40:34.264Z  INFO 140625 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.eneik.production.Application for test class com.eneik.production.DataRestorationVerificationTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.5)
+
+2026-08-19T16:40:34.300Z  INFO 140625 --- [           main] c.e.p.DataRestorationVerificationTest    : Starting DataRestorationVerificationTest using Java 21.0.10 with PID 140625 (started by jules in /app)
+2026-08-19T16:40:34.300Z  INFO 140625 --- [           main] c.e.p.DataRestorationVerificationTest    : No active profile set, falling back to 1 default profile: "default"
+2026-08-19T16:40:34.529Z  INFO 140625 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-08-19T16:40:34.543Z  INFO 140625 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 13 ms. Found 4 JPA repository interfaces.
+2026-08-19T16:40:34.657Z  INFO 140625 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Starting...
+2026-08-19T16:40:34.659Z  INFO 140625 --- [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-4 - Added connection conn32: url=jdbc:h2:mem:testdb user=SA
+2026-08-19T16:40:34.659Z  INFO 140625 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Start completed.
+2026-08-19T16:40:34.666Z  INFO 140625 --- [           main] o.f.c.i.resource.ResourceNameValidator   : 1 SQL migrations were detected but not run because they did not follow the filename convention.
+2026-08-19T16:40:34.666Z  INFO 140625 --- [           main] o.f.c.i.resource.ResourceNameValidator   : Set 'validateMigrationNaming' to true to fail fast and see a list of the invalid file names.
+2026-08-19T16:40:34.667Z  INFO 140625 --- [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:h2:mem:testdb (H2 2.2)
+2026-08-19T16:40:34.669Z  WARN 140625 --- [           main] o.f.c.internal.database.base.Database    : Flyway upgrade recommended: H2 2.2.224 is newer than this version of Flyway and support has not been tested. The latest supported version of H2 is 2.2.220.
+2026-08-19T16:40:34.675Z  INFO 140625 --- [           main] o.f.core.internal.command.DbValidate     : Successfully validated 7 migrations (execution time 00:00.004s)
+2026-08-19T16:40:34.679Z  INFO 140625 --- [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "PUBLIC": 20260819025141204
+2026-08-19T16:40:34.679Z  INFO 140625 --- [           main] o.f.core.internal.command.DbMigrate      : Schema "PUBLIC" is up to date. No migration necessary.
+2026-08-19T16:40:34.699Z  INFO 140625 --- [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-08-19T16:40:34.701Z  INFO 140625 --- [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-08-19T16:40:34.707Z  INFO 140625 --- [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-08-19T16:40:34.885Z  INFO 140625 --- [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-08-19T16:40:34.900Z  INFO 140625 --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-08-19T16:40:35.218Z  WARN 140625 --- [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-08-19T16:40:35.356Z  INFO 140625 --- [           main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2026-08-19T16:40:35.508Z  INFO 140625 --- [           main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@3c913e84, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@2de3095c, org.springframework.security.web.context.SecurityContextHolderFilter@198ae772, org.springframework.security.web.header.HeaderWriterFilter@6a6a8915, org.springframework.web.filter.CorsFilter@323fe1f5, org.springframework.security.web.authentication.logout.LogoutFilter@528a643c, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@3dbb168b, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@239707bb, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@1d0b10fd, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@57d5b677, org.springframework.security.web.session.SessionManagementFilter@1612fdb6, org.springframework.security.web.access.ExceptionTranslationFilter@f86b42c, org.springframework.security.web.access.intercept.AuthorizationFilter@cf2662b]
+2026-08-19T16:40:35.592Z  INFO 140625 --- [           main] c.e.p.DataRestorationVerificationTest    : Started DataRestorationVerificationTest in 1.321 seconds (process running for 14.5)
+Hibernate: select epe1_0.id,epe1_0.author_organization,epe1_0.category,epe1_0.code,epe1_0.created_at,epe1_0.publication_year,epe1_0.status,epe1_0.summary,epe1_0.title,epe1_0.version from epidemiological_protocols epe1_0
+Hibernate: select epe1_0.id,epe1_0.author_organization,epe1_0.category,epe1_0.code,epe1_0.created_at,epe1_0.publication_year,epe1_0.status,epe1_0.summary,epe1_0.title,epe1_0.version from epidemiological_protocols epe1_0 where epe1_0.code=?
+Hibernate: insert into search_analytics_events (created_at,execution_time_ms,filters,query,result_count,user_id,id) values (?,?,?,?,?,?,default)
+Hibernate: select saee1_0.id,saee1_0.created_at,saee1_0.execution_time_ms,saee1_0.filters,saee1_0.query,saee1_0.result_count,saee1_0.user_id from search_analytics_events saee1_0 where saee1_0.user_id=?
 ]]></system-out>
   </testcase>
 </testsuite>
