@@ -2,6 +2,7 @@ package com.eneik.production;
 
 import com.eneik.production.dto.SearchEventRequestDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -30,6 +31,7 @@ public class SearchAnalyticsControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
+    @WithMockUser(username="user",roles={"ADMIN"})
     public void testRecordSearchEventAndGetMetrics() throws Exception {
         SearchEventRequestDTO event1 = new SearchEventRequestDTO(
                 "ebola protocol", "user_100", "{\"category\":\"protocol\"}", 10, 150L

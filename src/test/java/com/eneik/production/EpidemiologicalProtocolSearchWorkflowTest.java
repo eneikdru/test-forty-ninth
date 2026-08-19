@@ -12,6 +12,7 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import org.springframework.security.test.context.support.WithMockUser;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -25,6 +26,7 @@ public class EpidemiologicalProtocolSearchWorkflowTest {
 
     @Test
     @DisplayName("Given seeded protocols, When querying with combined search parameters, Then accurate matching protocols are returned")
+    @WithMockUser(username="user",roles={"ADMIN"})
     public void testSearchCombinedParameters() throws Exception {
         // Query q=Outbreak and category=Respiratory
         mockMvc.perform(get("/api/v1/protocols")
@@ -38,6 +40,7 @@ public class EpidemiologicalProtocolSearchWorkflowTest {
 
     @Test
     @DisplayName("Given valid sorting options, When querying protocols, Then results are returned in correct order")
+    @WithMockUser(username="user",roles={"ADMIN"})
     public void testSearchSortingAndPagination() throws Exception {
         // Sort by publicationYear asc
         mockMvc.perform(get("/api/v1/protocols")
@@ -54,6 +57,7 @@ public class EpidemiologicalProtocolSearchWorkflowTest {
 
     @Test
     @DisplayName("Given non-matching query string, When querying protocols, Then empty result list is returned")
+    @WithMockUser(username="user",roles={"ADMIN"})
     public void testSearchNoResultsFound() throws Exception {
         mockMvc.perform(get("/api/v1/protocols")
                         .param("q", "NonExistentPathogenCode12345"))
@@ -64,6 +68,7 @@ public class EpidemiologicalProtocolSearchWorkflowTest {
 
     @Test
     @DisplayName("Given invalid sort parameters, When querying protocols, Then return 400 Bad Request")
+    @WithMockUser(username="user",roles={"ADMIN"})
     public void testInvalidSortParameterReturns400() throws Exception {
         mockMvc.perform(get("/api/v1/protocols")
                         .param("sortBy", "invalidField"))
