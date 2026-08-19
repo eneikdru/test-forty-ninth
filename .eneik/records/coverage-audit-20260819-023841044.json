@@ -1,0 +1,18 @@
+{
+  "gaps": [
+    {
+      "title": "Material Cataloging Persistence",
+      "roleTag": "BARCAN-TAG-08",
+      "jtbd": "When saving an epidemiological material, I want the system to persist its cataloging metadata, so that materials can be effectively cataloged as requested.",
+      "acceptanceCriteria": "Given a material with category and tags, When the material is submitted, Then the backend successfully persists these fields in the database.",
+      "reason": "COVERAGE: The brief explicitly requires 'каталогизации' (cataloging) of materials, but the backend MaterialEntity and Service completely omit and fail to persist taxonomy fields like category and tags."
+    },
+    {
+      "title": "Material Management Access Control",
+      "roleTag": "BARCAN-TAG-07",
+      "jtbd": "When managing the knowledge base, I want to restrict material uploads and modifications to authenticated users, so that unauthorized actors cannot corrupt or delete epidemiological records.",
+      "acceptanceCriteria": "Given an unauthenticated request, When attempting to POST, PUT, or DELETE to /api/materials, Then the server responds with 401 Unauthorized.",
+      "reason": "DOMAIN-STANDARD: A knowledge base management system requires access control for write operations to maintain data integrity, but the /api/materials endpoints are currently completely public."
+    }
+  ]
+}
