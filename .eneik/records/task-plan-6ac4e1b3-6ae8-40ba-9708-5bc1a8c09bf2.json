@@ -1,0 +1,64 @@
+{
+  "epics": [
+    {
+      "existingEpicId": null,
+      "title": "Epidemiological Data Cataloging, Search, and Management",
+      "jtbd": "When an epidemiologist accesses the knowledge base, I want to catalog, search, and manage epidemiological data records, so that data can be effectively organized alongside protocols and materials.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "clear",
+      "sixSigmaMetric": "Reduce uncataloged epidemiological data occurrences from baseline to 0 by implementing patched management capabilities.",
+      "tocConstraintRef": "Knowledge base data coverage limitation.",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Support cataloging, search, and management of epidemiological data records."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Patch existing materials and protocols code to support epidemiological data",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When implementing epidemiological data support for this epic, I want to patch existing backend functionality, so that epidemiological data can be managed without redundant new layers.",
+          "acceptanceCriteria": "Given epidemiological data records, When a user attempts to catalog or search them, Then the patched existing API endpoints and models handle the operations successfully.\nGiven the patched backend logic, When integration tests are run, Then they verify that data records are processed correctly without regressing materials or protocols.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Data endpoint schema reuse",
+          "sixSigmaMetric": "Increase coverage of epidemiological data management endpoints from 0% to 100%.",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1"
+          ]
+        }
+      ]
+    },
+    {
+      "existingEpicId": "e9f12eb2-7924-4e56-baa6-96f8ecd2ae54",
+      "title": null,
+      "jtbd": null,
+      "kanoClass": null,
+      "cynefinDomain": null,
+      "sixSigmaMetric": "Decrease unauthorized write attempts from baseline to 0 via frontend session handling.",
+      "tocConstraintRef": "Frontend write authorization limitation.",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Prompt for credentials and authenticate against secured backend API on frontend management operations."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Patch frontend to prompt for authentication on management operations",
+          "roleTag": "BARCAN-TAG-11",
+          "jtbd": "When implementing frontend authentication for this epic, I want to patch the existing UI to handle credentials, so that write operations are restricted to authorized users.",
+          "acceptanceCriteria": "Given an unauthenticated web client session, When management operations are attempted, Then the UI prompts for credentials.\nGiven valid credentials, When submitted, Then the frontend securely authenticates against backend API endpoints and provides visible success feedback.\nGiven a failed login attempt, When the error occurs, Then the user's typed username survives and visible error feedback is shown.\nGiven the authentication UI, When accessed on mobile devices or tested for WCAG 2.1 level AA compliance, Then the interface is fully responsive, keyboard operable, and meets 4.5:1 text contrast requirements.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Frontend session state management",
+          "sixSigmaMetric": "Increase authenticated management operation flows from 0% to 100% on the frontend.",
+          "hasUi": true,
+          "requirementRefs": [
+            "R1"
+          ]
+        }
+      ]
+    }
+  ]
+}
