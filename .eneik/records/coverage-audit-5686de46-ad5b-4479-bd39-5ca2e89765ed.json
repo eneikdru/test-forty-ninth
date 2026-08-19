@@ -1,0 +1,18 @@
+{
+  "gaps": [
+    {
+      "title": "Epidemiological Data Cataloging, Search, and Management",
+      "roleTag": "BARCAN-TAG-02",
+      "jtbd": "When accessing the knowledge base, I want to catalog, search, and manage epidemiological data records, so that data can be effectively organized alongside protocols and materials.",
+      "acceptanceCriteria": "Given epidemiological data records, When a user attempts to catalog, search, or update them, Then the system provides dedicated backend models, REST API endpoints, and UI interfaces to perform these operations.",
+      "reason": "literal brief requirement: The original client brief explicitly asks for cataloging, search, and management of 'эпидемиологическими материалами, протоколами и данными' (epidemiological materials, protocols, and data). While materials and protocols are implemented, epidemiological data management is completely missing from the codebase."
+    },
+    {
+      "title": "Authentication and Session Management Interface",
+      "roleTag": "BARCAN-TAG-08",
+      "jtbd": "When accessing administrative management capabilities, I want an authentication login and session mechanism, so that write operations (creating, updating, deleting materials and protocols) are restricted to authorized users.",
+      "acceptanceCriteria": "Given an unauthenticated session in the web client, When a user attempts to perform management operations (create, edit, delete), Then the UI prompts for credentials and authenticates requests against the secured backend API endpoints.",
+      "reason": "domain-standard expectation: A knowledge base system for managing epidemiological materials and protocols requires user authentication and session management to secure write operations against unauthorized access. While Spring Security protects write endpoints with ROLE_ADMIN, the frontend provides no login interface or session credential handling."
+    }
+  ]
+}
