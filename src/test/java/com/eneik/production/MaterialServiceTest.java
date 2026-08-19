@@ -1,8 +1,10 @@
 package com.eneik.production;
 
 import com.eneik.production.dto.MaterialDto;
+import com.eneik.production.dto.MaterialUploadDto;
 import com.eneik.production.dto.SearchMetricsDTO;
 import com.eneik.production.models.persistence.MaterialEntity;
+import java.util.List;
 import com.eneik.production.repository.MaterialRepository;
 import com.eneik.production.repository.SearchAnalyticsEventRepository;
 import com.eneik.production.service.MaterialService;
@@ -67,5 +69,32 @@ class MaterialServiceTest {
         SearchMetricsDTO metrics = searchAnalyticsService.getAggregateMetrics();
         assertEquals(4, metrics.getTotalSearches());
         assertEquals(0.25, metrics.getZeroResultRate(), 0.001);
+    }
+
+    @Test
+    void testMaterialCategoryAndTagsPersistence() {
+        MaterialUploadDto uploadDto = new MaterialUploadDto(
+                "Cholera Surveillance Protocol",
+                "Guidelines for monitoring waterborne diseases",
+                "Protocol details for cholera outbreak management...",
+                "Epidemiology",
+                List.of("outbreak", "cholera", "surveillance"),
+                null
+        );
+
+        MaterialDto created = materialService.createMaterial(uploadDto);
+        assertNotNull(created.getId());
+        assertEquals("Epidemiology", created.getCategory());
+        assertEquals(3, created.getTags().size());
+        assertTrue(created.getTags().contains("outbreak"));
+        assertTrue(created.getTags().contains("cholera"));
+        assertTrue(created.getTags().contains("surveillance"));
+
+        MaterialEntity entity = materialService.getMaterialEntity(created.getId()).orElseThrow();
+        assertEquals("Epidemiology", entity.getCategory());
+        assertEquals(3, entity.getTags().size());
+        assertTrue(entity.getTags().contains("outbreak"));
+        assertTrue(entity.getTags().contains("cholera"));
+        assertTrue(entity.getTags().contains("surveillance"));
     }
 }
