@@ -1,0 +1,34 @@
+{
+  "epics": [
+    {
+      "existingEpicId": "c1be406c-64fa-4620-83c6-49abdc20c7c2",
+      "title": null,
+      "jtbd": null,
+      "kanoClass": null,
+      "cynefinDomain": null,
+      "sixSigmaMetric": "Decrease container startup failures due to unresolvable minio tag from 100% to 0%.",
+      "tocConstraintRef": "Local development environment startup",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Update the MinIO Docker image tag to a resolvable version."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Update MinIO Docker Image Tag",
+          "roleTag": "BARCAN-TAG-05",
+          "jtbd": "When implementing the MinIO docker image tag fix for this epic, I want to replace the invalid tag with a valid one, so that the container starts without error.",
+          "acceptanceCriteria": "Given the docker-compose.yml file,\nWhen checking the MinIO service configuration,\nThen it must use a valid and resolvable Docker image tag.\nGiven the updated configuration,\nWhen executing docker compose up,\nThen the MinIO container pulls and starts without 'not found' errors.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Docker Compose image pulling",
+          "sixSigmaMetric": "Reduce Docker image pull errors for MinIO from 1 to 0.",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1"
+          ]
+        }
+      ]
+    }
+  ]
+}
