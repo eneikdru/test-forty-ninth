@@ -1,14 +1,20 @@
 package com.eneik.production.models.persistence;
 
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "materials")
@@ -26,6 +32,14 @@ public class MaterialEntity {
 
     @Column(columnDefinition = "TEXT")
     private String content;
+
+    @Column(name = "category", length = 255)
+    private String category;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "material_tag_names", joinColumns = @JoinColumn(name = "material_id"))
+    @Column(name = "tag", length = 100)
+    private List<String> tags = new ArrayList<>();
 
     @Column(name = "file_name", length = 255)
     private String fileName;
@@ -47,6 +61,19 @@ public class MaterialEntity {
         this.title = title;
         this.description = description;
         this.content = content;
+        this.fileName = fileName;
+        this.contentType = contentType;
+        this.fileData = fileData;
+    }
+
+    public MaterialEntity(String title, String description, String content, String category, List<String> tags, String fileName, String contentType, byte[] fileData) {
+        this.title = title;
+        this.description = description;
+        this.content = content;
+        this.category = category;
+        if (tags != null) {
+            this.tags = new ArrayList<>(tags);
+        }
         this.fileName = fileName;
         this.contentType = contentType;
         this.fileData = fileData;
@@ -89,6 +116,22 @@ public class MaterialEntity {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags != null ? tags : new ArrayList<>();
     }
 
     public String getFileName() {

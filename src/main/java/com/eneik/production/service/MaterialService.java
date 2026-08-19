@@ -67,6 +67,8 @@ public class MaterialService {
         entity.setTitle(uploadDto.getTitle());
         entity.setDescription(uploadDto.getDescription());
         entity.setContent(uploadDto.getContent());
+        entity.setCategory(uploadDto.getCategory());
+        entity.setTags(uploadDto.getTags());
 
         MultipartFile file = uploadDto.getFile();
         if (file != null && !file.isEmpty()) {
@@ -94,6 +96,8 @@ public class MaterialService {
         entity.setTitle(uploadDto.getTitle());
         entity.setDescription(uploadDto.getDescription());
         entity.setContent(uploadDto.getContent());
+        entity.setCategory(uploadDto.getCategory());
+        entity.setTags(uploadDto.getTags());
 
         MultipartFile file = uploadDto.getFile();
         if (file != null && !file.isEmpty()) {

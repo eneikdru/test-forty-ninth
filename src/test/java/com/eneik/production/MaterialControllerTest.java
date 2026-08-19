@@ -12,12 +12,16 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
@@ -89,17 +93,25 @@ class MaterialControllerTest {
                         .file(file)
                         .param("title", "Epidemiological Report 2026")
                         .param("description", "Annual influenza surveillance data")
-                        .param("content", "Full text of epidemiological findings..."))
+                        .param("content", "Full text of epidemiological findings...")
+                        .param("category", "protocol")
+                        .param("tags", "influenza", "outbreak"))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", notNullValue()))
                 .andExpect(jsonPath("$.title", is("Epidemiological Report 2026")))
                 .andExpect(jsonPath("$.description", is("Annual influenza surveillance data")))
+                .andExpect(jsonPath("$.category", is("protocol")))
+                .andExpect(jsonPath("$.tags", containsInAnyOrder("influenza", "outbreak")))
                 .andExpect(jsonPath("$.fileName", is("report.pdf")))
                 .andExpect(jsonPath("$.contentType", is("application/pdf")));
 
         assertEquals(1, materialRepository.count());
         MaterialEntity saved = materialRepository.findAll().get(0);
         assertEquals("Epidemiological Report 2026", saved.getTitle());
+        assertEquals("protocol", saved.getCategory());
+        assertEquals(2, saved.getTags().size());
+        assertTrue(saved.getTags().contains("influenza"));
+        assertTrue(saved.getTags().contains("outbreak"));
         assertEquals("report.pdf", saved.getFileName());
         assertEquals("application/pdf", saved.getContentType());
         assertArrayEquals(fileBytes, saved.getFileData());
@@ -123,7 +135,7 @@ class MaterialControllerTest {
 
     @Test
     void testUpdateMaterialSuccess() throws Exception {
-        MaterialEntity material = new MaterialEntity("Original Title", "Original Desc", "Original Content", "orig.pdf", "application/pdf", "orig bytes".getBytes());
+        MaterialEntity material = new MaterialEntity("Original Title", "Original Desc", "Original Content", "report", List.of("oldtag"), "orig.pdf", "application/pdf", "orig bytes".getBytes());
         MaterialEntity saved = materialRepository.save(material);
 
         byte[] updatedFileBytes = "Updated PDF report content".getBytes();
@@ -137,12 +149,16 @@ class MaterialControllerTest {
                         })
                         .param("title", "Updated Title")
                         .param("description", "Updated Desc")
-                        .param("content", "Updated Content"))
+                        .param("content", "Updated Content")
+                        .param("category", "protocol")
+                        .param("tags", "newtag1", "newtag2"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(saved.getId().intValue())))
                 .andExpect(jsonPath("$.title", is("Updated Title")))
                 .andExpect(jsonPath("$.description", is("Updated Desc")))
                 .andExpect(jsonPath("$.content", is("Updated Content")))
+                .andExpect(jsonPath("$.category", is("protocol")))
+                .andExpect(jsonPath("$.tags", containsInAnyOrder("newtag1", "newtag2")))
                 .andExpect(jsonPath("$.fileName", is("updated_report.pdf")))
                 .andExpect(jsonPath("$.contentType", is("application/pdf")));
 
@@ -150,6 +166,10 @@ class MaterialControllerTest {
         assertEquals("Updated Title", updated.getTitle());
         assertEquals("Updated Desc", updated.getDescription());
         assertEquals("Updated Content", updated.getContent());
+        assertEquals("protocol", updated.getCategory());
+        assertEquals(2, updated.getTags().size());
+        assertTrue(updated.getTags().contains("newtag1"));
+        assertTrue(updated.getTags().contains("newtag2"));
         assertEquals("updated_report.pdf", updated.getFileName());
         assertArrayEquals(updatedFileBytes, updated.getFileData());
     }
