@@ -1,0 +1,34 @@
+{
+  "epics": [
+    {
+      "existingEpicId": "c1be406c-64fa-4620-83c6-49abdc20c7c2",
+      "title": null,
+      "jtbd": null,
+      "kanoClass": null,
+      "cynefinDomain": null,
+      "sixSigmaMetric": "Reduce container startup failure rate from 1 to 0",
+      "tocConstraintRef": "Environment setup bottleneck",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Update the unresolved minio Docker image tag to a resolvable version"
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Update MinIO Docker image tag",
+          "roleTag": "BARCAN-TAG-05",
+          "jtbd": "When implementing the image tag fix for this epic, I want to update the minio version to a stable resolvable release, so that the object storage container can start successfully and unblock the environment.",
+          "acceptanceCriteria": "Given the docker-compose environment, When the object-storage service is configured, Then the minio image has a resolvable tag.\nGiven the system needs to run locally, When docker-compose up is executed, Then there are no image resolution errors for minio.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Docker image resolution block",
+          "sixSigmaMetric": "Reduce image pull failure rate for minio from 100% to 0%",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1"
+          ]
+        }
+      ]
+    }
+  ]
+}
