@@ -1,0 +1,68 @@
+{
+  "epics": [
+    {
+      "existingEpicId": "6e2959ed-3e58-42d6-b8d1-be77197e3404",
+      "title": null,
+      "jtbd": null,
+      "kanoClass": null,
+      "cynefinDomain": null,
+      "sixSigmaMetric": "Reduce manual database edits for material corrections from 5 per week to 0 per week",
+      "tocConstraintRef": "Material API incompleteness bottlenecking content updates",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: The system must support updating existing epidemiological material records via the Material API.",
+        "R2: The system must support deleting existing epidemiological material records via the Material API."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Patch Material API with Update and Delete Endpoints",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When implementing update and delete for this epic, I want to patch the existing API controller, so that the material collection remains accurate and organized.",
+          "acceptanceCriteria": "Given an existing material record in the database\nWhen a client sends a PUT request with updated data to the existing Material API\nThen the material is correctly updated in the database\nGiven an existing material record in the database\nWhen a client sends a DELETE request to the existing Material API\nThen the material is removed from the system and verified by integration tests",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Missing update and delete handlers in Material Controller",
+          "sixSigmaMetric": "Increase update and delete operation test coverage from 0% to 100%",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2"
+          ]
+        }
+      ]
+    },
+    {
+      "existingEpicId": null,
+      "title": "Authentication and Session Management Patch",
+      "jtbd": "When an authorized health professional accesses the epidemiological knowledge base, I want to authenticate my identity, so that only authorized personnel can add, modify, or view sensitive protocols.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "clear",
+      "sixSigmaMetric": "Reduce unauthorized access incidents from 50 per week to 0 per week",
+      "tocConstraintRef": "Lack of security controls exposing sensitive knowledge base data",
+      "sourceIndex": 1,
+      "requirements": [
+        "R1: The system must enforce valid credentials for accessing sensitive endpoints.",
+        "R2: The system must grant an authenticated session with appropriate role-based permissions."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Patch Authentication and Role-Based Session Logic",
+          "roleTag": "BARCAN-TAG-07",
+          "jtbd": "When implementing authentication for this epic, I want to patch the existing security configuration, so that only authorized personnel can add, modify, or view sensitive protocols.",
+          "acceptanceCriteria": "Given a user attempting to access the system\nWhen they request a protected endpoint without valid credentials\nThen access is denied and a 401 Unauthorized response is returned\nGiven a user attempting to access the system\nWhen they provide valid credentials\nThen they are granted an authenticated session with appropriate role-based permissions and verified by integration tests",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Unrestricted access in application security configuration",
+          "sixSigmaMetric": "Increase authentication test coverage on protected endpoints from 0% to 100%",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2"
+          ]
+        }
+      ]
+    }
+  ]
+}
