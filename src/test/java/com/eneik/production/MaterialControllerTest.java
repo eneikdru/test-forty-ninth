@@ -45,8 +45,8 @@ class MaterialControllerTest {
     @Test
     @WithMockUser(username="user",roles={"ADMIN"})
     void testSearchMaterialsEndpoint() throws Exception {
-        MaterialEntity m1 = new MaterialEntity("Flu Guidelines", "Seasonal influenza management", "Text", "flu.pdf", "application/pdf", "dummy pdf content".getBytes());
-        MaterialEntity m2 = new MaterialEntity("COVID Protocol", "Coronavirus response details", "Text", "covid.pdf", "application/pdf", "dummy covid content".getBytes());
+        MaterialEntity m1 = new MaterialEntity("Flu Guidelines", "Seasonal influenza management", "Text", "epidemiology", List.of("flu", "seasonal"), "flu.pdf", "application/pdf", "dummy pdf content".getBytes());
+        MaterialEntity m2 = new MaterialEntity("COVID Protocol", "Coronavirus response details", "Text", "virology", List.of("covid", "pandemic"), "covid.pdf", "application/pdf", "dummy covid content".getBytes());
 
         materialRepository.save(m1);
         materialRepository.save(m2);
@@ -58,6 +58,8 @@ class MaterialControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content", hasSize(1)))
                 .andExpect(jsonPath("$.content[0].title", is("Flu Guidelines")))
+                .andExpect(jsonPath("$.content[0].category", is("epidemiology")))
+                .andExpect(jsonPath("$.content[0].tags", containsInAnyOrder("flu", "seasonal")))
                 .andExpect(jsonPath("$.totalElements", is(1)));
     }
 
