@@ -1,0 +1,56 @@
+{
+  "epics": [
+    {
+      "existingEpicId": "6e2959ed-3e58-42d6-b8d1-be77197e3404",
+      "sourceIndex": 0,
+      "sixSigmaMetric": "Increase cataloging completeness rate from 0% to 100%",
+      "tocConstraintRef": "Material ingestion taxonomy bottleneck",
+      "requirements": [
+        "R1: The backend MaterialEntity and Service must persist category and tags fields in the database"
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Patch MaterialEntity and Service for taxonomy persistence",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When implementing the persistence patch for this epic, I want to add category and tags fields to the entity and service, so that materials can be effectively cataloged as requested",
+          "acceptanceCriteria": "Given a material with category and tags\nWhen the material is submitted\nThen the backend successfully persists these fields in the database",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Backend entity field update bottleneck",
+          "sixSigmaMetric": "Decrease missing taxonomy field saves from 100% to 0%",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1"
+          ]
+        }
+      ]
+    },
+    {
+      "existingEpicId": "e9f12eb2-7924-4e56-baa6-96f8ecd2ae54",
+      "sourceIndex": 1,
+      "sixSigmaMetric": "Decrease unauthorized material modifications from 100% to 0%",
+      "tocConstraintRef": "Material endpoint access control bottleneck",
+      "requirements": [
+        "R1: Restrict material uploads and modifications on /api/materials endpoints to authenticated users"
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Patch /api/materials endpoints for write access control",
+          "roleTag": "BARCAN-TAG-07",
+          "jtbd": "When implementing access control for this epic, I want to restrict material uploads and modifications to authenticated users, so that unauthorized actors cannot corrupt or delete epidemiological records",
+          "acceptanceCriteria": "Given an unauthenticated request\nWhen attempting to POST, PUT, or DELETE to /api/materials\nThen the server responds with 401 Unauthorized\nGiven an authenticated but unauthorized request\nWhen attempting to POST, PUT, or DELETE to /api/materials\nThen the server responds with 403 Forbidden\nGiven these security constraints\nWhen tests are written\nThen they explicitly verify the 401 Unauthorized and 403 Forbidden scenarios in *Test.java files",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "API authorization enforcement bottleneck",
+          "sixSigmaMetric": "Decrease unauthorized write success rate from 100% to 0%",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1"
+          ]
+        }
+      ]
+    }
+  ]
+}
