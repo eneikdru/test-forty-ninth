@@ -1,0 +1,34 @@
+{
+  "epics": [
+    {
+      "existingEpicId": "c1be406c-64fa-4620-83c6-49abdc20c7c2",
+      "title": null,
+      "jtbd": null,
+      "kanoClass": null,
+      "cynefinDomain": null,
+      "sixSigmaMetric": "Reduce Docker Compose boot failures due to unresolvable MinIO image tag from 100% to 0%",
+      "tocConstraintRef": "Docker Compose runtime boot",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Fix the unresolvable MinIO image tag RELEASE.2023-09-20T22-40-07Z in the Docker Compose runtime to allow successful boot."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Update MinIO image tag in Docker Compose",
+          "roleTag": "BARCAN-TAG-05",
+          "jtbd": "When implementing the MinIO image tag fix for this epic, I want to update the docker-compose.yml configuration, so that technical debt is eliminated and infrastructure standards are strictly upheld.",
+          "acceptanceCriteria": "Given the Docker Compose environment is configured\nWhen the runtime attempts to pull the MinIO image\nThen it uses a resolvable tag instead of RELEASE.2023-09-20T22-40-07Z\nGiven the MinIO image is pulled\nWhen the Docker Compose stack is started\nThen the object-storage container boots successfully without not found errors",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "MinIO Docker image resolution",
+          "sixSigmaMetric": "Reduce MinIO image pull failure rate from 100% to 0%",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1"
+          ]
+        }
+      ]
+    }
+  ]
+}
