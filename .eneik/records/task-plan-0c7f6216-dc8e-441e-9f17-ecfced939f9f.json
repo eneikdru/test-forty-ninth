@@ -1,0 +1,36 @@
+{
+  "epics": [
+    {
+      "existingEpicId": "c1be406c-64fa-4620-83c6-49abdc20c7c2",
+      "title": null,
+      "jtbd": null,
+      "kanoClass": null,
+      "cynefinDomain": null,
+      "sixSigmaMetric": "Decrease the number of unresolved falsification findings across the project from 8 to 0",
+      "tocConstraintRef": "Quality review bottleneck due to unresolved falsification findings",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Patch existing code to resolve the 8 confirmed falsification findings",
+        "R2: Verify the fixes using the existing test infrastructure to ensure no regressions"
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Remediate 8 unresolved falsification findings via codebase patch",
+          "roleTag": "BARCAN-TAG-00",
+          "jtbd": "When implementing the remediation for this epic, I want to apply a direct codebase patch for the 8 findings, so that technical debt is eliminated without new layers",
+          "acceptanceCriteria": "Given 8 unresolved falsification findings exist,\nWhen the codebase is patched directly,\nThen the number of unresolved falsification findings is decreased to 0.\nGiven the codebase is patched,\nWhen the existing test suite is executed,\nThen all tests pass and verify the applied fixes.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Quality review bottleneck due to falsification findings",
+          "sixSigmaMetric": "Decrease the number of unresolved falsification findings from 8 to 0",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2"
+          ]
+        }
+      ]
+    }
+  ]
+}
