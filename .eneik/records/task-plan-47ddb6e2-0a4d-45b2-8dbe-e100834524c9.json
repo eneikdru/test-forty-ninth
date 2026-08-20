@@ -1,0 +1,34 @@
+{
+  "epics": [
+    {
+      "existingEpicId": "c1be406c-64fa-4620-83c6-49abdc20c7c2",
+      "title": null,
+      "jtbd": null,
+      "kanoClass": null,
+      "cynefinDomain": null,
+      "sixSigmaMetric": "Decrease the number of unresolved falsification findings across the project from 8 to 0",
+      "tocConstraintRef": "reviewConcerns at epic sequence 11",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Patch the existing code directly to resolve the uncategorized invariant pattern causing design review concerns at sequence 11"
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Remediate design review concerns from sequence 11",
+          "roleTag": "BARCAN-TAG-11",
+          "jtbd": "When implementing the fix for this epic, I want to patch the existing code to resolve the uncategorized design review pattern, so that the number of unresolved falsification findings decreases to 0.",
+          "acceptanceCriteria": "Given the design review concerns from sequence 11, When the existing code is patched, Then the underlying defect event is resolved.\nGiven the patched code, When tests are run, Then they pass successfully.",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "reviewConcerns at epic sequence 11",
+          "sixSigmaMetric": "Reduce unresolved falsification findings from sequence 11 to 0",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1"
+          ]
+        }
+      ]
+    }
+  ]
+}
