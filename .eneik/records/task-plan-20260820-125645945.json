@@ -1,0 +1,34 @@
+{
+  "epics": [
+    {
+      "existingEpicId": "c1be406c-64fa-4620-83c6-49abdc20c7c2",
+      "title": null,
+      "jtbd": null,
+      "kanoClass": null,
+      "cynefinDomain": null,
+      "sixSigmaMetric": "Decrease the number of unresolved falsification findings across the project from 8 to 0",
+      "tocConstraintRef": "falsification-finding-remediation",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Patch existing code directly to resolve the newly identified design review concern pattern and assign a rootCausePatternId"
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Categorize and remediate design review concern pattern",
+          "roleTag": "BARCAN-TAG-09",
+          "jtbd": "When implementing the pattern remediation for this epic, I want to assign a rootCausePatternId and patch the underlying code, so that the design review concern is resolved and the finding count decreases to 0.",
+          "acceptanceCriteria": "Given a statistically confirmed pattern of design review concerns\nWhen the existing code is patched directly\nThen the defect event carries a rootCausePatternId and the falsification finding is resolved\nGiven testing requirements for a clear domain exception\nWhen the remediation is executed\nThen it includes direct testing within the same patch rather than a separate QA slice",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "review-concern-pattern-resolution",
+          "sixSigmaMetric": "Reduce the stream 'reviewConcerns' u-chart rate to within control limits (u=0.0000)",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1"
+          ]
+        }
+      ]
+    }
+  ]
+}
