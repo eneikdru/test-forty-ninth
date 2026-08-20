@@ -1,0 +1,34 @@
+{
+  "epics": [
+    {
+      "existingEpicId": "c1be406c-64fa-4620-83c6-49abdc20c7c2",
+      "title": null,
+      "jtbd": null,
+      "kanoClass": null,
+      "cynefinDomain": null,
+      "sixSigmaMetric": "Decrease the number of unresolved falsification findings across the project from 8 to 0",
+      "tocConstraintRef": "Technical debt from unresolved falsification findings blocking codebase maintainability",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Patch existing product code to remediate the uncategorized design review concern finding at epic sequence 11 without adding new structural layers"
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Remediate design review concern finding pattern",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When implementing the remediation for this epic, I want to patch the code to address the design review concern, so that technical debt is eliminated.",
+          "acceptanceCriteria": "Given an existing codebase with an unresolved design review concern\nWhen the patch is applied directly to the existing code\nThen the falsification finding is resolved without introducing new data schemas, API contracts, or UI slices\nAnd existing tests are executed and pass to ensure no regression",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Accumulated technical debt limiting feature velocity",
+          "sixSigmaMetric": "Decrease stream 'reviewConcerns' deviation to centerline 0.0000",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1"
+          ]
+        }
+      ]
+    }
+  ]
+}
