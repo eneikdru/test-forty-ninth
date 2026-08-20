@@ -1,0 +1,11 @@
+{
+  "gaps": [
+    {
+      "title": "Material search missing pagination in UI",
+      "roleTag": "BARCAN-TAG-11",
+      "jtbd": "When viewing material search results, I want to paginate through results, so that large catalogs don't overwhelm the browser",
+      "acceptanceCriteria": "Given a search result with many materials, When I look at the UI, Then I should see pagination controls to navigate through pages",
+      "reason": "domain-standard expectation: A public list/search endpoint usually needs pagination, as mentioned in the guidelines. The ProtocolSearch UI has pagination controls, but MaterialSearch.svelte lacks pagination logic and controls completely."
+    }
+  ]
+}
