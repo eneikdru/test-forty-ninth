@@ -1,0 +1,36 @@
+{
+  "epics": [
+    {
+      "existingEpicId": "c1be406c-64fa-4620-83c6-49abdc20c7c2",
+      "title": null,
+      "jtbd": null,
+      "kanoClass": null,
+      "cynefinDomain": null,
+      "sixSigmaMetric": "Decrease the number of unresolved falsification findings across the project from 8 to 0",
+      "tocConstraintRef": "Uncategorized defect events masking the root cause of design review concerns",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Establish a new invariant pattern to categorize the statistically confirmed design review concerns.",
+        "R2: Apply the new rootCausePatternId to the existing underlying defect events."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Establish and apply rootCausePatternId for design review concerns",
+          "roleTag": "BARCAN-TAG-09",
+          "jtbd": "When implementing the root cause categorization for this epic, I want to establish a new invariant pattern and apply its rootCausePatternId to the existing defect events, so that the design review concerns are formally categorized and the falsification findings are resolved.",
+          "acceptanceCriteria": "Given a pattern of design review concerns with u=0.0667,\nWhen a new invariant pattern and rootCausePatternId are defined,\nThen the ID is applied to the underlying defect events and verified to return the u-chart to centerline 0.0000.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Lack of root cause pattern definition for review concerns",
+          "sixSigmaMetric": "Reduce the reviewConcerns u-chart variation from 0.0667 to 0.0000",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2"
+          ]
+        }
+      ]
+    }
+  ]
+}
