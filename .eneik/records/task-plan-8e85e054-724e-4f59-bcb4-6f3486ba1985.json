@@ -1,0 +1,34 @@
+{
+  "epics": [
+    {
+      "existingEpicId": "c1be406c-64fa-4620-83c6-49abdc20c7c2",
+      "title": null,
+      "jtbd": null,
+      "kanoClass": null,
+      "cynefinDomain": "clear",
+      "sixSigmaMetric": "Decrease the number of unresolved falsification findings across the project from 8 to 0",
+      "tocConstraintRef": "falsification_finding_resolution",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Address the out-of-control 'reviewConcerns' stream by assigning a rootCausePatternId and patching the existing code directly."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Remediate design review concerns pattern",
+          "roleTag": "BARCAN-TAG-11",
+          "jtbd": "When implementing the fix for this epic, I want to identify the root cause of the design review concerns and apply a direct code patch, so that the falsification findings are resolved.",
+          "acceptanceCriteria": "Given the reviewConcerns stream shows an out of control pattern\nWhen the underlying defect events are analyzed and patched\nThen they must be assigned a rootCausePatternId\nGiven the patch is applied\nWhen the code is tested\nThen the QA coverage verifies the design review concerns are resolved and all related verifications pass.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "frontend_design_consistency",
+          "sixSigmaMetric": "Stream 'reviewConcerns' u-chart returns to in-control state (u=0.0)",
+          "hasUi": true,
+          "requirementRefs": [
+            "R1"
+          ]
+        }
+      ]
+    }
+  ]
+}
