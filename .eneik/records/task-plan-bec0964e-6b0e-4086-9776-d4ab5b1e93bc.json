@@ -1,0 +1,34 @@
+{
+  "epics": [
+    {
+      "existingEpicId": "c1be406c-64fa-4620-83c6-49abdc20c7c2",
+      "title": null,
+      "jtbd": null,
+      "kanoClass": null,
+      "cynefinDomain": "clear",
+      "sixSigmaMetric": "Decrease the number of unresolved falsification findings across the project from 8 to 0",
+      "tocConstraintRef": "Unresolved design review falsification findings at epic sequence 11",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Address the out-of-control 'reviewConcerns' stream by assigning a rootCausePatternId and patching the existing code directly."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Patch existing code to resolve design review falsification findings",
+          "roleTag": "BARCAN-TAG-11",
+          "jtbd": "When implementing the falsification remediation for this epic, I want to patch the existing code to resolve the design review concerns, so that the number of unresolved falsification findings decreases from 8 to 0.",
+          "acceptanceCriteria": "Given the reviewConcerns stream shows an out of control pattern\nWhen the underlying defect events are analyzed and patched directly\nThen they must be assigned a rootCausePatternId and the unresolved findings count drops to 0.\nGiven the patched codebase\nWhen the QA coverage verifies the design review concerns\nThen all tests pass and the regressions are fixed.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Missing rootCausePatternId for sequence 11 defects",
+          "sixSigmaMetric": "0 remaining unresolved design review findings in sequence 11",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1"
+          ]
+        }
+      ]
+    }
+  ]
+}
