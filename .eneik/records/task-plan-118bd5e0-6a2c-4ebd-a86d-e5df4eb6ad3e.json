@@ -1,0 +1,34 @@
+{
+  "epics": [
+    {
+      "existingEpicId": "c1be406c-64fa-4620-83c6-49abdc20c7c2",
+      "title": null,
+      "jtbd": null,
+      "kanoClass": null,
+      "cynefinDomain": "clear",
+      "sixSigmaMetric": "Decrease the number of unresolved falsification findings across the project from 8 to 0",
+      "tocConstraintRef": "Unresolved technical debt slowing down feature delivery",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Resolve design review concern 'reviewConcerns' (u=0.0667) identified at epic sequence #11 in falsification findings"
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Resolve design review concern from epic sequence #11",
+          "roleTag": "BARCAN-TAG-09",
+          "jtbd": "When implementing the resolution for this epic, I want to patch the existing code directly to address the design review concern, so that the number of unresolved falsification findings decreases.",
+          "acceptanceCriteria": "Given a codebase with an unresolved design review concern at epic sequence #11\nWhen the code is patched\nThen the falsification finding is resolved without creating new layers",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Technical debt resolution bottleneck",
+          "sixSigmaMetric": "Reduce 'reviewConcerns' u-chart value to centerline 0.0000",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1"
+          ]
+        }
+      ]
+    }
+  ]
+}
