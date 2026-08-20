@@ -1,0 +1,34 @@
+{
+  "epics": [
+    {
+      "existingEpicId": "e05f2da2-bc41-4357-a2cc-71ca56af54ca",
+      "title": null,
+      "jtbd": null,
+      "kanoClass": null,
+      "cynefinDomain": null,
+      "sixSigmaMetric": "Decrease pagination-related search abandonment from >15% to <2%",
+      "tocConstraintRef": "Frontend rendering bottleneck during large material search results",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Material search frontend must implement pagination logic and UI controls to paginate through large search result sets"
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Implement pagination in MaterialSearch.svelte",
+          "roleTag": "BARCAN-TAG-11",
+          "jtbd": "When implementing pagination for this epic, I want to add pagination logic and controls to MaterialSearch.svelte, so that the material search results do not overwhelm the browser.",
+          "acceptanceCriteria": "Given a search result with many materials,\nWhen I look at the UI,\nThen I should see pagination controls to navigate through pages.\nGiven a user clicks to navigate to a new page of results,\nWhen the new page is loading,\nThen a visible loading indicator or progress state is shown so the user is not left guessing.\nGiven the newly added pagination controls,\nWhen I interact with them,\nThen they must satisfy WCAG 2.1 level AA standards, including keyboard operability, visible focus, labelled form controls, and 4.5:1 text contrast.\nGiven a frontend component change,\nWhen I run the frontend vitest tests,\nThen the tests verify that pagination logic correctly updates the displayed page state and renders the UI accordingly.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Memory leak/DOM overload rendering excessive MaterialSearch nodes",
+          "sixSigmaMetric": "Decrease average material search UI render time for large result sets from >2000ms to <200ms",
+          "hasUi": true,
+          "requirementRefs": [
+            "R1"
+          ]
+        }
+      ]
+    }
+  ]
+}
