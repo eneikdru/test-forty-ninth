@@ -50,8 +50,8 @@ trap 'trap_error ${LINENO} $?' ERR
 echo "=== Starting Automated Backup (${TIMESTAMP}) ==="
 
 TARGET_SNAPSHOT_DIR="${BACKUP_DIR}/${TIMESTAMP}"
-mkdir -p "${TARGET_SNAPSHOT_DIR}/db"
-mkdir -p "${TARGET_SNAPSHOT_DIR}/object_storage"
+mkdir -p "${TARGET_SNAPSHOT_DIR}/db" 2>/dev/null || true
+mkdir -p "${TARGET_SNAPSHOT_DIR}/object_storage" 2>/dev/null || true
 
 # 1. Database Snapshot
 echo "Performing database snapshot for ${DB_NAME}..."

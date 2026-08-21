@@ -33,6 +33,10 @@ public class SearchAnalyticsControllerTest {
     @Test
     @WithMockUser(username="user",roles={"ADMIN"})
     public void testRecordSearchEventAndGetMetrics() throws Exception {
+        mockMvc.perform(post("/api/v1/analytics/search/events/reset")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
         SearchEventRequestDTO event1 = new SearchEventRequestDTO(
                 "ebola protocol", "user_100", "{\"category\":\"protocol\"}", 10, 150L
         );

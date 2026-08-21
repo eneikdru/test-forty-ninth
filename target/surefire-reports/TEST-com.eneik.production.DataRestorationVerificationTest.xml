@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.eneik.production.EpidemiologicalProtocolApiTest" time="0.193" tests="7" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.eneik.production.DataRestorationVerificationTest" time="1.313" tests="1" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="21"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -59,15 +59,51 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="65.0"/>
   </properties>
-  <testcase name="testInvalidSearchParametersReturn400" classname="com.eneik.production.EpidemiologicalProtocolApiTest" time="0.013">
-    <system-out><![CDATA[2026-08-21T09:58:11.607Z  INFO 74908 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.eneik.production.EpidemiologicalProtocolApiTest]: EpidemiologicalProtocolApiTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2026-08-21T09:58:11.609Z  INFO 74908 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.eneik.production.Application for test class com.eneik.production.EpidemiologicalProtocolApiTest
+  <testcase name="testFullRestoreAndCriticalWorkflowVerification(Path)" classname="com.eneik.production.DataRestorationVerificationTest" time="0.1">
+    <system-out><![CDATA[2026-08-21T09:58:10.123Z  INFO 74908 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.eneik.production.DataRestorationVerificationTest]: DataRestorationVerificationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-21T09:58:10.128Z  INFO 74908 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.eneik.production.Application for test class com.eneik.production.DataRestorationVerificationTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.5)
+
+2026-08-21T09:58:10.168Z  INFO 74908 --- [           main] c.e.p.DataRestorationVerificationTest    : Starting DataRestorationVerificationTest using Java 21.0.10 with PID 74908 (started by jules in /app)
+2026-08-21T09:58:10.169Z  INFO 74908 --- [           main] c.e.p.DataRestorationVerificationTest    : No active profile set, falling back to 1 default profile: "default"
+2026-08-21T09:58:10.386Z  INFO 74908 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-08-21T09:58:10.399Z  INFO 74908 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 12 ms. Found 4 JPA repository interfaces.
+2026-08-21T09:58:10.497Z  INFO 74908 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Starting...
+2026-08-21T09:58:10.500Z  INFO 74908 --- [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-4 - Added connection conn32: url=jdbc:h2:mem:50f50fc1-88f3-4186-bcfe-9624cbb92b2c user=SA
+2026-08-21T09:58:10.501Z  INFO 74908 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Start completed.
+2026-08-21T09:58:10.506Z  INFO 74908 --- [           main] o.f.c.i.resource.ResourceNameValidator   : 1 SQL migrations were detected but not run because they did not follow the filename convention.
+2026-08-21T09:58:10.507Z  INFO 74908 --- [           main] o.f.c.i.resource.ResourceNameValidator   : Set 'validateMigrationNaming' to true to fail fast and see a list of the invalid file names.
+2026-08-21T09:58:10.509Z  INFO 74908 --- [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:h2:mem:50f50fc1-88f3-4186-bcfe-9624cbb92b2c (H2 2.2)
+2026-08-21T09:58:10.510Z  WARN 74908 --- [           main] o.f.c.internal.database.base.Database    : Flyway upgrade recommended: H2 2.2.224 is newer than this version of Flyway and support has not been tested. The latest supported version of H2 is 2.2.220.
+2026-08-21T09:58:10.515Z  INFO 74908 --- [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table "PUBLIC"."flyway_schema_history" does not exist yet
+2026-08-21T09:58:10.517Z  INFO 74908 --- [           main] o.f.core.internal.command.DbValidate     : Successfully validated 8 migrations (execution time 00:00.005s)
+2026-08-21T09:58:10.518Z  INFO 74908 --- [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "PUBLIC"."flyway_schema_history" ...
+2026-08-21T09:58:10.525Z  INFO 74908 --- [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "PUBLIC": << Empty Schema >>
+2026-08-21T09:58:10.528Z  INFO 74908 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20260816054204525 - create categories and tags schema"
+2026-08-21T09:58:10.539Z  INFO 74908 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20260816054723620 - create materials table"
+2026-08-21T09:58:10.545Z  INFO 74908 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20260816055043275 - create search analytics events table"
+2026-08-21T09:58:10.552Z  INFO 74908 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20260816055559715 - seed epidemiological protocols"
+2026-08-21T09:58:10.561Z  INFO 74908 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20260816065637846 - create internal tasks table"
+2026-08-21T09:58:10.566Z  INFO 74908 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20260816122837666 - seed baseline epidemiological protocols"
+2026-08-21T09:58:10.572Z  INFO 74908 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20260819025141204 - add category and tags to materials"
+2026-08-21T09:58:10.624Z  INFO 74908 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20260819145810891 - add record type to epidemiological protocols"
+2026-08-21T09:58:10.650Z  INFO 74908 --- [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 8 migrations to schema "PUBLIC", now at version v20260819145810891 (execution time 00:00.046s)
+2026-08-21T09:58:10.758Z  INFO 74908 --- [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-08-21T09:58:10.767Z  INFO 74908 --- [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-08-21T09:58:10.777Z  INFO 74908 --- [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-08-21T09:58:10.922Z  INFO 74908 --- [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-08-21T09:58:10.922Z  INFO 74908 --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-08-21T09:58:11.065Z  WARN 74908 --- [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-08-21T09:58:11.181Z  INFO 74908 --- [           main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2026-08-21T09:58:11.245Z  INFO 74908 --- [           main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@470a4e26, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@708f0dd6, org.springframework.security.web.context.SecurityContextHolderFilter@4e4dcf7c, org.springframework.security.web.header.HeaderWriterFilter@36a2bc42, org.springframework.web.filter.CorsFilter@4ac5dcd8, org.springframework.security.web.authentication.logout.LogoutFilter@6b61b3a8, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@2190454f, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@54583aa6, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@773bccc3, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@69dc42f2, org.springframework.security.web.session.SessionManagementFilter@74791130, org.springframework.security.web.access.ExceptionTranslationFilter@191063f0, org.springframework.security.web.access.intercept.AuthorizationFilter@578dbfa0]
+2026-08-21T09:58:11.327Z  INFO 74908 --- [           main] c.e.p.DataRestorationVerificationTest    : Started DataRestorationVerificationTest in 1.188 seconds (process running for 13.86)
 ]]></system-out>
   </testcase>
-  <testcase name="testDeleteProtocolSuccessAndNotFound" classname="com.eneik.production.EpidemiologicalProtocolApiTest" time="0.025"/>
-  <testcase name="testGetProtocolByIdSuccessAndNotFound" classname="com.eneik.production.EpidemiologicalProtocolApiTest" time="0.016"/>
-  <testcase name="testCreateProtocolSuccessAndConflict" classname="com.eneik.production.EpidemiologicalProtocolApiTest" time="0.031"/>
-  <testcase name="testUnauthorizedAccessToProtocolsReturns401" classname="com.eneik.production.EpidemiologicalProtocolApiTest" time="0.006"/>
-  <testcase name="testUpdateProtocolSuccessAndAtomicallyGuarded" classname="com.eneik.production.EpidemiologicalProtocolApiTest" time="0.031"/>
-  <testcase name="testSearchProtocolsWithPaginationAndFiltering" classname="com.eneik.production.EpidemiologicalProtocolApiTest" time="0.055"/>
 </testsuite>
