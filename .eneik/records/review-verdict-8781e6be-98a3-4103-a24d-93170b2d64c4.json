@@ -1,0 +1,1 @@
+{"verdicts": [{"sourceIndex": 0, "verdict": "block", "criticalReason": "Committed generated artifact files (.png) inside the strictly restricted .eneik/ directory, which directly contradicts the DoD boundaries prohibiting commits to this path.", "concerns": []}]}
