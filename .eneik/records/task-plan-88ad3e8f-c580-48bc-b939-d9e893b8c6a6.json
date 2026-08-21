@@ -1,0 +1,36 @@
+{
+  "epics": [
+    {
+      "existingEpicId": "9303db9c-6ef6-4c29-9f9c-47073b8632e8",
+      "title": null,
+      "jtbd": null,
+      "kanoClass": null,
+      "cynefinDomain": null,
+      "sixSigmaMetric": "Decrease backend application container boot and health-check failure rate from 100% to 0% in observed launches",
+      "tocConstraintRef": "Backend Application Launch and Health Check",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: The backend application starts successfully and does not crash on boot.",
+        "R2: The backend application responds with HTTP 200 OK to the health check on port 18080."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Resolve backend application startup crash to enable successful health checks",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When implementing the runtime fix for this epic, I want to patch the existing startup logic to prevent crash or hang, so that the Application Startup Remediation epic outcome is achieved.",
+          "acceptanceCriteria": "Given a fresh deployment of the backend environment\nWhen the backend container initializes\nThen the container must start successfully without exiting early\nGiven a running backend container\nWhen the health check is polled at /health on port 18080\nThen the backend must return a 200 OK response, proving the application is fully up",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Application runtime initialization",
+          "sixSigmaMetric": "Decrease health check /health endpoint failure rate from 100% to 0%",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2"
+          ]
+        }
+      ]
+    }
+  ]
+}
