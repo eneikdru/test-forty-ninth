@@ -1,3 +1,4 @@
+<svelte:options accessors />
 <script>
   import { onMount, onDestroy } from 'svelte';
   import AuthModal from './AuthModal.svelte';
@@ -16,12 +17,19 @@
   export let pendingAction = null;
   export let authSuccessFeedback = null;
 
-  let searchQuery = '';
-  let activeSearchQuery = '';
-  let selectedCategory = '';
-  let selectedTag = '';
-  let sortBy = 'relevance';
-  let sortOrder = 'desc';
+  export let searchQuery = '';
+  let activeSearchQuery = searchQuery;
+  export let selectedCategory = '';
+  export let selectedTag = '';
+  export let sortBy = 'relevance';
+  export let sortOrder = 'desc';
+
+  // Pagination State
+  export let page = 0;
+  export let size = 10;
+  let totalPages = 1;
+  let isFirst = true;
+  let isLast = true;
 
   // Sample dataset for fallback / initial display
   let sampleDocuments = [
@@ -171,8 +179,18 @@
       filtered.sort((a, b) => sortOrder === 'asc' ? new Date(a.createdAt) - new Date(b.createdAt) : new Date(b.createdAt) - new Date(a.createdAt));
     }
 
-    searchResults = filtered;
     totalElements = filtered.length;
+    const currentSize = Math.max(1, Number(size));
+    totalPages = Math.ceil(totalElements / currentSize) || 1;
+    if (page >= totalPages) page = Math.max(0, totalPages - 1);
+
+    isFirst = page === 0;
+    isLast = page >= totalPages - 1;
+
+    const startIdx = page * currentSize;
+    const endIdx = startIdx + currentSize;
+    searchResults = filtered.slice(startIdx, endIdx);
+
     searchCompleted = true;
     hasClickedDocument = false;
     isAbandoned = false;
@@ -180,9 +198,10 @@
     isLoading = false;
   }
 
-  export function executeSearch(query = searchQuery) {
+  export function executeSearch(query = searchQuery, targetPage = page) {
     searchQuery = query;
     activeSearchQuery = searchQuery.trim();
+    page = targetPage;
     searchError = null;
 
     filterLocalSamples();
@@ -193,6 +212,8 @@
       if (activeSearchQuery) params.set('q', activeSearchQuery);
       if (selectedCategory) params.set('category', selectedCategory);
       if (selectedTag) params.set('tags', selectedTag);
+      params.set('page', page.toString());
+      params.set('size', size.toString());
       params.set('sortBy', sortBy);
       params.set('sortOrder', sortOrder);
 
@@ -206,7 +227,18 @@
               if (data && Array.isArray(data.items)) {
                 if (data.items.length > 0 || (data.pagination && data.pagination.totalElements === 0)) {
                   searchResults = data.items;
-                  totalElements = data.pagination ? data.pagination.totalElements : data.items.length;
+                  if (data.pagination) {
+                    totalElements = data.pagination.totalElements;
+                    totalPages = data.pagination.totalPages;
+                    page = data.pagination.page;
+                    isFirst = data.pagination.isFirst;
+                    isLast = data.pagination.isLast;
+                  } else {
+                    totalElements = data.items.length;
+                    totalPages = Math.ceil(totalElements / size) || 1;
+                    isFirst = page === 0;
+                    isLast = page >= totalPages - 1;
+                  }
                 }
               }
             }
@@ -214,6 +246,16 @@
         }
       } catch (e) {}
     }
+  }
+
+  export function handlePageChange(newPage) {
+    if (newPage < 0 || (totalPages > 0 && newPage >= totalPages) || newPage === page) return;
+    executeSearch(searchQuery, newPage);
+  }
+
+  export function handleSizeChange(newSize) {
+    size = Number(newSize);
+    executeSearch(searchQuery, 0);
   }
 
   export function handleDocumentClick(doc) {
@@ -305,7 +347,8 @@
     sortOrder = 'desc';
     downloadError = null;
     searchError = null;
-    executeSearch('');
+    page = 0;
+    executeSearch('', 0);
   }
 
   // Authentication & Management Operation Gates
@@ -519,7 +562,7 @@
 
   function onKeyDown(e) {
     if (e.key === 'Enter') {
-      executeSearch(searchQuery);
+      executeSearch(searchQuery, 0);
     }
   }
 
@@ -535,8 +578,12 @@
     handleAbandonment();
   };
 
+  $: if (sampleDocuments && size !== undefined) {
+    filterLocalSamples();
+  }
+
   onMount(() => {
-    executeSearch('');
+    executeSearch(searchQuery, page);
   });
 
   if (typeof window !== 'undefined') {
@@ -791,7 +838,7 @@
         <select
           id="sort-select"
           bind:value={sortBy}
-          on:change={() => executeSearch()}
+          on:change={() => executeSearch(searchQuery, 0)}
           class="bg-surface-container-lowest border border-outline-variant text-on-surface font-label-md text-label-md rounded-DEFAULT px-2 py-1 focus:ring-2 focus:ring-primary focus:outline-none"
           data-testid="sort-by-select"
         >
@@ -804,7 +851,7 @@
           type="button"
           aria-label={`Toggle sort order, current: ${sortOrder}`}
           class="p-1 text-on-surface-variant hover:text-on-surface rounded border border-outline-variant bg-surface-container-lowest focus:ring-2 focus:ring-primary focus:outline-none"
-          on:click={() => { sortOrder = sortOrder === 'asc' ? 'desc' : 'asc'; executeSearch(); }}
+          on:click={() => { sortOrder = sortOrder === 'asc' ? 'desc' : 'asc'; executeSearch(searchQuery, 0); }}
           data-testid="sort-order-btn"
         >
           <span class="material-symbols-outlined" aria-hidden="true">
@@ -816,7 +863,7 @@
 
     <!-- Results List -->
     {#if isLoading}
-      <div class="py-12 text-center text-on-surface-variant" data-testid="loading-state">
+      <div class="py-12 text-center text-on-surface-variant" data-testid="loading-state" role="status" aria-live="polite">
         <span class="material-symbols-outlined animate-spin text-primary text-3xl mb-2" aria-hidden="true">progress_activity</span>
         <p class="font-body-md">Searching epidemiological materials...</p>
       </div>
@@ -838,7 +885,7 @@
                   <button
                     type="button"
                     class="px-2 py-0.5 bg-surface-container-high text-on-surface-variant text-xs font-mono-data rounded hover:bg-surface-container-highest transition-colors focus:ring-1 focus:ring-primary focus:outline-none"
-                    on:click={(e) => { e.stopPropagation(); selectedTag = tag; executeSearch(); }}
+                    on:click={(e) => { e.stopPropagation(); selectedTag = tag; executeSearch(searchQuery, 0); }}
                     data-testid={`tag-chip-${tag}`}
                   >
                     #{tag}
@@ -911,6 +958,78 @@
           </article>
         {/each}
       </div>
+
+      <!-- Pagination Control Bar -->
+      <nav
+        aria-label="Search results pagination"
+        class="flex flex-col sm:flex-row justify-between items-center gap-3 pt-4 border-t border-outline-variant bg-surface-container-lowest p-4 rounded-lg shadow-xs"
+        data-testid="pagination-controls"
+      >
+        <div class="flex items-center gap-2 font-label-md text-label-md text-on-surface-variant">
+          <label for="rows-per-page-select">Rows per page:</label>
+          <select
+            id="rows-per-page-select"
+            bind:value={size}
+            on:change={(e) => handleSizeChange(e.target.value)}
+            class="bg-surface-container-lowest border border-outline-variant text-on-surface font-label-md rounded px-2 py-1 focus:ring-2 focus:ring-primary focus:outline-none min-h-[36px]"
+            data-testid="rows-per-page-select"
+          >
+            <option value={2}>2</option>
+            <option value={5}>5</option>
+            <option value={10}>10</option>
+            <option value={20}>20</option>
+            <option value={50}>50</option>
+          </select>
+          <span class="ml-2 font-label-sm text-on-surface-variant" data-testid="page-indicator">
+            Page {page + 1} of {totalPages}
+          </span>
+        </div>
+
+        <div class="flex items-center gap-1">
+          <button
+            type="button"
+            aria-label="Go to previous page"
+            disabled={isFirst || page === 0}
+            class="min-h-[44px] min-w-[44px] flex items-center justify-center rounded border border-outline-variant bg-surface-container-lowest text-on-surface hover:bg-surface-container-high transition-colors disabled:opacity-50 disabled:cursor-not-allowed focus:ring-2 focus:ring-primary focus:outline-none"
+            on:click={() => handlePageChange(page - 1)}
+            data-testid="prev-page-btn"
+          >
+            <span class="material-symbols-outlined" style="font-size: 20px;" aria-hidden="true">chevron_left</span>
+          </button>
+
+          {#each Array.from({ length: totalPages }, (_, i) => i) as pageIdx}
+            {#if totalPages <= 7 || pageIdx === 0 || pageIdx === totalPages - 1 || Math.abs(pageIdx - page) <= 1}
+              <button
+                type="button"
+                aria-label={`Go to page ${pageIdx + 1}`}
+                aria-current={pageIdx === page ? 'page' : undefined}
+                class={`min-h-[44px] min-w-[44px] flex items-center justify-center rounded font-label-md text-label-md transition-colors focus:ring-2 focus:ring-primary focus:outline-none ${
+                  pageIdx === page
+                    ? 'bg-primary-container text-on-primary-container font-bold border border-primary'
+                    : 'bg-surface-container-lowest text-on-surface hover:bg-surface-container-high border border-outline-variant'
+                }`}
+                on:click={() => handlePageChange(pageIdx)}
+                data-testid={`page-btn-${pageIdx}`}
+              >
+                {pageIdx + 1}
+              </button>
+            {:else if (pageIdx === 1 && page > 2) || (pageIdx === totalPages - 2 && page < totalPages - 3)}
+              <span class="min-h-[44px] min-w-[32px] flex items-center justify-center font-label-md text-on-surface-variant" aria-hidden="true">...</span>
+            {/if}
+          {/each}
+
+          <button
+            type="button"
+            aria-label="Go to next page"
+            disabled={isLast || page >= totalPages - 1}
+            class="min-h-[44px] min-w-[44px] flex items-center justify-center rounded border border-outline-variant bg-surface-container-lowest text-on-surface hover:bg-surface-container-high transition-colors disabled:opacity-50 disabled:cursor-not-allowed focus:ring-2 focus:ring-primary focus:outline-none"
+            on:click={() => handlePageChange(page + 1)}
+            data-testid="next-page-btn"
+          >
+            <span class="material-symbols-outlined" style="font-size: 20px;" aria-hidden="true">chevron_right</span>
+          </button>
+        </div>
+      </nav>
     {:else}
       <!-- Empty State -->
       <div

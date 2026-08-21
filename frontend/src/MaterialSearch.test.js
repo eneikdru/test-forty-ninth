@@ -125,4 +125,96 @@ describe('MaterialSearch component', () => {
     expect(queryByTestId('delete-confirmation-dialog')).toBeNull();
     expect(getAllByTestId('document-item').length).toBe(initialDocCount - 1);
   });
+
+  it('renders pagination controls and paginates through search results', async () => {
+    const { getByTestId, getAllByTestId } = render(MaterialSearch, {
+      props: { size: 2 }
+    });
+
+    // Wait for onMount state update to flush
+    await waitFor(() => {
+      expect(getByTestId('page-indicator').textContent).toContain('Page 1 of 3');
+    });
+
+    // Pagination bar exists
+    expect(getByTestId('pagination-controls')).toBeDefined();
+
+    // Currently showing 2 documents for page size 2
+    let docItems = getAllByTestId('document-item');
+    expect(docItems.length).toBe(2);
+
+    // Prev button disabled on first page
+    const prevBtn = getByTestId('prev-page-btn');
+    const nextBtn = getByTestId('next-page-btn');
+    expect(prevBtn.disabled).toBe(true);
+    expect(nextBtn.disabled).toBe(false);
+
+    // Click Next Page button
+    await fireEvent.click(nextBtn);
+
+    expect(getByTestId('page-indicator').textContent).toContain('Page 2 of 3');
+    docItems = getAllByTestId('document-item');
+    expect(docItems.length).toBe(2);
+    expect(prevBtn.disabled).toBe(false);
+
+    // Click Page 3 direct button
+    const page3Btn = getByTestId('page-btn-2');
+    await fireEvent.click(page3Btn);
+
+    expect(getByTestId('page-indicator').textContent).toContain('Page 3 of 3');
+    docItems = getAllByTestId('document-item');
+    expect(docItems.length).toBe(1);
+    expect(nextBtn.disabled).toBe(true);
+
+    // Change rows per page size
+    const sizeSelect = getByTestId('rows-per-page-select');
+    await fireEvent.change(sizeSelect, { target: { value: '10' } });
+
+    expect(getByTestId('page-indicator').textContent).toContain('Page 1 of 1');
+    docItems = getAllByTestId('document-item');
+    expect(docItems.length).toBe(5);
+  });
+
+  it('passes page and size parameters when executing search via API endpoint', async () => {
+    const requestedUrls = [];
+    const fetchFn = vi.fn((url) => {
+      requestedUrls.push(url);
+      return Promise.resolve({
+        ok: true,
+        json: async () => ({
+          items: [
+            { id: 'item-10', title: 'API Material 10', category: 'protocol', tags: [] }
+          ],
+          pagination: {
+            page: 1,
+            size: 5,
+            totalElements: 12,
+            totalPages: 3,
+            isFirst: false,
+            isLast: false
+          }
+        })
+      });
+    });
+
+    const { getByTestId } = render(MaterialSearch, {
+      props: { fetchFn, size: 5, page: 0 }
+    });
+
+    // Execute search
+    const searchInput = getByTestId('search-input');
+    const submitBtn = getByTestId('search-submit');
+
+    await fireEvent.input(searchInput, { target: { value: 'surveillance' } });
+    await fireEvent.click(submitBtn);
+
+    await waitFor(() => {
+      expect(fetchFn).toHaveBeenCalled();
+    });
+
+    const lastUrl = requestedUrls[requestedUrls.length - 1];
+    expect(lastUrl).toContain('q=surveillance');
+    expect(lastUrl).toContain('page=0');
+    expect(lastUrl).toContain('size=5');
+  });
 });

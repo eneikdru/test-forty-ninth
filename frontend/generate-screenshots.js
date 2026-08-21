@@ -4,14 +4,16 @@ import fs from 'fs';
 import path from 'path';
 
 async function generateScreenshots() {
-  const targetDir = path.resolve(process.cwd(), '../.eneik/records/design-check-1de9a15e-da83-4b54-b9d2-05f661f1964d');
+  const rootDir = process.cwd().endsWith('frontend') ? path.resolve(process.cwd(), '..') : process.cwd();
+  const targetDir = path.resolve(rootDir, '.eneik/records/design-check-97b8395e-fafa-4c08-91c6-565b8bba690f');
   if (!fs.existsSync(targetDir)) {
     fs.mkdirSync(targetDir, { recursive: true });
   }
 
+  const frontendDir = process.cwd().endsWith('frontend') ? process.cwd() : path.resolve(process.cwd(), 'frontend');
   // Start Vite dev server
   const server = await createServer({
-    configFile: path.resolve(process.cwd(), 'vite.config.js'),
+    configFile: path.resolve(frontendDir, 'vite.config.js'),
     server: { port: 5173 }
   });
   await server.listen();
