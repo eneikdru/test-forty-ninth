@@ -2,6 +2,7 @@ package com.eneik.production;
 
 import com.eneik.production.models.persistence.SearchAnalyticsEventEntity;
 import com.eneik.production.repository.SearchAnalyticsEventRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -18,6 +19,11 @@ public class SearchAnalyticsEventRepositoryTest {
 
     @Autowired
     private SearchAnalyticsEventRepository repository;
+
+    @BeforeEach
+    public void setUp() {
+        repository.deleteAll();
+    }
 
     @Test
     public void testSaveAndQuerySearchAnalyticsEvents() {
