@@ -1,0 +1,34 @@
+{
+  "epics": [
+    {
+      "existingEpicId": "9303db9c-6ef6-4c29-9f9c-47073b8632e8",
+      "title": null,
+      "jtbd": null,
+      "kanoClass": null,
+      "cynefinDomain": null,
+      "sixSigmaMetric": "Reduce application startup connection failures on port 18080 from 100% to 0%",
+      "tocConstraintRef": "Backend application initialization block",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: The backend application container must successfully start and respond to health checks on port 18080 without connection refused errors"
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Fix backend application startup and health check response",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When implementing the startup fix for this epic, I want to resolve the connection refused error, so that the launched environment is healthy and accessible.",
+          "acceptanceCriteria": "Given a launched backend application container\nWhen the system makes an HTTP GET request to localhost:18080/health\nThen the application must accept the connection and return an HTTP 200 OK status.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Backend connection and initialization flow",
+          "sixSigmaMetric": "Reduce connection refused errors on port 18080 from 100% to 0%",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1"
+          ]
+        }
+      ]
+    }
+  ]
+}
