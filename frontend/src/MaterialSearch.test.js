@@ -166,4 +166,62 @@ describe('MaterialSearch component', () => {
     expect(docItems.length).toBe(12);
     expect(getByTestId('page-indicator').textContent).toContain('Page 1 of 1');
   });
+
+  it('displays loading indicator during async pagination fetch', async () => {
+    let resolveFetch;
+    const fetchPromise = new Promise((resolve) => {
+      resolveFetch = resolve;
+    });
+
+    const mockFetch = vi.fn().mockReturnValue(
+      fetchPromise.then(() => ({
+        ok: true,
+        json: async () => ({
+          items: [
+            {
+              id: 'async-1',
+              title: 'Async Document 1',
+              summary: 'Summary 1',
+              category: 'protocol',
+              tags: ['tag1'],
+              author: 'Author 1',
+              createdAt: '2026-08-01T10:00:00Z',
+              updatedAt: '2026-08-15T14:30:00Z',
+              fileUrl: '/files/test.pdf'
+            }
+          ],
+          pagination: {
+            page: 1,
+            size: 5,
+            totalElements: 10,
+            totalPages: 2,
+            isFirst: false,
+            isLast: true
+          }
+        })
+      }))
+    );
+
+    const { getByTestId, queryByTestId } = render(MaterialSearch, {
+      props: { fetchFn: mockFetch, size: 5 }
+    });
+
+    // Click next page button
+    const nextBtn = getByTestId('next-page-btn');
+    fireEvent.click(nextBtn);
+
+    // Verify loading state is visible while pending
+    await waitFor(() => {
+      expect(getByTestId('loading-state')).toBeDefined();
+    });
+
+    // Resolve fetch
+    resolveFetch();
+
+    // Verify loading state clears and results are rendered
+    await waitFor(() => {
+      expect(queryByTestId('loading-state')).toBeNull();
+      expect(getByTestId('results-list')).toBeDefined();
+    });
+  });
 });

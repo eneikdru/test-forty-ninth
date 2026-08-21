@@ -304,6 +304,7 @@
       try {
         const res = fetcher(url, { method: 'GET' });
         if (res && typeof res.then === 'function') {
+          isLoading = true;
           res.then(async (r) => {
             if (r && r.ok && typeof r.json === 'function') {
               const data = await r.json();
@@ -321,9 +322,13 @@
                 }
               }
             }
-          }).catch(() => {});
+          }).catch(() => {}).finally(() => {
+            isLoading = false;
+          });
         }
-      } catch (e) {}
+      } catch (e) {
+        isLoading = false;
+      }
     }
   }
 
@@ -940,13 +945,16 @@
       </div>
     </div>
 
-    <!-- Results List -->
+    <!-- Loading Indicator -->
     {#if isLoading}
-      <div class="py-12 text-center text-on-surface-variant flex flex-col items-center justify-center gap-2" data-testid="loading-state">
-        <span class="material-symbols-outlined animate-spin text-primary text-3xl mb-2" aria-hidden="true">progress_activity</span>
+      <div class="py-8 text-center text-on-surface-variant flex flex-col items-center justify-center gap-2" data-testid="loading-state">
+        <span class="material-symbols-outlined animate-spin text-primary text-3xl mb-1" aria-hidden="true">progress_activity</span>
         <p class="font-body-md font-medium text-on-surface">Loading page {page + 1} results...</p>
       </div>
-    {:else if searchResults.length > 0}
+    {/if}
+
+    <!-- Results List -->
+    {#if searchResults.length > 0}
       <div class="space-y-4" data-testid="results-list">
         {#each searchResults as doc (doc.id)}
           <article
@@ -1037,7 +1045,7 @@
           </article>
         {/each}
       </div>
-    {:else}
+    {:else if !isLoading}
       <!-- Empty State -->
       <div
         class="bg-surface-container-lowest border border-outline-variant rounded-lg p-8 text-center space-y-4 my-6"
