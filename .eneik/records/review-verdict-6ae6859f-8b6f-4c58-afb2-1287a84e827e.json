@@ -1,0 +1,10 @@
+{
+  "verdicts": [
+    {
+      "sourceIndex": 0,
+      "verdict": "block",
+      "criticalReason": "PR #0 commits binary generated screenshot files (.png) under .eneik/records/ (desktop-1440.png, mobile-375.png), violating rules against committing generated image artifacts (.png) and committing files under .eneik/.",
+      "concerns": []
+    }
+  ]
+}
