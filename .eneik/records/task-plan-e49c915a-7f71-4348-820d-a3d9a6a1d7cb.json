@@ -1,0 +1,34 @@
+{
+  "epics": [
+    {
+      "existingEpicId": "9303db9c-6ef6-4c29-9f9c-47073b8632e8",
+      "title": null,
+      "jtbd": null,
+      "kanoClass": null,
+      "cynefinDomain": null,
+      "sixSigmaMetric": null,
+      "tocConstraintRef": null,
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Resolve backend container startup failure and ensure the /health endpoint is reachable on port 18080"
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Fix backend application startup failure",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When implementing the backend startup fix for this epic, I want to resolve the connection refused error, so that the launched environment can be utilized and verified.",
+          "acceptanceCriteria": "Given the backend application with a failing health check,\nWhen the application is launched and its test suite is executed,\nThen it must pass context load tests and the /health endpoint must return a healthy HTTP status.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "backend-startup-reliability",
+          "sixSigmaMetric": "Increase backend successful startup rate from 0% to 100%.",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1"
+          ]
+        }
+      ]
+    }
+  ]
+}
