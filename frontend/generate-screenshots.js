@@ -4,7 +4,7 @@ import fs from 'fs';
 import path from 'path';
 
 async function generateScreenshots() {
-  const targetDir = path.resolve(process.cwd(), '../.eneik/records/design-check-1de9a15e-da83-4b54-b9d2-05f661f1964d');
+  const targetDir = path.resolve(process.cwd(), '../.eneik/records/design-check-01a762cb-fcd4-453d-b934-4e9d633f47b4');
   if (!fs.existsSync(targetDir)) {
     fs.mkdirSync(targetDir, { recursive: true });
   }
