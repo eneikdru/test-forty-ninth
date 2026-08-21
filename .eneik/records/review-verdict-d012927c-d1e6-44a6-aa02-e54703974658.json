@@ -1,0 +1,10 @@
+{
+  "verdicts": [
+    {
+      "sourceIndex": 0,
+      "verdict": "block",
+      "criticalReason": "The PR commits generated binary image files (.png artifacts) under .eneik/records/ (desktop-1440.png and mobile-375.png), which violates the strict policy against committing generated build artifacts/media files and modifying paths under .eneik/.",
+      "concerns": []
+    }
+  ]
+}
