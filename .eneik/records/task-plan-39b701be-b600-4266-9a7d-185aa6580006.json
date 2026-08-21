@@ -1,0 +1,34 @@
+{
+  "epics": [
+    {
+      "existingEpicId": "9303db9c-6ef6-4c29-9f9c-47073b8632e8",
+      "title": null,
+      "jtbd": null,
+      "kanoClass": null,
+      "cynefinDomain": null,
+      "sixSigmaMetric": "Reduce application startup failure rate from 100% to 0%",
+      "tocConstraintRef": "backend-startup-crash",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: The application backend must successfully run its Flyway migrations against PostgreSQL 15 without syntax errors and report healthy on the /health endpoint."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Fix PostgreSQL syntax error in Flyway migration",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When implementing the database migration fix for this epic, I want to replace the H2-specific CREATE ALIAS syntax with valid PostgreSQL syntax, so that the application startup remediation is achieved",
+          "acceptanceCriteria": "Given a local Docker Compose environment with PostgreSQL 15\nWhen the backend application starts and runs Flyway migrations\nThen it executes successfully without 'CREATE ALIAS' syntax errors\nAnd the /health endpoint returns HTTP 200 OK",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "flyway-migration-postgres-compatibility",
+          "sixSigmaMetric": "Decrease migration syntax errors from 1 to 0",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1"
+          ]
+        }
+      ]
+    }
+  ]
+}
