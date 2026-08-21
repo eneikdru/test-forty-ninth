@@ -1,5 +1,5 @@
 CREATE TABLE search_analytics_events (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    id BIGSERIAL PRIMARY KEY,
     query VARCHAR(512) NOT NULL,
     user_id VARCHAR(100),
     filters VARCHAR(1024),

@@ -1,5 +1,4 @@
-MERGE INTO epidemiological_protocols (code, title, category, version, status, summary, author_organization, publication_year)
-KEY (code)
+INSERT INTO epidemiological_protocols (code, title, category, version, status, summary, author_organization, publication_year)
 VALUES
 ('EPI-PROTO-011', 'Avian Influenza A (H5N1) Field Outbreak Investigation Protocol', 'Zoonotic', 'v2.0', 'APPROVED', 'Guidelines for poultry flock exposure assessment, human contact monitoring, PPE requirements, and antiviral prophylaxis triggers.', 'CDC / WHO Joint Taskforce', 2023),
 ('EPI-PROTO-012', 'Marburg Virus Outbreak Containment and Contact Tracing Protocol', 'Viral Hemorrhagic Fever', 'v1.3', 'APPROVED', 'Field containment procedures, barrier nursing standards, contact tracing protocols, and safe burial guidelines for Marburg virus disease outbreaks.', 'World Health Organization', 2023),
