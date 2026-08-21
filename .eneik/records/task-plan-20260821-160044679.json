@@ -1,0 +1,34 @@
+{
+  "epics": [
+    {
+      "existingEpicId": "9303db9c-6ef6-4c29-9f9c-47073b8632e8",
+      "title": null,
+      "jtbd": null,
+      "kanoClass": null,
+      "cynefinDomain": null,
+      "sixSigmaMetric": "Increase backend application uptime from 0% to 100% on port 18080",
+      "tocConstraintRef": "System availability for integration",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: The backend application must start successfully and respond to HTTP health checks on port 18080."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Patch backend startup error and restore health check",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When implementing the patch for this epic, I want to resolve the connection refused error on port 18080, so that the application startup remediation is complete.",
+          "acceptanceCriteria": "Given the backend application is launched in the target environment\nWhen a client requests the /health endpoint on port 18080\nThen the application must return a successful HTTP response without connection refusal\nGiven the patch is applied\nWhen the system tests are executed\nThen the tests confirm the application binds to the correct port and starts without failure\nGiven the patch is applied\nWhen the application is started\nThen there should be no exceptions logged during startup initialization",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Backend initialization phase",
+          "sixSigmaMetric": "Decrease backend startup failures from 1 to 0 per deployment",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1"
+          ]
+        }
+      ]
+    }
+  ]
+}
