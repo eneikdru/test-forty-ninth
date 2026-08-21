@@ -1,0 +1,34 @@
+{
+  "epics": [
+    {
+      "existingEpicId": "9303db9c-6ef6-4c29-9f9c-47073b8632e8",
+      "title": null,
+      "jtbd": null,
+      "kanoClass": null,
+      "cynefinDomain": null,
+      "sixSigmaMetric": null,
+      "tocConstraintRef": null,
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Align MaterialEntity.file_data mapping with PostgreSQL bytea column type to resolve startup schema-validation failure"
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Fix MaterialEntity file_data mapping for PostgreSQL bytea",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When implementing the entity mapping fix for this epic, I want to configure the file_data field to expect a binary JDBC type instead of an oid, so that the application startup remediation is achieved",
+          "acceptanceCriteria": "Given the backend application connects to PostgreSQL\nWhen the Spring Boot context and Hibernate schema validation initialize\nThen no schema-validation error occurs for the materials table\nAnd the application successfully exposes the health check endpoint",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "backend-startup-failure",
+          "sixSigmaMetric": "Reduce backend startup failures due to schema validation from 1 to 0",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1"
+          ]
+        }
+      ]
+    }
+  ]
+}
