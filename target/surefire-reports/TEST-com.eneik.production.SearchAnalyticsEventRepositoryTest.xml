@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.eneik.production.EpidemiologicalProtocolApiTest" time="0.182" tests="7" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.eneik.production.SearchAnalyticsEventRepositoryTest" time="0.508" tests="1" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="21"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -59,15 +59,53 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="65.0"/>
   </properties>
-  <testcase name="testInvalidSearchParametersReturn400" classname="com.eneik.production.EpidemiologicalProtocolApiTest" time="0.008">
-    <system-out><![CDATA[2026-08-21T01:59:39.210Z  INFO 414234 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.eneik.production.EpidemiologicalProtocolApiTest]: EpidemiologicalProtocolApiTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2026-08-21T01:59:39.212Z  INFO 414234 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.eneik.production.Application for test class com.eneik.production.EpidemiologicalProtocolApiTest
+  <testcase name="testSaveAndQuerySearchAnalyticsEvents" classname="com.eneik.production.SearchAnalyticsEventRepositoryTest" time="0.022">
+    <system-out><![CDATA[2026-08-21T01:59:39.398Z  INFO 414234 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.eneik.production.SearchAnalyticsEventRepositoryTest]: SearchAnalyticsEventRepositoryTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-21T01:59:39.408Z  INFO 414234 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.eneik.production.Application for test class com.eneik.production.SearchAnalyticsEventRepositoryTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.5)
+
+2026-08-21T01:59:39.433Z  INFO 414234 --- [           main] c.e.p.SearchAnalyticsEventRepositoryTest : Starting SearchAnalyticsEventRepositoryTest using Java 21.0.10 with PID 414234 (started by jules in /app)
+2026-08-21T01:59:39.433Z  INFO 414234 --- [           main] c.e.p.SearchAnalyticsEventRepositoryTest : No active profile set, falling back to 1 default profile: "default"
+2026-08-21T01:59:39.514Z  INFO 414234 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-08-21T01:59:39.524Z  INFO 414234 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 9 ms. Found 4 JPA repository interfaces.
+2026-08-21T01:59:39.540Z  INFO 414234 --- [           main] beddedDataSourceBeanFactoryPostProcessor : Replacing 'dataSource' DataSource bean with embedded version
+2026-08-21T01:59:39.574Z  INFO 414234 --- [           main] o.s.j.d.e.EmbeddedDatabaseFactory        : Starting embedded database: url='jdbc:h2:mem:92ae4e0d-f072-4fe0-85c1-9b37b9725a28;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false', username='sa'
+2026-08-21T01:59:39.584Z  INFO 414234 --- [           main] o.f.c.i.resource.ResourceNameValidator   : 1 SQL migrations were detected but not run because they did not follow the filename convention.
+2026-08-21T01:59:39.584Z  INFO 414234 --- [           main] o.f.c.i.resource.ResourceNameValidator   : Set 'validateMigrationNaming' to true to fail fast and see a list of the invalid file names.
+2026-08-21T01:59:39.586Z  INFO 414234 --- [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:h2:mem:92ae4e0d-f072-4fe0-85c1-9b37b9725a28 (H2 2.2)
+2026-08-21T01:59:39.587Z  WARN 414234 --- [           main] o.f.c.internal.database.base.Database    : Flyway upgrade recommended: H2 2.2.224 is newer than this version of Flyway and support has not been tested. The latest supported version of H2 is 2.2.220.
+2026-08-21T01:59:39.591Z  INFO 414234 --- [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table "PUBLIC"."flyway_schema_history" does not exist yet
+2026-08-21T01:59:39.592Z  INFO 414234 --- [           main] o.f.core.internal.command.DbValidate     : Successfully validated 8 migrations (execution time 00:00.003s)
+2026-08-21T01:59:39.593Z  INFO 414234 --- [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "PUBLIC"."flyway_schema_history" ...
+2026-08-21T01:59:39.598Z  INFO 414234 --- [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "PUBLIC": << Empty Schema >>
+2026-08-21T01:59:39.600Z  INFO 414234 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20260816054204525 - create categories and tags schema"
+2026-08-21T01:59:39.608Z  INFO 414234 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20260816054723620 - create materials table"
+2026-08-21T01:59:39.613Z  INFO 414234 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20260816055043275 - create search analytics events table"
+2026-08-21T01:59:39.618Z  INFO 414234 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20260816055559715 - seed epidemiological protocols"
+2026-08-21T01:59:39.628Z  INFO 414234 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20260816065637846 - create internal tasks table"
+2026-08-21T01:59:39.633Z  INFO 414234 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20260816122837666 - seed baseline epidemiological protocols"
+2026-08-21T01:59:39.639Z  INFO 414234 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20260819025141204 - add category and tags to materials"
+2026-08-21T01:59:39.648Z  INFO 414234 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20260819145810891 - add record type to epidemiological protocols"
+2026-08-21T01:59:39.653Z  INFO 414234 --- [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 8 migrations to schema "PUBLIC", now at version v20260819145810891 (execution time 00:00.025s)
+2026-08-21T01:59:39.677Z  INFO 414234 --- [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-08-21T01:59:39.679Z  INFO 414234 --- [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-08-21T01:59:39.684Z  INFO 414234 --- [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-08-21T01:59:39.790Z  INFO 414234 --- [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-08-21T01:59:39.790Z  INFO 414234 --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-08-21T01:59:39.876Z  INFO 414234 --- [           main] c.e.p.SearchAnalyticsEventRepositoryTest : Started SearchAnalyticsEventRepositoryTest in 0.465 seconds (process running for 14.764)
+Hibernate: insert into search_analytics_events (created_at,execution_time_ms,filters,query,result_count,user_id,id) values (?,?,?,?,?,?,default)
+Hibernate: insert into search_analytics_events (created_at,execution_time_ms,filters,query,result_count,user_id,id) values (?,?,?,?,?,?,default)
+Hibernate: insert into search_analytics_events (created_at,execution_time_ms,filters,query,result_count,user_id,id) values (?,?,?,?,?,?,default)
+Hibernate: select saee1_0.id,saee1_0.created_at,saee1_0.execution_time_ms,saee1_0.filters,saee1_0.query,saee1_0.result_count,saee1_0.user_id from search_analytics_events saee1_0 where saee1_0.user_id=?
+Hibernate: select saee1_0.id,saee1_0.created_at,saee1_0.execution_time_ms,saee1_0.filters,saee1_0.query,saee1_0.result_count,saee1_0.user_id from search_analytics_events saee1_0 where saee1_0.created_at between ? and ?
+Hibernate: select avg(cast(saee1_0.execution_time_ms as float(53))) from search_analytics_events saee1_0
 ]]></system-out>
   </testcase>
-  <testcase name="testDeleteProtocolSuccessAndNotFound" classname="com.eneik.production.EpidemiologicalProtocolApiTest" time="0.03"/>
-  <testcase name="testGetProtocolByIdSuccessAndNotFound" classname="com.eneik.production.EpidemiologicalProtocolApiTest" time="0.015"/>
-  <testcase name="testCreateProtocolSuccessAndConflict" classname="com.eneik.production.EpidemiologicalProtocolApiTest" time="0.029"/>
-  <testcase name="testUnauthorizedAccessToProtocolsReturns401" classname="com.eneik.production.EpidemiologicalProtocolApiTest" time="0.005"/>
-  <testcase name="testUpdateProtocolSuccessAndAtomicallyGuarded" classname="com.eneik.production.EpidemiologicalProtocolApiTest" time="0.028"/>
-  <testcase name="testSearchProtocolsWithPaginationAndFiltering" classname="com.eneik.production.EpidemiologicalProtocolApiTest" time="0.051"/>
 </testsuite>

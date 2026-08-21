@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.eneik.production.EpidemiologicalProtocolApiTest" time="0.182" tests="7" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.eneik.production.TaskStateSyncIntegrationTest" time="1.995" tests="5" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="21"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -43,7 +43,7 @@
     <property name="localRepository" value="/home/jules/.m2/repository"/>
     <property name="java.vendor.url.bug" value="https://bugs.launchpad.net/ubuntu/+source/openjdk-21"/>
     <property name="java.io.tmpdir" value="/tmp"/>
-    <property name="com.zaxxer.hikari.pool_number" value="4"/>
+    <property name="com.zaxxer.hikari.pool_number" value="3"/>
     <property name="java.version" value="21.0.10"/>
     <property name="user.dir" value="/app"/>
     <property name="os.arch" value="amd64"/>
@@ -59,15 +59,58 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="65.0"/>
   </properties>
-  <testcase name="testInvalidSearchParametersReturn400" classname="com.eneik.production.EpidemiologicalProtocolApiTest" time="0.008">
-    <system-out><![CDATA[2026-08-21T01:59:39.210Z  INFO 414234 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.eneik.production.EpidemiologicalProtocolApiTest]: EpidemiologicalProtocolApiTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2026-08-21T01:59:39.212Z  INFO 414234 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.eneik.production.Application for test class com.eneik.production.EpidemiologicalProtocolApiTest
+  <testcase name="testTaskStateSyncIntegration_stuckTask_reconcilesToInProgress" classname="com.eneik.production.TaskStateSyncIntegrationTest" time="0.136">
+    <system-out><![CDATA[2026-08-21T01:59:34.824Z  INFO 414234 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.eneik.production.TaskStateSyncIntegrationTest]: TaskStateSyncIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-21T01:59:34.829Z  INFO 414234 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.eneik.production.Application for test class com.eneik.production.TaskStateSyncIntegrationTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.5)
+
+2026-08-21T01:59:34.861Z  INFO 414234 --- [           main] c.e.p.TaskStateSyncIntegrationTest       : Starting TaskStateSyncIntegrationTest using Java 21.0.10 with PID 414234 (started by jules in /app)
+2026-08-21T01:59:34.861Z  INFO 414234 --- [           main] c.e.p.TaskStateSyncIntegrationTest       : No active profile set, falling back to 1 default profile: "default"
+2026-08-21T01:59:35.041Z  INFO 414234 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-08-21T01:59:35.051Z  INFO 414234 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 9 ms. Found 4 JPA repository interfaces.
+2026-08-21T01:59:35.417Z  INFO 414234 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Starting...
+2026-08-21T01:59:35.422Z  INFO 414234 --- [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-3 - Added connection conn20: url=jdbc:h2:mem:adb28ee4-1634-469c-9e5e-7e75d37d463d user=SA
+2026-08-21T01:59:35.423Z  INFO 414234 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Start completed.
+2026-08-21T01:59:35.437Z  INFO 414234 --- [           main] o.f.c.i.resource.ResourceNameValidator   : 1 SQL migrations were detected but not run because they did not follow the filename convention.
+2026-08-21T01:59:35.437Z  INFO 414234 --- [           main] o.f.c.i.resource.ResourceNameValidator   : Set 'validateMigrationNaming' to true to fail fast and see a list of the invalid file names.
+2026-08-21T01:59:35.441Z  INFO 414234 --- [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:h2:mem:adb28ee4-1634-469c-9e5e-7e75d37d463d (H2 2.2)
+2026-08-21T01:59:35.444Z  WARN 414234 --- [           main] o.f.c.internal.database.base.Database    : Flyway upgrade recommended: H2 2.2.224 is newer than this version of Flyway and support has not been tested. The latest supported version of H2 is 2.2.220.
+2026-08-21T01:59:35.452Z  INFO 414234 --- [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table "PUBLIC"."flyway_schema_history" does not exist yet
+2026-08-21T01:59:35.453Z  INFO 414234 --- [           main] o.f.core.internal.command.DbValidate     : Successfully validated 8 migrations (execution time 00:00.007s)
+2026-08-21T01:59:35.455Z  INFO 414234 --- [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "PUBLIC"."flyway_schema_history" ...
+2026-08-21T01:59:35.472Z  INFO 414234 --- [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "PUBLIC": << Empty Schema >>
+2026-08-21T01:59:35.480Z  INFO 414234 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20260816054204525 - create categories and tags schema"
+2026-08-21T01:59:35.503Z  INFO 414234 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20260816054723620 - create materials table"
+2026-08-21T01:59:35.514Z  INFO 414234 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20260816055043275 - create search analytics events table"
+2026-08-21T01:59:35.531Z  INFO 414234 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20260816055559715 - seed epidemiological protocols"
+2026-08-21T01:59:35.546Z  INFO 414234 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20260816065637846 - create internal tasks table"
+2026-08-21T01:59:35.556Z  INFO 414234 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20260816122837666 - seed baseline epidemiological protocols"
+2026-08-21T01:59:35.564Z  INFO 414234 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20260819025141204 - add category and tags to materials"
+2026-08-21T01:59:35.580Z  INFO 414234 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "20260819145810891 - add record type to epidemiological protocols"
+2026-08-21T01:59:35.595Z  INFO 414234 --- [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 8 migrations to schema "PUBLIC", now at version v20260819145810891 (execution time 00:00.052s)
+2026-08-21T01:59:35.639Z  INFO 414234 --- [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-08-21T01:59:35.643Z  INFO 414234 --- [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-08-21T01:59:35.651Z  INFO 414234 --- [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-08-21T01:59:35.827Z  INFO 414234 --- [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-08-21T01:59:35.828Z  INFO 414234 --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-08-21T01:59:36.034Z  WARN 414234 --- [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-08-21T01:59:36.248Z  INFO 414234 --- [           main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2026-08-21T01:59:36.359Z  INFO 414234 --- [           main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@4182c8d2, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@6f43db02, org.springframework.security.web.context.SecurityContextHolderFilter@779406fe, org.springframework.security.web.header.HeaderWriterFilter@777898ff, org.springframework.web.filter.CorsFilter@3225b1eb, org.springframework.security.web.authentication.logout.LogoutFilter@617f42cc, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@5af08862, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@47fe4f78, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@74f29818, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@6c488c55, org.springframework.security.web.session.SessionManagementFilter@149ad42f, org.springframework.security.web.access.ExceptionTranslationFilter@3af15569, org.springframework.security.web.access.intercept.AuthorizationFilter@341d34dd]
+2026-08-21T01:59:36.527Z  INFO 414234 --- [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-08-21T01:59:36.528Z  INFO 414234 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-08-21T01:59:36.532Z  INFO 414234 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 3 ms
+2026-08-21T01:59:36.551Z  INFO 414234 --- [           main] c.e.p.TaskStateSyncIntegrationTest       : Started TaskStateSyncIntegrationTest in 1.718 seconds (process running for 11.439)
 ]]></system-out>
   </testcase>
-  <testcase name="testDeleteProtocolSuccessAndNotFound" classname="com.eneik.production.EpidemiologicalProtocolApiTest" time="0.03"/>
-  <testcase name="testGetProtocolByIdSuccessAndNotFound" classname="com.eneik.production.EpidemiologicalProtocolApiTest" time="0.015"/>
-  <testcase name="testCreateProtocolSuccessAndConflict" classname="com.eneik.production.EpidemiologicalProtocolApiTest" time="0.029"/>
-  <testcase name="testUnauthorizedAccessToProtocolsReturns401" classname="com.eneik.production.EpidemiologicalProtocolApiTest" time="0.005"/>
-  <testcase name="testUpdateProtocolSuccessAndAtomicallyGuarded" classname="com.eneik.production.EpidemiologicalProtocolApiTest" time="0.028"/>
-  <testcase name="testSearchProtocolsWithPaginationAndFiltering" classname="com.eneik.production.EpidemiologicalProtocolApiTest" time="0.051"/>
+  <testcase name="testBulkTaskStateSyncIntegration" classname="com.eneik.production.TaskStateSyncIntegrationTest" time="0.044"/>
+  <testcase name="testTaskStateSyncIntegration" classname="com.eneik.production.TaskStateSyncIntegrationTest" time="0.025"/>
+  <testcase name="testAtomicUpdateQuery" classname="com.eneik.production.TaskStateSyncIntegrationTest" time="0.015"/>
+  <testcase name="testTaskStateSyncIntegration_prClosed_reconcilesToBlocked" classname="com.eneik.production.TaskStateSyncIntegrationTest" time="0.023"/>
 </testsuite>
