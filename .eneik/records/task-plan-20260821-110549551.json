@@ -1,0 +1,34 @@
+{
+  "epics": [
+    {
+      "existingEpicId": "9303db9c-6ef6-4c29-9f9c-47073b8632e8",
+      "title": null,
+      "jtbd": null,
+      "kanoClass": null,
+      "cynefinDomain": "clear",
+      "sixSigmaMetric": "Increase successful backend health check passes from 0% to 100%",
+      "tocConstraintRef": "Deployment verification bottleneck",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: The backend application must successfully start up and report healthy on port 18080 without database connection failures."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Remediate backend startup failure",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When implementing the startup fix for this epic, I want to resolve the connection refused errors, so that the application startup remediation is achieved",
+          "acceptanceCriteria": "Given the deployed backend and database containers\nWhen the application starts and a request is made to /health on port 18080\nThen the application successfully connects to the database and returns 200 OK",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Database connection stability",
+          "sixSigmaMetric": "Reduce container startup failure rate from 100% to 0%",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1"
+          ]
+        }
+      ]
+    }
+  ]
+}
