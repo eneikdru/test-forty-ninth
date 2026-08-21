@@ -19,10 +19,16 @@ public class StartupAndHealthIntegrationTest {
     private TestRestTemplate restTemplate;
 
     @Test
+    public void testContextLoads() {
+        assertNotNull(restTemplate);
+    }
+
+    @Test
     public void testApplicationStartupAndHealthCheck() {
         ResponseEntity<Map> response = restTemplate.getForEntity("/health", Map.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
         assertEquals("UP", response.getBody().get("status"));
+        assertEquals("UP", response.getBody().get("database"));
     }
 }

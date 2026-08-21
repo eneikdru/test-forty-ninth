@@ -1,5 +1,5 @@
 CREATE TABLE epidemiological_protocols (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    id BIGSERIAL PRIMARY KEY,
     code VARCHAR(100) NOT NULL UNIQUE,
     title VARCHAR(512) NOT NULL,
     category VARCHAR(100) NOT NULL,
@@ -14,8 +14,7 @@ CREATE TABLE epidemiological_protocols (
 CREATE INDEX idx_epi_protocols_category ON epidemiological_protocols (category);
 CREATE INDEX idx_epi_protocols_code ON epidemiological_protocols (code);
 
-MERGE INTO epidemiological_protocols (code, title, category, version, status, summary, author_organization, publication_year)
-KEY (code)
+INSERT INTO epidemiological_protocols (code, title, category, version, status, summary, author_organization, publication_year)
 VALUES
 ('EPI-PROTO-001', 'COVID-19 Public Health Surveillance and Outbreak Investigation Protocol', 'Respiratory', 'v3.2', 'APPROVED', 'Comprehensive guidance for standard case definitions, contact tracing, and outbreak investigation protocols for SARS-CoV-2.', 'World Health Organization', 2022),
 ('EPI-PROTO-002', 'Cholera Outbreak Early Warning and Rapid Response Protocol', 'Enteric', 'v2.1', 'APPROVED', 'Standard procedures for cholera case detection, water source testing, oral cholera vaccine deployment, and epidemic control.', 'CDC Epidemic Intelligence Service', 2021),
