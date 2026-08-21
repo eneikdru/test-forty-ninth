@@ -1,0 +1,34 @@
+{
+  "epics": [
+    {
+      "existingEpicId": "9303db9c-6ef6-4c29-9f9c-47073b8632e8",
+      "title": null,
+      "jtbd": null,
+      "kanoClass": null,
+      "cynefinDomain": null,
+      "sixSigmaMetric": null,
+      "tocConstraintRef": null,
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Fix the runtime launcher IO error on POST to the health check endpoint to ensure successful startup verification."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Fix Runtime Launcher Health Check EOF Error",
+          "roleTag": "BARCAN-TAG-05",
+          "jtbd": "When implementing the runtime health check connection fix for this epic, I want to ensure the startup process correctly polls the health endpoint without IO errors, so that the deployed environment can be successfully verified.",
+          "acceptanceCriteria": "Given a running backend application environment,\nWhen the runtime launcher attempts to POST to the health check endpoint,\nThen the request must succeed without an unexpected EOF error.\nGiven the updated configuration,\nWhen automated verification scripts are executed against the health check endpoint,\nThen they must pass to confirm the application is healthy and accessible.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Deployment Verification Bottleneck",
+          "sixSigmaMetric": "Reduce runtime launcher startup failures from current baseline to 0%",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1"
+          ]
+        }
+      ]
+    }
+  ]
+}
