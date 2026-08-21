@@ -1,0 +1,36 @@
+{
+  "epics": [
+    {
+      "existingEpicId": null,
+      "title": "Application Startup Remediation",
+      "jtbd": "When a user accesses the launched environment, I want the backend application to be fully running and healthy, so that all underlying features can be utilized and further verification can occur.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "clear",
+      "sixSigmaMetric": "Reduce container startup failure rate from 100% to 0%",
+      "tocConstraintRef": "Application initialization",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: The backend application container must start and remain running without silent crashes.",
+        "R2: The backend application must return HTTP 200 OK at the /health endpoint on port 18080."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Patch application startup and health check",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When implementing the startup fix for this epic, I want to identify and resolve the root cause of the silent crash and connection refusal, so that the application is reachable at /health on port 18080.",
+          "acceptanceCriteria": "Given the application starts in its container environment,\nWhen verifying the startup sequence,\nThen the application logs indicate successful startup without silent crashes.\nGiven the docker-compose environment is running,\nWhen an HTTP GET request is made to localhost:18080/health,\nThen it returns a 200 OK response.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Application container initialization",
+          "sixSigmaMetric": "Reduce connection refused errors on port 18080 to 0",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2"
+          ]
+        }
+      ]
+    }
+  ]
+}
