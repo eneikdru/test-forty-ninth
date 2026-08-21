@@ -100,7 +100,7 @@ describe('MaterialSearch component', () => {
 
   it('opens confirmation dialog before irreversible item deletion when authenticated', async () => {
     const { getByTestId, queryByTestId, getAllByTestId } = render(MaterialSearch, {
-      props: { isAuthenticated: true, authUsername: 'admin' }
+      props: { isAuthenticated: true, authUsername: 'admin', size: 20 }
     });
 
     const initialDocCount = getAllByTestId('document-item').length;
@@ -124,5 +124,46 @@ describe('MaterialSearch component', () => {
     await fireEvent.click(getByTestId('delete-confirm-btn'));
     expect(queryByTestId('delete-confirmation-dialog')).toBeNull();
     expect(getAllByTestId('document-item').length).toBe(initialDocCount - 1);
+  });
+
+  it('paginates results correctly when page controls and rows per page are interacted with', async () => {
+    const { getByTestId, getAllByTestId } = render(MaterialSearch, {
+      props: { size: 5 }
+    });
+
+    // Verify initial page (5 items)
+    let docItems = getAllByTestId('document-item');
+    expect(docItems.length).toBe(5);
+    expect(getByTestId('page-indicator').textContent).toContain('Page 1 of 3');
+
+    // Click next page button
+    const nextBtn = getByTestId('next-page-btn');
+    await fireEvent.click(nextBtn);
+
+    docItems = getAllByTestId('document-item');
+    expect(docItems.length).toBe(5);
+    expect(getByTestId('page-indicator').textContent).toContain('Page 2 of 3');
+
+    // Click page 3 button directly
+    const page3Btn = getByTestId('page-btn-3');
+    await fireEvent.click(page3Btn);
+
+    docItems = getAllByTestId('document-item');
+    expect(docItems.length).toBe(2);
+    expect(getByTestId('page-indicator').textContent).toContain('Page 3 of 3');
+
+    // Click previous page button
+    const prevBtn = getByTestId('prev-page-btn');
+    await fireEvent.click(prevBtn);
+
+    expect(getByTestId('page-indicator').textContent).toContain('Page 2 of 3');
+
+    // Change rows per page size
+    const rowsSelect = getByTestId('rows-per-page-select');
+    await fireEvent.change(rowsSelect, { target: { value: '20' } });
+
+    docItems = getAllByTestId('document-item');
+    expect(docItems.length).toBe(12);
+    expect(getByTestId('page-indicator').textContent).toContain('Page 1 of 1');
   });
 });
