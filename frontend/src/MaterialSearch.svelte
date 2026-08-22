@@ -903,7 +903,7 @@
   {/if}
 
   <!-- Main Content Canvas -->
-  <main class="flex-1 overflow-y-auto px-margin-mobile md:px-margin-desktop py-4 pb-28 space-y-4 bg-surface-container-low max-w-container-max mx-auto w-full">
+  <main class="flex-1 overflow-y-auto px-margin-mobile md:px-margin-desktop py-4 pb-28 space-y-4 bg-surface-container-low max-w-container-max mx-auto w-full" aria-live="polite" aria-busy={isLoading}>
     <!-- Results Header / Controls -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-outline-variant pb-3">
       <div class="flex items-center gap-2">
@@ -1188,8 +1188,9 @@
           <select
             id="rows-per-page-select"
             value={size}
+            aria-label="Rows per page"
             on:change={(e) => changeSize(e.target.value)}
-            class="bg-transparent border border-outline-variant text-on-surface font-label-md py-1 px-2 rounded focus:ring-2 focus:ring-primary focus:outline-none cursor-pointer"
+            class="bg-transparent border border-outline-variant text-on-surface font-label-md min-h-[44px] py-1 px-2 rounded focus:ring-2 focus:ring-primary focus:outline-none cursor-pointer"
             data-testid="rows-per-page-select"
           >
             <option value={5}>5</option>
@@ -1211,7 +1212,7 @@
           aria-label="Go to previous page"
           disabled={isFirst || page === 0 || isLoading}
           on:click={() => changePage(page - 1)}
-          class="min-h-[36px] min-w-[36px] px-2.5 py-1.5 flex items-center justify-center rounded border border-outline-variant bg-surface-container-high text-on-surface hover:bg-surface-container-highest disabled:opacity-50 disabled:cursor-not-allowed focus:ring-2 focus:ring-primary focus:outline-none transition-colors"
+          class="min-h-[44px] min-w-[44px] px-2.5 py-1.5 flex items-center justify-center rounded border border-outline-variant bg-surface-container-high text-on-surface hover:bg-surface-container-highest disabled:opacity-50 disabled:cursor-not-allowed focus:ring-2 focus:ring-primary focus:outline-none transition-colors"
           data-testid="prev-page-btn"
         >
           <span class="material-symbols-outlined text-[18px]" aria-hidden="true">chevron_left</span>
@@ -1227,7 +1228,7 @@
                 aria-current={p === page ? 'page' : undefined}
                 disabled={isLoading}
                 on:click={() => changePage(p)}
-                class={`min-h-[36px] min-w-[36px] px-3 py-1 rounded font-label-md text-xs font-bold transition-colors focus:ring-2 focus:ring-primary focus:outline-none ${
+                class={`min-h-[44px] min-w-[44px] px-3 py-1 rounded font-label-md text-xs font-bold transition-colors focus:ring-2 focus:ring-primary focus:outline-none ${
                   p === page
                     ? 'bg-primary text-on-primary border border-primary'
                     : 'bg-surface-container-low text-on-surface border border-outline-variant hover:bg-surface-container-high'
@@ -1247,7 +1248,7 @@
           aria-label="Go to next page"
           disabled={isLast || page >= totalPages - 1 || isLoading}
           on:click={() => changePage(page + 1)}
-          class="min-h-[36px] min-w-[36px] px-2.5 py-1.5 flex items-center justify-center rounded border border-outline-variant bg-surface-container-high text-on-surface hover:bg-surface-container-highest disabled:opacity-50 disabled:cursor-not-allowed focus:ring-2 focus:ring-primary focus:outline-none transition-colors"
+          class="min-h-[44px] min-w-[44px] px-2.5 py-1.5 flex items-center justify-center rounded border border-outline-variant bg-surface-container-high text-on-surface hover:bg-surface-container-highest disabled:opacity-50 disabled:cursor-not-allowed focus:ring-2 focus:ring-primary focus:outline-none transition-colors"
           data-testid="next-page-btn"
         >
           <span class="sr-only sm:not-sr-only sm:mr-1 text-xs font-label-md">Next</span>
