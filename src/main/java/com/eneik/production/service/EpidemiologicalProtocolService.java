@@ -117,6 +117,10 @@ public class EpidemiologicalProtocolService {
             throw new DuplicateProtocolCodeException("Protocol with code '" + request.getCode() + "' already exists");
         }
 
+        String normalizedRecordType = (request.getRecordType() != null && !request.getRecordType().isBlank())
+                ? request.getRecordType().trim().toUpperCase()
+                : "PROTOCOL";
+
         EpidemiologicalProtocolEntity entity = new EpidemiologicalProtocolEntity(
                 request.getCode(),
                 request.getTitle(),
@@ -126,7 +130,7 @@ public class EpidemiologicalProtocolService {
                 request.getSummary(),
                 request.getAuthorOrganization(),
                 request.getPublicationYear(),
-                request.getRecordType() != null && !request.getRecordType().isBlank() ? request.getRecordType() : "PROTOCOL"
+                normalizedRecordType
         );
 
         EpidemiologicalProtocolEntity saved = repository.save(entity);
@@ -154,7 +158,9 @@ public class EpidemiologicalProtocolService {
         String newSummary = request.getSummary() != null ? request.getSummary() : existing.getSummary();
         String newAuthorOrg = request.getAuthorOrganization() != null ? request.getAuthorOrganization() : existing.getAuthorOrganization();
         Integer newPubYear = request.getPublicationYear() != null ? request.getPublicationYear() : existing.getPublicationYear();
-        String newRecordType = request.getRecordType() != null ? request.getRecordType() : existing.getRecordType();
+        String newRecordType = (request.getRecordType() != null && !request.getRecordType().isBlank())
+                ? request.getRecordType().trim().toUpperCase()
+                : existing.getRecordType();
 
         int rowsUpdated = repository.updateProtocolWithStatusGuard(
                 id,
