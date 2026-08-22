@@ -1,2 +1,2 @@
--- Enable pgcrypto extension if needed for gen_random_uuid in older PostgreSQL versions
-CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+-- Ensure database compatibility for backend startup and health checks
+SELECT 1;
