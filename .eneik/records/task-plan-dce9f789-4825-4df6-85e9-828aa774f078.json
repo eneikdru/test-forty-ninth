@@ -1,0 +1,64 @@
+{
+  "epics": [
+    {
+      "existingEpicId": "e97e8f67-706c-4311-a641-182daf568c3a",
+      "title": null,
+      "jtbd": null,
+      "kanoClass": null,
+      "cynefinDomain": null,
+      "sixSigmaMetric": null,
+      "tocConstraintRef": null,
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Dedicated structure and explicit management for raw epidemiological data/datasets distinct from documents and protocols"
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Patch existing entities to support explicit data management",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When implementing raw data management for this epic, I want to patch the existing backend codebase directly, so that data sets can be managed alongside protocols without creating new distinct UI or API boundaries.",
+          "acceptanceCriteria": "Given the 'База знаний по эпидемиологии' backend service,\nWhen managing records via existing endpoints,\nThen the system must support explicit properties or types to manage raw datasets, and these changes must be verifiable by passing unit and integration tests.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Record type flexibility in the backend",
+          "sixSigmaMetric": "Decrease instances of raw data miscategorization from 100% to 0%",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1"
+          ]
+        }
+      ]
+    },
+    {
+      "existingEpicId": "e9f12eb2-7924-4e56-baa6-96f8ecd2ae54",
+      "title": null,
+      "jtbd": null,
+      "kanoClass": null,
+      "cynefinDomain": null,
+      "sixSigmaMetric": null,
+      "tocConstraintRef": null,
+      "sourceIndex": 1,
+      "requirements": [
+        "R1: Replace in-memory user details with database-backed authentication"
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Patch SecurityConfig for database-backed authentication",
+          "roleTag": "BARCAN-TAG-07",
+          "jtbd": "When implementing the persistent authentication for this epic, I want to replace the InMemoryUserDetailsManager with a database-backed mechanism in the existing codebase, so that authentication is secure and production-ready.",
+          "acceptanceCriteria": "Given a deployed Spring backend system,\nWhen a user attempts to access the knowledge base endpoints,\nThen authentication must be verified against a persistent database rather than in-memory credentials, explicitly returning 401 Unauthorized for invalid credentials and verifiable by passing unit and integration tests.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Hardcoded security constraints in the application startup",
+          "sixSigmaMetric": "Reduce hardcoded credential vulnerabilities from 1 to 0",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1"
+          ]
+        }
+      ]
+    }
+  ]
+}
