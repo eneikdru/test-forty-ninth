@@ -1,0 +1,18 @@
+{
+  "gaps": [
+    {
+      "title": "Missing dedicated 'data' management feature",
+      "roleTag": "BARCAN-TAG-09",
+      "jtbd": "When cataloging epidemiological records, I want a dedicated structure for managing raw 'data' (datasets, statistics), so that I fulfill the brief's requirement to manage 'данными' explicitly beyond simple files.",
+      "acceptanceCriteria": "Given the 'База знаний по эпидемиологии', When managing records, Then there must be dedicated functionality for epidemiological data/datasets distinct from documents and protocols.",
+      "reason": "literal brief requirement: The brief explicitly asks to manage 'данными' (data), but the codebase only implements Materials (files) and Protocols, leaving data without dedicated management."
+    },
+    {
+      "title": "Missing database-backed authentication system",
+      "roleTag": "BARCAN-TAG-09",
+      "jtbd": "When deploying the epidemiological knowledge base, I want a robust database-backed authentication and authorization mechanism, so that sensitive materials are securely managed by legitimate users without hardcoded credentials.",
+      "acceptanceCriteria": "Given a deployed system, When users access the system, Then authentication should be backed by a persistent user database rather than hardcoded in-memory credentials.",
+      "reason": "domain-standard expectation: Any knowledge base managing sensitive/medical/epidemiological materials is expected to have a production-ready, database-backed auth system; the current SecurityConfig uses an insecure InMemoryUserDetailsManager."
+    }
+  ]
+}
