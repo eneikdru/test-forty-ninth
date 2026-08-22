@@ -73,6 +73,67 @@ class EpidemiologicalProtocolServiceTest {
     }
 
     @Test
+    void testDatasetRecordTypeManagementAndFiltering() {
+        CreateEpidemiologicalProtocolRequest dataReq = new CreateEpidemiologicalProtocolRequest(
+                "EPI-DATA-001",
+                "Regional Dengue Incidence Dataset",
+                "Vector-Borne",
+                "v1.0",
+                "APPROVED",
+                "Surveillance raw statistics dataset for vector transmission.",
+                "Ministry of Health",
+                2025,
+                "data "
+        );
+
+        EpidemiologicalProtocolDto createdData = service.createProtocol(dataReq);
+        assertNotNull(createdData.getId());
+        assertEquals("DATA", createdData.getRecordType());
+
+        // Create a protocol record to verify distinction
+        CreateEpidemiologicalProtocolRequest protoReq = new CreateEpidemiologicalProtocolRequest(
+                "EPI-PROTO-100",
+                "Dengue Clinical Protocol",
+                "Vector-Borne",
+                "v1.0",
+                "APPROVED",
+                "Standard operating procedure for dengue response.",
+                "Ministry of Health",
+                2025,
+                "PROTOCOL"
+        );
+        service.createProtocol(protoReq);
+
+        // Filter by recordType=DATA
+        EpidemiologicalProtocolSearchResult dataResults = service.searchProtocols(null, null, null, "DATA", 0, 10, "createdAt", "desc");
+        assertEquals(1, dataResults.getItems().size());
+        assertEquals("EPI-DATA-001", dataResults.getItems().get(0).getCode());
+        assertEquals("DATA", dataResults.getItems().get(0).getRecordType());
+
+        // Filter by recordType=PROTOCOL
+        EpidemiologicalProtocolSearchResult protoResults = service.searchProtocols(null, null, null, "PROTOCOL", 0, 10, "createdAt", "desc");
+        assertEquals(1, protoResults.getItems().size());
+        assertEquals("EPI-PROTO-100", protoResults.getItems().get(0).getCode());
+        assertEquals("PROTOCOL", protoResults.getItems().get(0).getRecordType());
+
+        // Update dataset record type
+        UpdateEpidemiologicalProtocolRequest updateReq = new UpdateEpidemiologicalProtocolRequest(
+                "EPI-DATA-001",
+                "Updated Dengue Incidence Dataset",
+                "Vector-Borne",
+                "v1.1",
+                "APPROVED",
+                "Updated raw dataset.",
+                "Ministry of Health",
+                2025,
+                "data"
+        );
+        EpidemiologicalProtocolDto updatedData = service.updateProtocol(createdData.getId(), updateReq);
+        assertEquals("Updated Dengue Incidence Dataset", updatedData.getTitle());
+        assertEquals("DATA", updatedData.getRecordType());
+    }
+
+    @Test
     void testSearchProtocolsPaginationAndFiltering() {
         CreateEpidemiologicalProtocolRequest p1 = new CreateEpidemiologicalProtocolRequest(
                 "EPI-UNIT-101", "Influenza Surveillance", "Respiratory", "v1.0", "APPROVED", "Flu tracking", "CDC", 2025, "PROTOCOL");
