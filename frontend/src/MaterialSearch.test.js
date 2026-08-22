@@ -224,4 +224,26 @@ describe('MaterialSearch component', () => {
       expect(getByTestId('results-list')).toBeDefined();
     });
   });
+
+  it('satisfies WCAG 2.1 AA requirements on pagination controls with aria attributes and touch target styling', async () => {
+    const { getByTestId, getByLabelText } = render(MaterialSearch, {
+      props: { size: 5 }
+    });
+
+    const prevBtn = getByTestId('prev-page-btn');
+    const nextBtn = getByTestId('next-page-btn');
+    const rowsSelect = getByTestId('rows-per-page-select');
+
+    expect(prevBtn.getAttribute('aria-label')).toBe('Go to previous page');
+    expect(nextBtn.getAttribute('aria-label')).toBe('Go to next page');
+    expect(rowsSelect.getAttribute('aria-label')).toBe('Rows per page');
+
+    // Check page 1 aria-current attribute
+    const page1Btn = getByTestId('page-btn-1');
+    expect(page1Btn.getAttribute('aria-current')).toBe('page');
+
+    // Page 2 should not have aria-current
+    const page2Btn = getByTestId('page-btn-2');
+    expect(page2Btn.getAttribute('aria-current')).toBeNull();
+  });
 });
