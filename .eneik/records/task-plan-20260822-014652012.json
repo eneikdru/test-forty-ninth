@@ -1,0 +1,34 @@
+{
+  "epics": [
+    {
+      "existingEpicId": "9303db9c-6ef6-4c29-9f9c-47073b8632e8",
+      "title": null,
+      "jtbd": null,
+      "kanoClass": null,
+      "cynefinDomain": null,
+      "sixSigmaMetric": null,
+      "tocConstraintRef": null,
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: The backend application must successfully respond to HTTP health checks on the expected port without connection refusal."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Remediate application health check connection refusal",
+          "roleTag": "BARCAN-TAG-05",
+          "jtbd": "When implementing the health check fix for this epic, I want to correct the port bindings and application configuration, so that the launched application successfully passes health checks on port 18080.",
+          "acceptanceCriteria": "Given a deployed local environment,\nWhen a HTTP GET request is made to the /health endpoint on port 18080,\nThen the server must respond with a successful status code.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "local-deployment-pipeline",
+          "sixSigmaMetric": "Reduce container health check failure rate from 100% to 0%",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1"
+          ]
+        }
+      ]
+    }
+  ]
+}
