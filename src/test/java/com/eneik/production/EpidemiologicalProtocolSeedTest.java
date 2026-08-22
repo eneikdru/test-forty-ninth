@@ -47,10 +47,10 @@ public class EpidemiologicalProtocolSeedTest {
         assertTrue(repository.findByCode("EPI-PROTO-011").isPresent());
 
         // When the seed script runs again on an existing seeded database
-        jdbcTemplate.execute("MERGE INTO epidemiological_protocols (code, title, category, version, status, summary, author_organization, publication_year) " +
-                "KEY (code) VALUES " +
+        jdbcTemplate.execute("INSERT INTO epidemiological_protocols (code, title, category, version, status, summary, author_organization, publication_year) VALUES " +
                 "('EPI-PROTO-001', 'COVID-19 Public Health Surveillance and Outbreak Investigation Protocol', 'Respiratory', 'v3.2', 'APPROVED', 'Comprehensive guidance for standard case definitions, contact tracing, and outbreak investigation protocols for SARS-CoV-2.', 'World Health Organization', 2022), " +
-                "('EPI-PROTO-011', 'Avian Influenza A (H5N1) Field Outbreak Investigation Protocol', 'Zoonotic', 'v2.0', 'APPROVED', 'Guidelines for poultry flock exposure assessment, human contact monitoring, PPE requirements, and antiviral prophylaxis triggers.', 'CDC / WHO Joint Taskforce', 2023);");
+                "('EPI-PROTO-011', 'Avian Influenza A (H5N1) Field Outbreak Investigation Protocol', 'Zoonotic', 'v2.0', 'APPROVED', 'Guidelines for poultry flock exposure assessment, human contact monitoring, PPE requirements, and antiviral prophylaxis triggers.', 'CDC / WHO Joint Taskforce', 2023) " +
+                "ON CONFLICT (code) DO NOTHING;");
 
         // Then it is fully idempotent and does not duplicate baseline content
         List<EpidemiologicalProtocolEntity> protocolsAfterReRun = repository.findAll();

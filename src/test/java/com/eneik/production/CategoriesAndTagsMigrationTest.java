@@ -21,20 +21,20 @@ public class CategoriesAndTagsMigrationTest {
 
     @Test
     public void testTablesAndIndicesExist() {
-        // Query H2 system tables to check if created tables exist
-        List<String> expectedTables = List.of("CATEGORIES", "TAGS", "MATERIAL_CATEGORIES", "MATERIAL_TAGS");
+        // Query INFORMATION_SCHEMA tables in a case-insensitive manner for database engine portability
+        List<String> expectedTables = List.of("categories", "tags", "material_categories", "material_tags");
         for (String tableName : expectedTables) {
             Integer tableCount = jdbcTemplate.queryForObject(
-                    "SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = ?",
+                    "SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE LOWER(TABLE_NAME) = ?",
                     Integer.class,
-                    tableName
+                    tableName.toLowerCase()
             );
             assertEquals(1, tableCount, "Table " + tableName + " must exist after migration");
         }
 
         // Verify key indexes exist
         List<Map<String, Object>> indexList = jdbcTemplate.queryForList(
-                "SELECT INDEX_NAME FROM INFORMATION_SCHEMA.INDEXES WHERE TABLE_NAME IN ('CATEGORIES', 'TAGS', 'MATERIAL_CATEGORIES', 'MATERIAL_TAGS')"
+                "SELECT INDEX_NAME FROM INFORMATION_SCHEMA.INDEXES WHERE LOWER(TABLE_NAME) IN ('categories', 'tags', 'material_categories', 'material_tags')"
         );
 
         List<String> indexNames = indexList.stream()
@@ -90,12 +90,12 @@ public class CategoriesAndTagsMigrationTest {
         jdbcTemplate.execute("DROP TABLE IF EXISTS categories");
 
         // Verify tables are removed cleanly
-        List<String> removedTables = List.of("CATEGORIES", "TAGS", "MATERIAL_CATEGORIES", "MATERIAL_TAGS");
+        List<String> removedTables = List.of("categories", "tags", "material_categories", "material_tags");
         for (String tableName : removedTables) {
             Integer tableCount = jdbcTemplate.queryForObject(
-                    "SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = ?",
+                    "SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE LOWER(TABLE_NAME) = ?",
                     Integer.class,
-                    tableName
+                    tableName.toLowerCase()
             );
             assertEquals(0, tableCount, "Table " + tableName + " must be removed after rollback");
         }
