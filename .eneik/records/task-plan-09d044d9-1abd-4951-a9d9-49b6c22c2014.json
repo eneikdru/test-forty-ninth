@@ -1,0 +1,36 @@
+{
+  "epics": [
+    {
+      "existingEpicId": "e05f2da2-bc41-4357-a2cc-71ca56af54ca",
+      "title": null,
+      "jtbd": null,
+      "kanoClass": null,
+      "cynefinDomain": null,
+      "sixSigmaMetric": null,
+      "tocConstraintRef": null,
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Replace the built-in static arrays of dummy data with the backend's actual API response for the search endpoint.",
+        "R2: Implement data view states for empty, loading, error, and present, ensuring that when the backend returns zero rows or is stopped, the page displays no domain records."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Replace hardcoded records with backend response and states",
+          "roleTag": "BARCAN-TAG-11",
+          "jtbd": "When implementing the search data binding for this epic, I want to use the actual server response and handle its states, so that the page asserts only true claims about the database.",
+          "acceptanceCriteria": "Given the backend is stopped or returns zero rows,\nWhen the user performs a search,\nThen the page must display no domain records and a true empty state.\nGiven the backend returns an error or is loading,\nWhen the user performs a search,\nThen the page must display the corresponding error or loading state without showing hardcoded data.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Frontend data coupling",
+          "sixSigmaMetric": "Decrease the number of hardcoded false documents shown from 12 to 0.",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2"
+          ]
+        }
+      ]
+    }
+  ]
+}
