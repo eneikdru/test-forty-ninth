@@ -3,6 +3,8 @@ package com.eneik.production.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 /**
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Component;
  * This customizer explicitly binds the container web server port to 8080 (or CONTAINER_PORT/PORT/APP_PORT).
  */
 @Component
+@Order(Ordered.LOWEST_PRECEDENCE)
 public class ServerPortCustomizer implements WebServerFactoryCustomizer<ConfigurableServletWebServerFactory> {
 
     @Value("${app.server.port:${PORT:${CONTAINER_PORT:8080}}}")
