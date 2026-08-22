@@ -97,4 +97,39 @@ class MaterialServiceTest {
         assertTrue(entity.getTags().contains("cholera"));
         assertTrue(entity.getTags().contains("surveillance"));
     }
+
+    @Test
+    void testUpdateMaterialCategoryAndTagsPersistence() {
+        MaterialUploadDto uploadDto = new MaterialUploadDto(
+                "Initial Title",
+                "Initial Desc",
+                "Initial Content",
+                "Initial Category",
+                List.of("tag1"),
+                null
+        );
+
+        MaterialDto created = materialService.createMaterial(uploadDto);
+
+        MaterialUploadDto updateDto = new MaterialUploadDto(
+                "Updated Title",
+                "Updated Desc",
+                "Updated Content",
+                "Updated Category",
+                List.of("tag2", "tag3"),
+                null
+        );
+
+        MaterialDto updated = materialService.updateMaterial(created.getId(), updateDto).orElseThrow();
+        assertEquals("Updated Category", updated.getCategory());
+        assertEquals(2, updated.getTags().size());
+        assertTrue(updated.getTags().contains("tag2"));
+        assertTrue(updated.getTags().contains("tag3"));
+
+        MaterialEntity entity = materialService.getMaterialEntity(created.getId()).orElseThrow();
+        assertEquals("Updated Category", entity.getCategory());
+        assertEquals(2, entity.getTags().size());
+        assertTrue(entity.getTags().contains("tag2"));
+        assertTrue(entity.getTags().contains("tag3"));
+    }
 }
