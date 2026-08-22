@@ -12,6 +12,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +50,7 @@ public class MaterialEntity {
     private String contentType;
 
     @Lob
+    @JdbcTypeCode(SqlTypes.BINARY)
     @Column(name = "file_data")
     private byte[] fileData;
 
